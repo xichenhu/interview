@@ -1,0 +1,84 @@
+电子书：https://react.jokcy.me/book/api/react.html?q=#
+
+一、阅读源码的意义
+	—— 外在
+		1、提高开发能力
+		2、提升问题能力
+		3、提升自身价值
+	—— 内在
+		1、提升学习能力
+		2、提升思考能力
+		3、提升设计能力
+
+二、准备工作
+	—— 源码地址以及目录结构
+	—— React 及 React-Dom
+	—— Flow Type
+
+——————————————————————————————————————————————————————————————————————————————————————————
+
+一、React API
+	—— JSX到JavaScript的转换
+		1、https://babeljs.io/repl
+	—— reactElement 源码
+	—— Component、pureComponent 源码
+	—— createRef & reg  源码
+		1、三种使用方式 
+	—— forwardRef
+	—— Context
+		1、两种方法：childContextType 和 createContext
+	—— ConcurrentMode
+	—— Suspense
+	—— hooks
+	—— Children
+
+二、React 中创建更新的API 
+	—— ReactDOM.render()
+		1、fiberRoot
+		2、Fiber
+		3、update & UpdateQueue
+		4、expirationTime
+		5、setState & froceUpdate
+	—— setState
+
+三、Fiber Scheduler
+	—— FiberWork
+	—— RequestWork
+	—— batchedUpdate（批量更新）
+	—— React Scheduler
+	—— performWork
+
+四、开始更新
+五、完成各个节点的更新
+六、提交更新
+七、各个功能的实现过程
+八、Suspense
+九、Hooks
+十、React源码的实现
+
+——————————————————————————————————————————————————————————————————————————————————————————
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,275 @@
+精通HTML5、CSS3、JavaScript等Web前端开发技术 
+熟练使用react+redux+react-router全家桶进行项目开发,负责管理系统项目开发及维护 
+熟练使用es6/es7,react-hooks, jquery等技术
+熟练使用可视化js库，如G6, antv,等图表库开发
+熟悉vue, 浏览器渲染原理, http协议等 
+了解ts相关文档，可以使用其技术开发 
+了解webpack构建以及babel等相关配置 
+具有丰富的中后台系统开发经验
+
+http://www.mianshigee.com/topic/1017nlg/p3
+
+
+2、你能列出HTML5中新的输入类型属性吗？
+	search：用于搜索域，比如站点搜索或 Google 搜索，域显示为常规的文本域。
+	url ：用于应该包含 URL 地址的输入域在提交表单时，会自动验证 url 域的值。
+	email：用于应该包含 e-mail 地址的输入域，在提交表单时，会自动验证 email 域的值。
+	datetime：选取时间、日、月、年（UTC 时间）
+	date：选取日、月、年
+	month：选取月、年
+	week：选取周和年
+	time：选取时间（小时和分钟）
+	datetime-local：选取时间、日、月、年（本地时间）
+	number：用于应该包含数值的输入域，您还能够设定对所接受的数字的限定。
+	range：用于应该包含一定范围内数字值的输入域，类型显示为滑动条。
+
+2、语义化的理解
+	*HTML语义化就是让页面的内容结构化，便于对浏览器、搜索引擎解析；
+	*在没有样式CSS情况下也以一种文档格式显示，并且是容易阅读的；
+	*搜索引擎的爬虫依赖于标记来确定上下文和各个关键字的权重，利于SEO。
+	*使阅读源代码的人对网站更容易将网站分块，便于阅读维护理解。
+
+5、HTML5中如何嵌入音频？audio
+	HTML5支持MP3、Wav和Ogg格式的音频，下面是在网页中嵌入音频的简单实例：
+	<audio controls>
+	  <source src="jamshed.mp3" type="audio/mpeg">
+	 浏览器不支持音频嵌入功能
+	<audio>
+
+6、HTML5如何嵌入视频？video
+	和音频类似，HTML5支持MP4、WebM和Ogg格式的视频，下面是简单实例：
+	 <embed>标签定义嵌入的内容，比如插件。
+	 <embed type="video/quicktime"  src="Fishing.mov">
+	 <source>对于定义多个数据源很有用。
+	 <video width="450" height="340" controls>
+	 <source src="jamshed.mp4" type="video/mp4">
+	 <source src="jamshed.mp4" type="video/ogg">
+	 </video>
+
+6、HTML5存储类型有什么区别？
+
+7、CSS 选择符有哪些？哪些属性可以继承？优先级算法如何计算？ CSS3 新增伪类有哪些？
+	1）id 选择器（#myid） 
+	2）类选择器（.myclassname） 
+	3）标签选择器（div，h1，p） 
+	4）相邻选择器（h1 + p） 
+	5）子选择器（ul > li） 
+	6）后代选择器（li a） 
+	7）通配符选择器（* ） 
+	8）属性选择器（ a[rel = "external"]） 
+	9）伪类选择器（a: hover, li: nth - child）
+
+	可继承的样式： font-size font-family color, UL LI DL DD DT
+	不可继承的样式：border padding margin width height
+	优先级就近原则，同权重情况下样式定义最近者为准
+	载入样式以最后载入的定位为准;优先级为: !important > id > class > tag ； important 比 内联优先级高
+
+4、页面导入样式时，使用link和@import有什么区别？
+	1）link属于XHTML标签，而@import是css提供的； 
+	2）页面被加载时，link会同时被加载，而@import引用的css会等到页面被加载完再加载； 
+	3）@import只在IE5以上才能识别，而link是XHTML标签，无兼容问题； 
+	4）link方式的样式的权重高于@import的权重。
+
+1、HTML5的新特性
+	(1) 绘画canvas
+	(2) 用于媒介回放的video和audio元素
+	(3) 本地离线存储localStorage长期存储数据，浏览器关闭后数据不丢失
+	(4) sessionStorage的数据在浏览器关闭后自动删除
+	(5) 语义化更好的内容元素，比如<section>，<article>，<footer>，<header>，<nav>，<menu>
+	(6) 表单控件，calendar,date,time,email,url等
+	(7) 新的技术webworker,websockt,Geolocation
+	(8) 移出的元素
+
+8、css3有哪些新特性？
+	1）CSS3 实现圆角（border-radius:8px;）， 
+	2）阴影（box-shadow:10px）, 
+	3）对文字加特效（text-shadow）, 
+	4）线性渐变（gradient）， 
+	5）旋转（transform）,
+	6）transform:rotate(9deg) scale(0.85,0.90) translate(0px,-30px) skew(-9deg,0deg);//旋转，缩放，定位，倾斜 
+	7）增加了更多的 css 选择器 , 
+	8）多背景 rgba ,
+
+9、cookie、sessionStorage、localStorage不同点：
+	1.存储大小
+		cookie 数据大小不能超过4k；
+		sessionStorage 和 localStorage 虽然也有存储大小的限制，但比 cookie 大得多，可以达到 5M 或更大。
+	2.有效时间
+		localStorage 存储持久数据，浏览器关闭后数据不丢失除非主动删除数据；
+		sessionStorage 数据在当前浏览器窗口关闭后自动删除；
+		cookie 设置的 cookie 过期时间之前一直有效，即使窗口或浏览器关闭。
+	3.数据与服务器之间的交互方式
+		cookie 的数据会自动的传递到服务器，服务器端也可以写 cookie 到客户端 
+		sessionStorage 和 localStorage 不会自动把数据发给服务器，仅在本地保存。
+
+10、盒子模型
+	—— 把所有的网页元素都看成一个盒子，它具有： content，padding，border，margin 四个属性，这就是盒子模型
+	—— 盒子模型有两种形式：标准盒子模型，怪异盒子模型
+		两种模式可以利用box-sizing属性进行自行选择：
+		　　标准模式：box-sizing:content-box;
+		　　怪异模式：box-sizing:border-box;
+
+11、flex布局常用属性有哪些？
+
+12、描述new一个对象的过程
+	创建一个新对象
+	this指向这个新对象
+	执行代码，即对this赋值
+	返回this
+13、什么是闭包？（https://blog.csdn.net/weixin_43352901/article/details/107528020）
+	—— 一个函数的作用域是它定义时的作用域
+	—— 闭包的使用场景
+		1、函数作为返回值
+		2、函数作为参数传递
+14、什么是原型
+	①所有引用类型都有一个__proto__(隐式原型)属性，属性值是一个普通的对象 
+	②所有函数都有一个prototype(原型)属性，属性值是一个普通的对象 
+	③所有引用类型的__proto__属性指向它构造函数的prototype
+
+15、原型链
+	当访问一个对象的某个属性时，会先在这个对象本身属性上查找，如果没有找到，则会去它的__proto__隐式原型上查找，即它的构造函数的prototype，如果还没有找到就会再在构造函数的prototype的__proto__中查找，这样一层一层向上查找就会形成一个链式结构，我们称为原型链。
+16、ES6的常用功能 
+	1、let/const
+	2、多行字符串/模版变量
+	3、解构赋值
+	4、块级作用域
+	5、函数默认参数
+	6、箭头函数
+
+8、描述下节流、防抖
+	
+19、从输入url到页面加载完成发生了什么？（https://www.jianshu.com/p/0054fa46e22b）
+	1、浏览器的地址栏输入URL并按下回车。
+	2、浏览器查找当前URL是否存在缓存，并比较缓存是否过期。
+	3、DNS解析URL对应的IP。
+	4、根据IP建立TCP连接（三次握手）。
+	5、HTTP发起请求。
+	6、服务器处理请求，浏览器接收HTTP响应。
+	7、渲染页面，构建DOM树。
+	8、关闭TCP连接（四次挥手）。
+	
+5、总结
+	—— 什么是单线程，和异步有什么关系
+		1、单线程就是同时只做一件事，两段JS不能同时执行
+		2、原因就是为了避免DOM渲染的冲突
+		3、异步是一种“无奈”的解决方案，虽然有很多问题
+
+	—— 什么是event-loop
+		1、事件轮询，JS异步的解决方案（解决JS异步存在的问题）
+		2、什么是异步队列，何时被放入异步队列（JS代码中同步的代码要立刻执行，异步的函数放入异步队列中，1、setTimeout没有时间参数，2、setTimeout有时间参数，3、网络请求图片或ajax加载完成之后，把回调函数放入异步队列中）
+		3、轮询的过程（监控异步队列，如果异步队列中有函数被放入，就放入主线程中执行）
+
+	—— 是否用过jquery的Deferred
+		1、可以jQuery1.5对ajax的改变举例
+		2、说明如何简单的封装，使用Deferred
+		3、说明promise和Deferred的区别
+
+	—— Promise的基本使用和原理
+		1、基本语法
+		2、如何异常捕获
+		3、多个串联-链式执行的好处
+		4、Promise.all 和 Promise.race
+		5、Promise标准-状态变化，then函数（Promise必须要实现then函数）
+
+	—— 介绍一下async/await
+		1、基本语法
+		2、使用了Promise，并没有和Promise冲突
+		3、完全是同步的写法，再也没有回调函数
+		4、但是，改变不了JS单线程、异步的本质
+	—— 总结一下当前JS异步的方案
+		1、jQuery Deferred
+		2、Promise（浏览器原生支持）
+		3、Async/Await
+		4、Generator（不讲的原因）
+			—— 原理复杂，跟编辑器有关，是新的语法
+			—— 不是异步的直接替代方案（被提出来并不是为了解决异步的）
+			—— 有更好更简洁的解决方案async/await
+			—— koa 也早已“弃暗投明”（放弃了generator的使用）
+
+17、为什么需要typeScript
+	TypeScript的设计目的应该是解决JavaScript的“痛点”：弱类型和没有命名空间，导致很难模块化，不适合开发大型程序。另外它还提供了一些语法糖（TypeScript可以实现类，接口，枚举，泛型，方法重载等，用简洁的语法丰富了JavaScript的使用。）来帮助大家更方便地实践面向对象的编程。
+
+18、Typescript有哪些基础类型？
+	1：number
+	2：string
+	3：boolean
+	4：Symbol
+	5：Array
+	6：Tuple(元组)
+	7：enum(枚举)
+	8：object
+	9：never 表示那些永不存在的值类型。如总是抛出异常或者根本不会有返回值的函数的返回值类型。
+	10：void 与any相反表示没有任何类型。函数没有返回值时用void。
+	11：null和undefined 它们是所有类型的子类型。当你指定structNullChecks时，它们只能赋值给void或者它们自己本身。
+	12：any
+
+20、React组件间通信方式
+	父组件向子组件通信：父组件通过向子组件传递 props，子组件得到 props 后进行相应的处理。
+	子组件向父组件通信：父组件将一个函数作为 props 传递给子组件，子组件调用该回调函数，便可以向父组件通信。
+	跨级组件之间通信：所谓跨级组件通信，就是父组件向子组件的子组件通信，向更深层的子组件通信。跨级组件通信可以采用下面两种方式：（1、中间组件层层传递 props 2、使用 context 对象）
+	非嵌套组件间通信：非嵌套组件，就是没有任何包含关系的组件，包括兄弟组件以及不在同一个父级中的非兄弟组件。对于非嵌套组件，可以采用下面两种方式：（1、利用二者共同父组件的 context 对象进行通信。2、使用自定义事件的方式）
+
+	本文总结了 React 中组件的几种通信方式，分别是：
+		父组件向子组件通信：使用 props
+		子组件向父组件通信：使用 props 回调
+		跨级组件间通信：使用 context 对象
+		非嵌套组件间通信：使用事件订阅
+
+1、说一下对组件化的理解
+	—— 组件的封装：封装视图、数据、变化逻辑
+	—— 组件的额复用：props传递、复用（把属性传递进去是复用、模版复用数据不重复） 
+
+2、JSX本质是什么
+	—— JSX语法（标签、JS表达式、判断、循环、事件绑定）
+	—— JSX是语法糖，需要被解析成JS才能执行
+	—— JSX是独立标准，可被其他项目使用
+
+3、JSX和vdom的关系
+	—— 为何使用 vdom：JSX需要渲染成html，还有rerender
+	—— React.createElement和h，都生成vnode
+	—— 何时patch: ReactDOM.redner(...)和setSate
+	—— 自定义组件的解析：初始化实例，然后执行render
+
+
+4、说一下setSate的过程
+	—— setSate的异步：效果、原因
+	—— vue修改属性也是异步：效果、原因
+	—— setState的过程：最终走到patch(preVnode,newVnode)
+
+5、阐述一下自己对React和vue的认识
+	—— 两者的本质区别
+		1、vue-本质是MVVM框架，由MVC发展而来
+		2、React-本质是前端组件化框架，由后端组件化发展而来
+		3、但不妨碍它们两者都能实现相同的功能
+
+	—— 看模版和组件化的区别
+		1、vue-使用模版（最初由angular提出）
+		2、React-使用JSX
+		3、模版语法上，我更加倾向于JSX
+		4、模版分离上，我更加倾向于vue
+			
+		—— 区别
+			React：只需要知道大括号里可以写JS表达式即可，学习成本更低。
+			React：模版和JS混合在一起，未分离。（模板应该和JS逻辑分离）（回顾：“开放封闭原则）
+			
+			React本身就是组件化，没有组件化就不是React
+			Vue也支持组件化，不过是在MVVM上的扩展
+			查阅vue组件化的文档，洋洋洒洒很多（侧面反映，越简单越好）
+
+			对于组件化，我更加倾向于React，做的彻底而清晰
+
+	—— 两者的共同点
+		1、都支持组件化
+		2、都是数据驱动视图
+
+	—— 总结问题答案
+		1、国内使用，首推vue。文档更易读、易学、社区够大（没有框架使用的经验推荐使用vue）
+		2、如果团队水平较高，推荐使用React。组件化和JSX
+
+
+
+
+
+
+
+

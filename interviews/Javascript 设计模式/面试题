@@ -1,0 +1,187 @@
+一、发布订阅者
+	class PubSub {
+		constructor () {
+			this.list = {}
+		}
+
+		subscribe(type, handler) {
+			if (!this.list[type]) {
+				this.list[type] = []
+			}
+			this.list[type].push(handler)
+		};
+		publish(type, params) {
+			if (!(type in this.list)) {
+				return;
+			}
+			this.list[type].forEach((handler) => {
+				handler(params)
+			})
+		};
+		removeSub(type, handler) {
+			if (!(type in this.list)) {
+				return;
+			}
+			if (!handler) {
+				delete this.list[type]
+			} else {
+				let idx = this.list[type].findIndex((item)=>{
+					return item == handler
+				})
+				if (idx < 0) {
+					return;
+				}
+				this.list[type].splice(idx, 1);
+				if (this.list[type].length <= 0) {
+					delete this.list[type]
+				}
+			}
+		}
+	}
+
+	//Example:
+
+        function xiaoming(params){
+            console.log('我是小明订阅的事件'+params)
+        }
+
+        function xiaohong1(params){
+            console.log('我是小红订阅的事件1'+params)
+        }
+
+        function xiaohong2(params){
+            console.log('我是小红订阅的事件2'+params)
+        }
+
+        let pubsub = new PubSub();
+        pubsub.subscribe('小明',xiaoming);
+
+        pubsub.subscribe('小红',xiaohong1);
+
+        pubsub.subscribe('小红',xiaohong2);
+
+        pubsub.removeSub('小红',xiaohong2)
+
+        pubsub.publish('小明','发布了');
+
+        pubsub.publish('小红','发布了');
+
+
+二、观察者
+	class Subject {  //  被观察者
+		constructor () {
+			this.obList = [] // 观察者observer 集合
+			this.state = 1; // 被观察者的默认状态
+		}
+		getState() {
+			return this.state
+		}
+		setState(value) {
+			this.state = value;
+			this.notifyAllOber(); // 重写时通知所有的观察者
+		}
+		attach(obj) {
+			this.obList.push(obj)
+		}
+		notifyAllOber() {
+			this.obList.forEach((ob)=>{
+				ob.update()
+			})
+		}
+
+	}
+
+	class Observer { // 观察者
+		constructor(name, object) {
+			this.name = name
+			this.object = object
+			this.object.attach(this)  // 收集观察者
+		}
+		update() {
+			console.log(this.name, '我观察到了变化')
+		}
+	}
+
+	let subject = new Subject()
+	let observer = new Observer('我是张三', subject)
+	subject.setState(2)
+
+三、单例模式
+	最简单的单例模式：
+	class Num {
+		constructor (name) {
+			this.name = name
+		}
+		getNum () {
+			return this.name
+		}
+	}
+	var createInstance = (function(){
+		let instance = null
+		return function(num) {
+			if (!instance) {
+				instance = new Num(num)
+			}
+			return instance.getNum()
+		}
+	})()
+
+	var instance1 = createInstance(10)
+	var instance2 = createInstance(20)
+
+四、策略模式
+	var strategies = {
+	    "CEO":function(bonus){ //首席执行官
+	        return bonus*10
+	    },
+	    "CTO":function(bonus){ //首席技术官
+	        return bonus*5
+	    },
+	    "CFO":function(bonus){ //首席财务官
+	        return bonus*4
+	    },
+	    "COO":function(bonus){ //首席运营官
+	        return bonus*2
+	    }
+	}
+
+	var calculateBonus = function(position,bonus){
+	    return strategies[position](bonus);
+	}
+	//环境类
+	var ceobonus = calculateBonus('CEO',50);
+	var ctobonus = calculateBonus('CTO',30);
+
+	console.log(ceobonus,ctobonus);//500 150
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

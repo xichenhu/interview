@@ -1,0 +1,387 @@
+/* JS API 部分*/
+零、从基础知识到JS-Web-API
+	1、JS基础知识
+		—— 特点：表面看来并不能用于工作中的开发代码，我们连在网页弹出一个Hello Word的弹窗都做不到
+		—— 标准：ECMA 262标准
+	2、JS-Web-API
+		—— 标准：W3C 标准
+		—— W3C标准中关于JS的规定有：
+			1、DOM操作
+			2、BOM操作
+			3、事件绑定
+			4、ajax请求（包括HTTP协议）
+			5、存储
+
+			6、示例：
+				—— 获取元素 document.getElementById('id'),浏览器需要：
+					1、定义一个document的全局变量，对象类型
+					2、给它定义一个getElementById的属性，属性值是一个函数
+				—— 但是W3C标准没有规定任何JS基础相关的东西
+				—— 不管什么变量类型、原型、作用域、和异步
+				—— 只管定义用于浏览器中JS操作页面的API和全局变量
+	3、问题
+		—— 全面考虑，JS的内置的全局函数和对象有哪些？
+			1、Object、Array、Boolean、String、Math、JSON、等
+			2、window、document
+			3、navigator.userAgent (浏览器制定的)
+	4、总结
+		—— 常说的JS（浏览器执行的JS）包含两部分
+			1、JS基础（ECMA 262标准）
+			2、JS-Web-API（W3C 标准）
+一、DOM操作
+	1、document Object Model 的缩写
+	2、知识点
+		—— DOM本质
+			1、DOM是结构化的可识别和可操作的树
+			2、浏览器吧拿到的HTML代码，结构化一个浏览器能识别且JS可操作的一个模型而已。
+
+		—— DOM节点操作
+			1、获取DOM节点
+				—— document.getElementById('id') // 元素
+				—— document.getElementByTagName('div') // 集合
+				—— document.getElementsByClassName('.contanier') // 集合
+				—— document.querySelectorAll('p') // 集合
+
+			2、prototype: JS对象的一个属性
+				var obj = {
+					x: 2,
+					y: 3
+				}
+				console.log(obj.x) // x就是prototype
+
+				var p = document.getElementByTagName('p')[0]
+				console.log(p.nodeName)  // nodeName就是prototype
+
+			3、Attribute: html标签上的属性
+				var pList = document.querySelectorAll('p');
+				var p = pList[0]
+				p.setAttribute('data-name', 'mooc')
+				p.getAttribute('data-name')
+				p.setAttribute('style', 'font-size: 10px')
+				p.getAttribute('style')
+
+		—— DOM结构操作
+			1、新增节点
+				var div1 = document.getElementById('div1');
+				// 添加新节点
+				var p1 = document.createElement('p');
+				p1.innerHTML = 'this is p1'
+				div1.appendChild(p1) // 添加新创建的元素
+
+				// 移动已有的元素
+				var p2 = document.getElementById('div2');
+				div1.appendChild(p2)
+
+			2、获取父元素
+				var div1 = document.getElementById('div1')
+				var parent = div1.parentElement
+
+			3、获取子元素
+				var div1 = document.getElementById('div1')
+				var child = div1.childNodes
+
+			4、删除节点
+				var div1 = document.getElementById('div1')
+				var child = div1.childNodes
+				div1.removeChild(child[0])
+
+
+	3、题目
+		—— DOM是哪种基本的数据结构？
+			1、树
+
+		—— DOM操作的常用API有哪些？
+			1、获取DOM节点，以及节点的prototype和Attribute
+			2、获取父节点、获取子节点
+			3、新增节点、删除节点
+
+		—— DOM节点的attr和prototype有何区别？
+			1、prototype只是一个JS对象的属性的修改和获取
+			2、Attribute是html标签属性的修改和获取
+
+	4、总结
+		—— DOM本质
+		—— DOM节点操作
+		—— DOM结构的操作
+
+二、BOM操作
+	—— 题目
+		1、如何检测浏览器的类型
+			var ua = navigator.userAgent
+			var isChrome = ua.indexof('Chrome')
+			console.log(isChrome)
+
+		2、拆解URL的各部分
+			console.log(location.href)
+			console.log(location.protocol)
+			console.log(location.pathname)
+			console.log(location.search)
+			console.log(location.hash)
+
+	—— 知识点
+		1、navigator
+			var ua = navigator.userAgent
+			var isChrome = ua.indexof('Chrome')
+
+		2、screen
+			console.log(screen.width)
+			console.log(screen.height)
+
+		3、location
+			console.log(location.href)
+			console.log(location.protocol)
+			console.log(location.pathname)
+			console.log(location.search)
+			console.log(location.hash)
+
+		4、history
+			history.back()
+			history.forward()
+
+
+三、事件绑定
+	—— 题目
+		1、编写一个通用的事件监听函数
+
+		2、描述事件冒泡流程
+			—— DOM树形结构
+			—— 事件冒泡
+			—— 阻止冒泡
+			—— 冒泡的应用（代理）
+
+		3、对一个无限下拉加载图片的页面，如何给每个图片绑定事件。
+			—— 使用代理
+			—— 知道代理的两个优点：1、代码简洁，事件只需要绑定一次。2、减小浏览器压力，JS代码量小
+
+	—— 知识点
+		1、通用事件绑定
+			var btn = document.getElementById('btn1');
+			btn.addEventListener('click', function() {
+				console.log('clicked')
+			})
+
+			// 封装方法
+			function bindEvent(elem, type, fn) {
+				elem.addEventListener(type, fn)
+			}
+
+			// 使用
+			var a = document.getElementById('link1')
+			bindEvent(a, 'click', function(e) {
+				e.preventDefault()
+				alert('clicked')
+			})
+
+			—— 关于低版本的兼容性
+				1、IE低版本使用attachEvent绑定事件，和W3C标准不一样。
+				2、IE低版本使用量已非常少，很多网站都早已不支持。
+				3、建议对IE低版本的兼容性：了解即可，无需深究
+				4、如果遇到对IE低版本要求苛刻的面试，果断放弃
+
+		2、事件冒泡
+			var div1 = document.getElementById('div1')
+			var body = document.body
+			bindEvent(div, 'click', function() {
+				e.stopPropatation() // 取消冒泡，就不会触发body的事件
+				alert('激活')
+			})
+
+			bindEvent(body, 'click', function() {
+				alert('取消')
+			})
+
+		3、代理
+			HTML：
+				<div id="div1">
+					<a href="#"></a>
+					<a href="#"></a>
+					<a href="#"></a>
+					<a href="#"></a>
+					/* 会随时新增更多的 a标签 */
+				</div>
+			JS：
+				var div1 = document.getElementById('div1')
+				div1.addEventListener('click', function(e) {
+					var target = e.target // 获取当前的点击是从那个标签触发的
+					if (target.nodeNage == 'A')
+					alert(target.innerHtml)
+				})
+		4、完善通用事件绑定函数
+			function binEvent(elem, type, selector, fn) {
+				if (fn === null) {
+					fn = selector
+					selector = null
+				}
+				elem.addEventListener('click', function(e) {
+					var target;
+					if (selector) {
+						target = e.target
+						if (target.matches(selector)) {
+							fn.call(target, e)
+						} else {
+							fn(e)
+						}
+					}
+				})
+			}
+
+			// 使用代理
+			var div1 = document.getElementById('div1')
+			binEvent(div1, 'click', 'a', function(e) {
+				console.log(this.innerHTML)
+			})
+
+			// 不使用代理
+			var a1 = document.getElementById('a1')
+			binEvent(a1, 'click', function(e) {
+				console.og(a.innerHTML)
+			} )
+
+
+四、Ajax
+	—— 题目
+		1、手动编写一个ajax，不依赖第三方
+		2、跨域的几种实现方式，以及原理
+	—— 知识点
+		1、XMLHttpRequest
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "/pai", false); // false 使用异步
+			xhr.onreadystatechange = function () {
+				// 这里的函数异步执行
+				if (xhr.readystate == 4) {
+					if (xhr.status == 200) {
+						alert(xhr.responseText)
+					}
+				}
+			}
+			xhr.send(null)
+
+			—— 兼容性
+				1、IE低版本使用ActiveXObject，和W3C标准不一样
+				2、IE低版本使用量已非常少，很多网站都早已不支持。
+				3、建议对IE低版本的兼容性：了解即可，无需深究
+				4、如果遇到对IE低版本要求苛刻的面试，果断放弃
+
+		2、状态码说明
+			—— xhr.readystate
+				1、0 - （未初始化）还没有调用send()方法
+				2、1 - （载入）已经调用send()方法，正在发送请求
+				3、2 - （载入完成）send()方法执行完成，已经接收到全部的响应内容
+				4、3 - （交互）正在解析交互内容
+				5、4 - （解析完成）响应内容解析完成，可以在客户端调用了
+			—— xhr.status
+				1、2XX —— 表示成功处理请求，如：200
+				2、3XX —— 需要重定向，浏览器直接跳转
+				3、4XX —— 客户端请求错误，如：404
+				4、5XX —— 服务端错误
+
+		3、跨域
+			—— 什么是跨域
+				1、浏览器有同源策略，不允许ajax访问其他域的接口
+				2、跨域条件：协议、域名、端口号，有一个不同就算跨域
+				3、可以跨域的三个标签
+					—— 有三个标签允许跨域加载资源
+						1、<img src="XXX">
+						2、<link href="XXX">
+						3、<script src="XXX">
+					—— 三个标签的使用场景
+						1、<img> 用于打点统计，统计网站可能是其他域（img没有浏览器兼容问题）
+						2、<link> <script> 可以使用CDN，CDN也是其他域
+						3、<script> 可以用JSONP
+					—— 跨域注意事项
+						1、所有跨域请求都必须经过信息提供方允许
+						2、如果未经允许即可获取，那是浏览器同源策略出现漏洞
+
+			—— JSONP
+				1、JSONP的实现原理
+					—— 加载 https://coding.m.imooc/classindex.html
+					—— 不一定服务器真正存在一个classindex.html文件
+					—— 服务器可以根据请求，动态生成一个文件返回
+					—— 同理 <script src="https://coding.m.imooc/api.js">
+					—— 例子：
+						1、请求https://coding.m.imooc/api.js地址
+						2、返回内容格式callback({x: 100, y: 200})
+
+							<script>
+								window.callback = function(data) {
+									console.log(data)
+								}
+							</script>
+							<script src="https://coding.m.imooc/api.js">
+							<!---- 以上将返回 callback({x: 100, y: 200}) ---->
+
+			—— 服务器端设置 http header
+				response.setHeader("Access-Control-Allow-Origin", "http://a.com") // 第二个参数是允许跨域的域名，不建议直接写*
+				response.setHeader("Access-Control-Allow-Header", "X-Requested-With")
+				response.setHeader("Access-Control-Allow-Methods", "PUT,GET,POST,OPTION")
+
+				// 接收跨域的cookie
+				response.setHeader("Access-Control-Credentials", "true")
+
+五、存储
+	—— 题目
+		1、请描述一下cookie、sessionStorage和localStorage的区别？
+			—— 容量
+			—— 是否会携带在ajax中
+			—— API的易用性
+
+	—— 知识点
+		1、cookie
+			—— 本身用于客户端和服务端通信
+			—— 但是它有本地存储的功能，于是就被“借用”
+			—— 使用document.cookie = ... 获取和修改即可
+			—— 缺点：
+				1、存储量太小，只有4KB
+				2、所有http请求都带着，会影响获取资源的效率
+				3、API简单，需要封装才能用 document.cookie = ...
+
+		2、sessionStorage和localStorage
+			—— HTML5专门为存储而设计，最大容量5M
+			—— http请求不会被携带
+			—— API简单易用：
+				localStorage.setItem(key, value);
+				localStorage.getItem(key);
+			—— sessionStorage和localStorage区别：
+				1、sessionStorage关闭浏览器，存储的数据会被清理
+				2、localStorage 关闭浏览器，存储的数据不会被清理，只能手动清除。
+			—— 坑：
+				1、IOS safari隐藏模式下
+				2、localStorage.getItem 会报错
+				3、建议统一使用try-catch封装
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

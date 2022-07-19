@@ -1,0 +1,434 @@
+基层工程师：基础知识
+高级工程师：项目经验
+架构师：解决方案
+
+
+一、JavaScript基础
+	—— 原型和原型链
+	—— 作用域和闭包
+	—— 异步和单线程
+
+二、JS API
+	—— DOM操作
+	—— Ajax
+	—— 事件绑定
+
+ 三、开发环境
+ 	—— 版本管理
+ 	—— 模块化
+ 	—— 打包工具
+
+ 四、运行环境	
+ 	—— 页面渲染
+ 	—— 性能优化
+
+ 五、几个面试题
+ 	—— JS用使用typeof能得到哪些类型
+ 	—— 何时使用=== 何时使用==
+ 	—— window.onload 和 DOMContentLoaded的区别？
+ 	—— 用JS创建10个<a/>标签，点击的时候弹出对应的序号
+ 	—— 简述如何实现一个模块加载器，实现类似require.js的基本功能
+ 	—— 实现数组的随机排序
+
+六、思考
+	—— 考点
+	—— 不变应万变
+	—— 题目到知识再到题目
+
+七、讲解
+	1、JS用使用typeof能得到哪些类型
+		—— JS变量类型
+ 	2、何时使用=== 何时使用==
+ 		—— 强制类型转换
+ 	3、window.onload 和 DOMContentLoaded的区别？
+ 		—— 浏览器渲染过程
+ 	4、用JS创建10个<a/>标签，点击的时候弹出对应的序号
+ 		—— 作用域
+ 	5、简述如何实现一个模块加载器，实现类似require.js的基本功能
+ 		—— JS模块化
+ 	6、实现数组的随机排序
+ 		—— JS基础算法
+八、知识点
+	—— 变量类型
+		—— 值类型 VS 引用类型
+		—— typeof运算符详解
+			1、只能判断出 值类型 和 函数，引用类型的判断结果都是object
+	—— 变量计算 —— 强制类型转换
+		1、字符串拼接
+		2、== 运算符
+		3、if语句
+		4、逻辑运算符
+
+九、自动清理构建目录产物
+	—— 使用clean-webpack-plugin
+		默认会删除 output 指定的输出目录
+
+十、CSS3的属性为什么需要前缀?
+	Trident(-ms)【IE浏览器】
+	Geko(-moz)【火狐浏览器】
+	Webkit(-webkit)【谷歌浏览器】
+	Presto(-o)【欧朋浏览器】
+
+	—— PostCSS插件autoprefixer自动补齐Css3前缀
+		1、使用autoprefixer插件，根据Can I Use规则(https://caniuse.com/
+
+十一、浏览器的分辨率
+	—— CSS媒体查询实现响应式布局
+		缺陷:需要写多套适配样式代码
+	—— rem是什么?
+		W3C对rem的定义: font-size of the root element
+		rem和px的对比:
+			rem是相对单位
+			px是绝对单位
+	—— 移动端CSS px自动转换成rem
+		使用px2rem-loader
+		页面渲染时计算根元素的font-size值
+			可以使用手淘的lib-flexible库
+			https://github.com/amfe/lib-flexible
+
+十二、资源内联的意义
+	—— 代码层面:
+		页面框架的初始化脚本
+		上报相关打点
+		css内联避免页面闪动
+
+	—— 请求层面:减少HTTP网络请求数
+		小图片或者字体内联(ur-loader)
+
+	—— HTML和JS内联
+		raw-loader内联html
+			<script S{require(' raw-loader!babel-loader!. /meta.html')k/script>
+		raw-loader内联JS
+			<script S{require('raw-loader!babel-loaderl!./node_modules/lib-flexible')k/script>
+
+	—— CsS内联
+		方案一:借助style-loader
+			use:{
+				loader: 'style-loader',
+				options: {
+					insertAt: 'top',//样式插入到<head>
+					singleton: true,//将所有的style标签合并成一个
+				}
+			}
+				
+		方案二: html-inline-css-webpack-plugin
+			1、安装raw-loader
+			2、${require('raw-loader!./meta.html')}
+
+	—— 多页面应用(MPA)概念
+		1、 每个页面对应一个entry,一个html-webpack-plugin
+			缺点:每次新增或删除页面需要改webpack配置
+
+		2、 动态获取entry和设置html-webpack-plugin数量
+			利用glob.sync：entry: glob.sync(path.join(_dirname, './src/*/index.js'))
+		
+	—— 使用 source map
+		1、作用:通过source map定位到源代码
+		2、开发环境开启,线上环境关闭
+			—— 线上排查问题的时候可以将sourcemap上传到错误监控系统
+
+	—— 提取页面公共资源
+		1、基础库分离
+			方法:使用html-webpack-externals-plugin
+		2、利用SplitChunksPlugin进行公共脚本分离
+
+	—— tree shaking(摇树优化)
+		概念: 1个模块可能有多个方法,只要其中的某个方法使用到了,则整个文件都会被打到bundle里面去, tree shaking就是只把用到的方法打入bundle ,没用到的方法会在uglify阶段被擦除掉。
+		使用: webpack默认支持,在.babelrc里设置modules: false即可production mode的情况下默认开启
+		要求:必须是ES6的语法, CJS的方式不支持
+
+		DCE (Elimination)
+			1、代码不会被执行,不可到达
+			2、代码执行的结果不会被用到
+			3、代码只会影响死变量(只写不读)
+				if (false) {
+					console.log"这段代码永远不会执行);
+				}
+
+		Tree-shaking 原理:
+			利用ES6模块的特点: 
+				只能作为模块顶层的语句出现
+				import的模块名只能是字符串常量
+				import binding是immutable的
+			代码擦除: uglify阶段删除无用代码
+
+		注意：要tree-shaking的代码不能有副作用，如果有副作用，tree-shaking也会失效
+
+	—— ScopeHoisting
+		1、没有启用，会导致什么问题?
+			—— 大量函数闭包包裹代码,导致体积增大(模块越多越明显)
+			—— 运行代码时创建的函数作用域变多,内存开销变大
+		2、scope hoisting原理
+			原理:将所有模块的代码按照引用顺序放在一个函数作用域里,然后适当的重命名一些变量以防止变量名冲突
+			对比:通过scope hoisting可以减少函数声明代码和内存开销
+		3、scope hoisting使用
+			webpack mode为production默认开启
+			必须是ES6语法, CJs（commonJS）不支持
+
+	—— 代码分割
+		1、代码分割的意义
+			对于大的Web应用来讲,将所有的代码都放在一个文件中显然是不够有效的,特别是当你的某些代码块是在某些特殊的时候才会被使用到。webpack有一个功能就是将你的代码库分割成chunks (语块) ,当代码运行到需要它们的时候再进行加载。
+		2、适用的场景:
+			—— 抽离相同代码到一个共享块
+			—— 脚本懒加载,使得初始下载的代码更小
+
+		3、懒加载JS脚本的方式
+			CommonJS: require.ensure
+			ES6:动态import (目前还没有原生支持,需要babel转换)
+		4、如何使用动态import?
+			安装babel插件
+			npm install @babel/plugin-syntax-dynamic-import save-dev
+			ES6:动态import (目前还没有原生支持,需要babel转换)
+			{
+				...
+					"plugins": ["@babel/plugin-syntax-dynamic-import"],
+				...
+			}
+
+	—— webpack打包库和组件
+		optimization、terser-webpack-plugin、
+		1、设置入口文件
+			if (process.env.NODE_ENV=== "production") { 
+				module.exports = require("./dist/large-number.min.js");
+			} else {
+				module.exports = require("./dist/large-number.j");
+			}
+		2、npm publish
+			—— prepublish 【package.json】
+
+	—— webpack实现SSR打包	
+		1、服务端渲染(SSR)是什么?
+			渲染: HTML + CSS + JS + Data->渲染后的HTML
+			服务端:
+				所有模板等资源都存储在服务端内网机器拉取数据更快
+				一个 HTML返回所有数据
+		2、SSR的优势
+			减少白屏时间
+			对于SEO友好
+		3、SSR代码实现思路
+			服务端
+				·使用react-dom/server的renderToString方法将React组件渲染成字符串
+				·服务端路由返回对应的模板
+			客户端
+				·打包出针对服务端的组件
+
+	—— 优化构建时命令行的显示日志
+		1、统计信息（ stats： "errors-only" | "minima1" | "none" | "normal" | "verbose"）
+		2、使用friendly-errors-webpack-plugin 【搭配stats设置成errors-only】
+			success:构建成功的日志提示
+			warning:构建警告的日志提示
+			error:构建报错的日志提示
+
+	—— 构建异常和中断处理
+		1、webpack4之前的版本构建失败不会抛出错误码(error code)
+		2、Node.js中的process.exit规范
+			.0表示成功完成,回调函数中, err为null
+			·非0表示执行失败,回调函数中, err不为null, errcode就是传给exit的数字
+		3、如何主动捕获并处理构建错误?
+			compiler在每次构建结束后会触发done这个hook
+			process.exit主动处理构建报错
+
+	—— 构建配置包设计
+		1、构建配置抽离成npm包的意义
+			—— 通用性
+				· 业务开发者无需关注构建配置
+				· 统一团队构建脚本
+			—— 可维护性
+				· 构建配置合理的拆分
+				· README文档、ChangeLog文档等
+			—— 质量
+				· 冒烟测试、单元测试、测试覆盖率
+				· 持续集成
+		2、构建配置管理的可选方案
+			—— 通过多个配置文件管理不同环境的构建, webpack--contig参数进行控制
+				·基础配置: webpack.base.js
+				·开发环境: webpack.dev.js
+				·生产环境: webpack.prod.js
+				.SSR环境: webpack.ssr.js
+				.........
+
+				抽离成一个npm包统一管理
+					·规范: Git commit日志、README, ESLint规范、Semver规范
+					·质量:冒烟测试、单元测试、测试覆盖率和cI
+				通过webpack-merge组合配置
+					合并配置: module.exports = merge(baseConfig, devConfig);
+
+			—— 将构建配置设计成一个库,比如: his-webpack, Neutrino, webpack-blocks
+
+			—— 抽成一个工具进行管理,比如: create-react-app, kyt, nwb
+			—— 将所有的配置放在一个文件,通过--env参数控制分支选择
+		3、功能模块设计和目录结构
+			基础配置: WEBPACK.BASE.js
+				—— 资源解析
+					1、解析ES6
+					2、解析React
+					3、解析CSS
+					4、解析Less
+					5、解析图片
+					6、解析字体
+				—— 样式增强
+					1、CSS前缀补齐
+					2、CSS px转化成rem
+				—— 目录清理
+				—— 多页面打包
+				—— 命令行信息显示优化
+				—— 错误捕获和处理
+				—— CSS提取成一个单独的文件
+			开发阶段配置: WEBPACK.DEV.js
+				—— 代码热更新
+					1、CSS热更新
+					2、JS热更新
+				—— sourcemap
+			生产阶段配置: WEBPACK.PRO.js
+				—— 代码压缩
+				—— 文件指纹
+				—— Tree Shaking
+				—— Scope Hosting
+				—— 速度优化
+					1、基础包CDN
+				—— 体积优化
+					1、代码分割
+			SSR 配置: WEBPACK.SSR.js
+				—— outpout的librayTargets设置
+				—— CSS解析的ignore
+
+		—— 使用ESLint规范构建脚本
+			使用eslint-config-airbnb-base
+			eslint--fix可以自动处理空格
+
+		—— 冒烟测试介绍和实际运用
+			1、构建是否成功
+			2、每次构建完成build目录是否有内容输出
+				·是否有JS,CSS等静态资源文件
+				·是否有HTML文件
+			3、mocha 、 glob-all 插件
+
+		—— 单元测试与测试覆盖率
+			1、单元测试接入
+				安装mocha + chai：npm i mocha chai -D
+			2、assert 写测试用例
+			3、测试覆盖率：istanbul
+
+		—— 持续集成和TravisCl	
+			优点:
+				·快速发 错误
+				·防止分支大幅偏离主干
+				核心措施是,代码集成到主干之前,必须通过自动化测试。只要有一个测试用例失败,就不能集成。
+
+		—— 发布到npm
+			添加用户: npm adduser
+			升级版本
+				升级补丁版本号: npm version patch
+				升级小版本号: npm version minor
+				级大版号: npm version major
+			发布版本: npm publish
+
+		—— Commi规范和changelog生成
+			安装husky：npm install husky --save-dev
+			通过commitmsg钩子校验信息
+
+		—— 速度分析:使用speed-measure-webpack-plugin
+		—— 体积分析:使用webpack-bundle-analyzer
+		—— 多进程/多实例:使用HappyPack解析资源
+			thread-loader
+			HappyPack
+			parallel-webpack
+		—— 多进程/多实例:并行压缩
+			方法一:使用parallel-uglify-plugin插件
+			方法二: uglifyjs-webpack-plugin开启parallel参数
+			方法三: terser-webpack-plugin开启pgrallel参数
+
+		—— 进一步分包:预编译资源模块
+			分包:设置Externals
+				思路:将react,react-dom基础包通过cdn引入,不打入bundle中
+				方法:使用html-webpack-externalsplugin
+			进一步分包:预编译资源模块
+				思路:将react, react-dom, redux, react-redux基础包和业务基础包打包成一个文件
+				方法:使用DLLPlugin进行分包, DIReferencePlugin对manifest.json引用
+			使用DIReferencePlugin引用manifest.json
+
+		—— 充分利用缓存提升二次构建速度度
+			目的:提升二次构建速度
+			缓存思路:
+				babel-loader开启缓存【'babel-loader?cacheDirectory=true'】
+				terser-webpack-plugin开启缓存
+				使用cache-loader或者hard-source-webpack-plugin
+
+		—— 缩小构建目标
+			目的:尽可能的少构建模块
+			比如babel-loader不解析node_modules
+			减少文件搜索范围
+				优化resolve.modules配置(减少模块搜索层级)
+				优化resolve.mainFields配置
+				优化resolve.extensions配置
+				合理使用alias
+
+		—— 使用webpack进行图片压缩
+			要求:基于Node库的imagemin或者tinypng API
+			使用:配置image-webpack-loader
+				Imagemin的优点分析
+				有很多定制选项
+				可以引入更多第三方优化插件,例如pngquant
+				可以处理多种图片格式
+
+		—— 使用TreeShaking擦除无用的CSS
+			使用: webpack默认支持,在babelrc里设置modules: false即可production mode的情况下默认开启
+			要求:必须是ES6的语法, CJS的方式不支持
+			无用的CSS如何删除掉?
+				PurifycSS:遍历代码,识别已经用到的CSS class
+				uncss: HTML需要通过jsdom加载,所有的样式通过PostCSS解析,通过document.querySelector来识别在html文件里面不存在的选择器。
+			在webpack中如何使用PurifyCSS?
+				使用purgecss-webpack-plugin
+					https://github.com/FullHuman/purgecss-webpack-plugin
+				和mini-css-extract-plugin配合使用
+
+		—— 使用动态Polyfill务
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

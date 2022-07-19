@@ -1,0 +1,225 @@
+—— 实现不使用 border 画出1px高的线
+	<div style="height:1px;overflow:hidden;background:red"></div>
+
+—— react 的diff算法
+	1、节点之间的比较
+	2、两个列表之间的比较
+	3、取舍
+
+—— 浏览器缓存机制 304
+	
+	if(Cache-Control === no-store) {
+		// 绝对禁止缓存，浏览器本地不会进行缓存，每次请求资源都要从服务器重新获取。
+		直接向服务器获取资源（本地不缓存资源）
+	} else if (Cache-Control === no-cache) {
+		// 设置了no-cache之后并不代表浏览器不缓存，而是在获取缓存前要向服务器确认资源是否被更改。
+		每次请求都想服务器确认资源是否被更改（本地缓存资源），走下面的协商缓存
+	} else if (本地未过期=> max-age|| Expires) {
+		使用浏览器本地缓存
+	} else {
+		if (Etag有值) {
+			向服务器请求带 if-None-Match
+			if(Etag与原来的一致) {
+				返回304，直接使用本地缓存
+			} else {
+				返回200，获取新资源
+			}
+		} else if (Last-modified有值) {
+			向服务器请求带 if-Modified-Since
+			if (Last-modified与原来的一致) {
+				返回304，直接使用本地缓存
+			} else {
+				返回200，获取新资源
+			}
+		} else {
+			向服务器获取新资源，返回200
+		}
+	}
+
+
+—— webpack的loader, plugles 
+	（Webpack配置(loader和plugin如何使用)：https://www.jianshu.com/p/d029a35d3501）
+	（https://blog.csdn.net/weixin_39645003/article/details/111138925）
+	（https://www.cnblogs.com/gaoht/p/11310365.html）
+
+	style-loader(将处理结束的CSS代码存储在js中，运行时嵌入<style>后挂载至html页面上)  
+	css-loader(使webpack可以识别css模块)  
+	sass-loader(使webpack可以识别scss/sass文件)
+
+	—— loader用于加载某些资源文件。因为webpack本身只能打包common.js规范的js文件，对于其他资源如css，img等，是没有办法加载的，这时就需要对应的loader将资源转化，从而进行加载。
+	—— plugin用于扩展webpack的功能。不同于loader，plugin的功能更加丰富，比如压缩打包，优化，不只局限于资源的加载。
+	—— 常用 loader
+		1、处理 css
+			—— style-loader
+			—— css-loader
+		2、处理less
+			—— syle-loader
+			—— css-loader
+			—— less-loader (less-loader依赖于less，所以要一并安装)
+		3、处理css图片资源
+			—— url-loader (依赖于file-loader，所以要一并安装,可以指定其限制用base64 )
+		4、处理html图片资源
+			—— html-loader(注意该loader的模块化方式与url-loader不一致，需要将url-loader的配置中esModule改为false)
+		5、处理其他资源(如：字体文件等)
+			—— file-loader
+	—— 常用plugins
+		1、html编译
+			—— html-webpack-plugin
+		2、提取css文件
+			—— mini-css-extract-plugin（如果用了此插件，那么就不能使用style-loader处理css文件了，需要用mcep.loader替换style-loader）
+
+—— babel的工作原理（parsing、transforming、generating）（https://blog.csdn.net/killbee365/article/details/106105232）
+	ES6代码输入 ——> babylon进行解析 ——> 得到AST ——> plugin用babel-traverse对AST树进行遍历转译 ——> 得到新的AST树 ——> 用babel-generator通过AST树生成ES5代码
+
+—— ts中的装饰器（https://www.jianshu.com/p/c8aaba6e8ce0）
+	属性装饰器 -> 方法装饰器 -> 类装饰器
+	装饰器是一种特殊类型的声明，它能被附加在类、方法、属性、访问符、参数上。
+	装饰器使用@expression这种方式，expression求值后必须为一个函数，它在运行时调用，被装饰器声明的信息作为参数传入。
+
+
+—— 介绍Redux数据流的流程
+	首先是dispatch一个action。
+	然后reducer会收到这个action, 
+	根据这个action对状态进行修改。
+	状态修改以后会被处理容器捕捉到。
+	从而对相关的界面进行更新。
+
+—— Redux三大原则
+	1、单一数据源
+	2、State 是只读的
+	3、使用纯函数来修改state
+
+—— 什么是纯函数（https://www.jianshu.com/p/bccb0e2dfd1d）
+	相同输入总是会返回相同的输出。
+	不产生副作用：纯函数不会产生任何副作用，意味着它无法更改任何外部状态。
+	不依赖于外部状态。
+
+
+—— webpack工作流程
+	从入口文件开始，建立依赖树 ——> 递归依赖树——> rules属性 -> test正则匹配文件，使用加载器，加载模块——> loader处理 ——> plugin ——> boundle.js 完成打包
+
+—— webpack的热更新机制是什么
+	模块热更新是webpack的一个功能，它可以使得代码修改之后，不用刷新浏览器就可以更新。在应用过程中替换添加删出模块，无需重新加载整个页面，是高级版的自动刷新浏览器。
+	（https://www.cnblogs.com/gaoht/p/11310365.html）
+
+—— 使用路由时出现问题如何解决
+	—— history模式 刷新页面404 （需要Nginx做配置 指向根目录index.html）
+
+—— WebView和原生是如何通信
+	1、目前js有三种调用原生Android的方式：
+		① 和上面Js调用原生iOS(OC或Swift)方法一样，通过schema方式，Native使用shouldOverrideUrlLoading方法对url协议进行解析。这种js的调用方式与ios的一样，使用iframe来调用native代码。(原理和使用方式与上面讲的iOS拦截url的一样，建议ios和android端都采用此方式，那么前端也将方便做兼容些)
+		② 往webview里面注入方法，前端角度理解就是Android创建了一个方法，添加到我们js的window对象里面了，直接调用就可以触发原生的方法。
+		③ 使用prompt、console.log、alert等方式，这三个方法对js里是属于原生的，例如当我们js代码中使用alert(data)时，原生这边可以抓到data数据，然后它们进行相应的操作，一般我们使用prompt，因为这个在js代码里面使用的很少，用来和native通讯副作用较少。
+	2、原生Android调用javascript方法通过在android代码里使用webview的loadUrl进行调用。需要被原生调用的js方法放全局。
+
+
+—— HTTPS的加密过程
+	1、服务器端用非对称加密(RSA)生成公钥和私钥
+	2、然后把公钥发给客户端, 服务器则保存私钥
+	3、客户端拿到公钥后, 会生成一个密钥, 这个密钥就是将来客户端和服务器用来通信的钥匙
+	4、然后客户端用公钥对密钥进行加密, 再发给服务器
+	5、服务器拿到客户端发来的加密后的密钥后, 再使用私钥解密密钥, 到此双方都获得通信的钥匙
+
+12、项目中如何处理安全问题（对安全有什么了解）
+
+—— 如何利用缓存做项目优化（https://blog.csdn.net/LuckyWinty/article/details/115019116）
+	1、缓存利用：缓存Ajax，使用CDN、外部 JavaScript和CSS文件缓存，添加 Expires头，在服务器端配置Etag，减少DNS查找等。
+
+—— 浏览器缓存（(http缓存是浏览器端缓存)）、DNS缓存、服务器缓存（(cdn是服务器端缓存)）、Nginx缓存 （https://blog.csdn.net/qq_37674616/article/details/94414002）
+	1、浏览器缓存（http缓存）
+	2、代理服务器缓存
+	3、CDN缓存（Content Delivery Network 内容分发网络）
+	4、数据库缓存
+	5、应用层缓存（代码层面上，通过代码逻辑将请求过的数据缓存起来）（https://www.jianshu.com/p/0764a335c292）
+
+
+—— 重绘、重排（回流）
+	1、重绘不一定需要重排（比如颜色的改变），重排必然导致重绘（比如改变网页位置）
+	2、重排：当渲染树的一部分必须更新并且节点的尺寸发生了变化，浏览器会使渲染树中受到影响的部分失效，并重新构造渲染树。
+		—— 触发重排的因素：
+			1、添加、删除可见的dom
+			2、元素的位置改变
+			3、元素的尺寸改变(外边距、内边距、边框厚度、宽高、等几何属性)
+			4、页面渲染初始化
+			5、浏览器窗口尺寸改变
+			6、获取某些属性。当获取一些属性时，浏览器为取得正确的值也会触发重排,它会导致队列刷新，
+				这些属性包括：offsetTop、offsetLeft、 offsetWidth、offsetHeight、scrollTop、scrollLeft、scrollWidth、scrollHeight、clientTop、clientLeft、clientWidth、clientHeight、getComputedStyle() (currentStyle in IE)。
+				因此，在多次使用这些值时应进行缓存。
+
+	3、重绘：在一个元素的外观被改变所触发的浏览器行为，浏览器会根据元素的新属性重新绘制，使元素呈现新的外观。（比如改变某个元素的背景色、文字颜色、边框颜色等等）
+	4、如何进行优化
+		—— 浏览器自己的优化：
+			1、浏览器会维护1个队列，把所有会引起重排，重绘的操作放入这个队列，等队列中的操作到一定数量或者到了一定时间间隔，浏览器就会flush队列，进行一批处理，这样多次重排，重绘变成一次重排重绘。
+		—— 减少重绘和重排
+			1、不要一条一条地修改 DOM 的样式。可以先定义好 css 的 class，然后修改 DOM 的 className。
+			2、不要把 DOM 结点的属性值放在一个循环里当成循环里的变量。
+			3、为动画的 HTML 元件使用 fixed 或 absolute 的 position，那么修改他们的 CSS 是不会 reflow 的。
+			4、千万不要使用 table 布局。因为可能很小的一个小改动会造成整个 table 的重新布局。
+			table及其内部元素除外，它可能需要多次计算才能确定好其在渲染树中节点的属性，通常要花3倍于同等元素的时间。这也是为什么我们要避免使用table做布局的一个原因。
+			5、不要在布局信息改变的时候做查询（会导致渲染队列强制刷新）
+
+
+—— vue3.0比2.0有哪些变化
+	1、Typescript：Vue3.0使用 TypeScript 重构，所以，别再纠结需要不需要学习TypeScript——学就对了！
+	2、Proxy：Vue3.0实现方式是通过 ES6 提供的 Proxy API，相比旧的 defineProperty API ，Proxy 可以代理数组&对象。
+	3、reactivity：Vue3.0 项目结构采用了 lerna 做 monorepo 风格的代码管理，简单来说就是源码的管理从多个包变成了集中管理。
+
+—— 什么是微前端、微前端的意义、介绍一下微前端的沙箱机制
+	1、微前端是一种类似于微服务的架构，它将微服务的理念应用于浏览器端，即将Web应用由单一的单体应用转变为多个小型前端应用聚合为一的应用。各个前端应用可以独立运行、独立开发、独立部署。
+	2、目前主流的single-spa框架
+		—— single-spa 社区公认的主流方案，可以基于它做二次开发
+		—— qiankun：基于 single-spa 封装，增加 umi 特色，增加沙箱机制（JS、ShadowDOM 等）
+		—— icestark：类似于 single-spa 实现，React 技术栈友好，阿里的另一个轮子
+		—— Micro-Frontends：类似于 single-spa 实现，React 技术栈友好，阿里的另一个轮子
+	3、关于是否使用微前端架构的思考
+		—— 系统是否臃肿，开发，构建性能很差，需要重构(自虐)，功能拆分
+		—— 多个系统，需要集成到一起，使用统一入口提供给用户使用
+		—— 能不能推动整个项目的规划和落实(多个系统配合 === 开发的噩梦， 流程失控)
+	4、微前端的特点
+		—— 代码库更小，可以将系统拆分成多个子系统。
+		—— 独立部署，子系统堵路部署，没有技术栈限制
+		—— 无需重新开发当前项目，可以直接集成
+	5、微前端的不足
+		—— 开发中
+			1、需要运行多个子系统才能开发和调试(至少是base系统和业务系统)
+			2、多个系统之间的约定，已经架构设计
+			3、性能问题（单页面系统=>ios， 微架构=> Android）
+		—— 生产环境
+			1、多个系统之间的版本控制(业务流程可能会出现耦合的情况)
+			2、浏览器会加载多个框架代码(子系统采用不同的技术框架，如vue, react, 以及UI框架)
+			3、多个系统之间通信复杂 ，数据共享操作很繁琐。
+	6、微前端的沙箱机制（https://segmentfault.com/a/1190000022684014?utm_source=tag-newest）
+
+
+22、Hooks的执行顺序问题（https://blog.csdn.net/lunahaijiao/article/details/99434993）
+
+
+—— 常规问题
+	1、怎么样合理分配开发资源  
+	2、怎么做组内技术更新迭代推广  
+	3、怎么保持组员的市场竞争力
+	4、怎么看待组内成员的稳定性和流动性
+	5、未来几年的职业规划
+	6、怎么搭建合理梯度的开发团队
+	7、工作中处理过的棘手问题 怎么处理的
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

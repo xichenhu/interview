@@ -1,0 +1,312 @@
+—— cookie、sessionStorage、localStorage不同点：
+	1、存储大小
+		cookie 数据大小不能超过4k；
+		sessionStorage 和 localStorage 虽然也有存储大小的限制，但比 cookie 大得多，可以达到 5M 或更大。
+	2、有效时间
+		localStorage 存储持久数据，浏览器关闭后数据不丢失除非主动删除数据；
+		sessionStorage 数据在当前浏览器窗口关闭后自动删除；
+		cookie 设置的 cookie 过期时间之前一直有效，即使窗口或浏览器关闭。
+	3、数据与服务器之间的交互方式
+		cookie 的数据会自动的传递到服务器，服务器端也可以写 cookie 到客户端 
+		sessionStorage 和 localStorage 不会自动把数据发给服务器，仅在本地保存。
+
+6、描述new一个对象的过程
+	创建一个新对象
+	this指向这个新对象
+	执行代码，即对this赋值
+	返回this
+
+7、什么是闭包？（https://blog.csdn.net/weixin_43352901/article/details/107528020）
+	—— 一个函数的作用域是它定义时的作用域
+	—— 闭包的使用场景
+		1、函数作为返回值
+		2、函数作为参数传递
+8、描述下节流、防抖
+
+9、Promise的基本规则
+	1. 首先Promise构造函数会立即执行，而Promise.then()内部的代码在当次事件循环的结尾立即执行(微任务)。
+	2. promise的状态一旦由等待pending变为成功fulfilled或者失败rejected。那么当前promise被标记为完成，后面则不会再次改变该状态。
+	3. resolve函数和reject函数都将当前Promise状态改为完成，并将异步结果，或者错误结果当做参数返回。
+	4. Promise.resolve(value)
+		返回一个状态由给定 value 决定的 Promise 对象。如果该值是 thenable(即，带有 then 方法的对象)，返回的 Promise 对象的最终状态由 then 方法执行决定；否则的话(该 value 为空，基本类型或者不带 then 方法的对象),返回的 Promise 对象状态为 fulfilled，并且将该 value 传递给对应的 then 方法。通常而言，如果你不知道一个值是否是 Promise 对象，使用 Promise.resolve(value) 来返回一个 Promise 对象,这样就能将该 value 以 Promise 对象形式使用。
+	5. Promise.all(iterable)/Promise.race(iterable)
+		简单理解，这2个函数，是将接收到的promise列表的结果返回，区别是，all是等待所有的promise都触发成功了，才会返回，而arce有一个成功了就会返回结果。其中任何一个promise执行失败了，都会直接返回失败的结果。
+	6. promise对象的构造函数只会调用一次，then方法和catch方法都能多次调用，但一旦有了确定的结果，再次调用就会直接返回结果。
+10、ES6的常用功能 
+	1、let/const
+	2、多行字符串/模版变量
+	3、解构赋值
+	4、块级作用域
+	5、函数默认参数
+	6、箭头函数
+
+
+20、什么是原型
+①所有引用类型都有一个__proto__(隐式原型)属性，属性值是一个普通的对象 
+②所有函数都有一个prototype(原型)属性，属性值是一个普通的对象 
+③所有引用类型的__proto__属性指向它构造函数的prototype
+
+21、原型链
+	当访问一个对象的某个属性时，会先在这个对象本身属性上查找，如果没有找到，则会去它的__proto__隐式原型上查找，即它的构造函数的prototype，如果还没有找到就会再在构造函数的prototype的__proto__中查找，这样一层一层向上查找就会形成一个链式结构，我们称为原型链。
+
+5、DOM 渲染在 哪个周期中就已经完成？
+	DOM 渲染在 mounted 中就已经完成了。
+
+23、简述每个周期具体适合哪些场景
+	beforecreate : 可以在这加个loading事件，在加载实例时触发
+	created : 初始化完成时的事件写在这里，如在这结束loading事件，异步请求也适宜在这里调用
+	mounted : 挂载元素，获取到DOM节点
+	updated : 如果对数据统一处理，在这里写上相应函数
+	beforeDestroy : 可以做一个确认停止事件的确认框
+	nextTick : 更新数据后立即操作dom
+
+24、created和mounted的区别
+	created:在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图。
+	mounted:在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
+
+12、什么是typescript（http://www.srcmini.com/3507.html）
+	它是一个强类型的JavaScript超集，，支持ES6语法，支持面向对象编程的概念，如类、接口、继承、泛型等。可编译为纯JavaScript。
+13、为什么需要typeScript
+	TypeScript的设计目的应该是解决JavaScript的“痛点”：弱类型和没有命名空间，导致很难模块化，不适合开发大型程序。另外它还提供了一些语法糖（TypeScript可以实现类，接口，枚举，泛型，方法重载等，用简洁的语法丰富了JavaScript的使用。）来帮助大家更方便地实践面向对象的编程。
+14、Typescript有哪些基础类型？
+	1：number
+	2：string
+	3：boolean
+	4：Symbol
+	5：Array
+	6：Tuple(元组)
+	7：enum(枚举)
+	8：object
+	9：never
+		表示那些永不存在的值类型。如总是抛出异常或者根本不会有返回值的函数的返回值类型。
+	10：void
+		与any相反表示没有任何类型。函数没有返回值时用void。
+	11：null和undefined
+		它们是所有类型的子类型。当你指定structNullChecks时，它们只能赋值给void或者它们自己本身。
+	12：any
+15、解释TypeScript中的泛型？
+	TypeScript泛型是一个提供创建可重用组件方法的工具。它能够创建可以处理多种数据类型而不是单一数据类型的组件。泛型在不影响性能或生产率的情况下提供类型安全性。泛型允许我们创建泛型类、泛型函数、泛型方法和泛型接口。
+	在泛型中，类型参数写在开(<)和闭(>)括号之间，这使得它是强类型集合。泛型使用一种特殊类型的类型变量<T>，它表示类型。泛型集合只包含类似类型的对象。
+	function identity<T>(arg: T): T {      
+   		return arg;      
+	}      
+	let output1 = identity<string>("myString");      
+	let output2 = identity<number>( 100 );    
+	console.log(output1);    
+	console.log(output2);     
+—— HTTP
+	1、从输入url到页面加载完成发生了什么？（https://www.jianshu.com/p/0054fa46e22b）
+	2、浏览器的缓存机制
+		—— 浏览器缓存机制 304
+			if(Cache-Control === no-store) {
+				// 绝对禁止缓存，浏览器本地不会进行缓存，每次请求资源都要从服务器重新获取。
+				直接向服务器获取资源（本地不缓存资源）
+			} else if (Cache-Control === no-cache) {
+				// 设置了no-cache之后并不代表浏览器不缓存，而是在获取缓存前要向服务器确认资源是否被更改。
+				每次请求都想服务器确认资源是否被更改（本地缓存资源），走下面的协商缓存
+			} else if (本地未过期=> max-age|| Expires) {
+				使用浏览器本地缓存
+			} else {
+				if (Etag有值) {
+					向服务器请求带 if-None-Match
+					if(Etag与原来的一致) {
+						返回304，直接使用本地缓存
+					} else {
+						返回200，获取新资源
+					}
+				} else if (Last-modified有值) {
+					向服务器请求带 if-Modified-Since
+					if (Last-modified与原来的一致) {
+						返回304，直接使用本地缓存
+					} else {
+						返回200，获取新资源
+					}
+				} else {
+					向服务器获取新资源，返回200
+				}
+			}
+	3、HTTPS的加密过程
+		1、服务器端用非对称加密(RSA)生成公钥和私钥
+		2、然后把公钥发给客户端, 服务器则保存私钥
+		3、客户端拿到公钥后, 会生成一个密钥, 这个密钥就是将来客户端和服务器用来通信的钥匙
+		4、然后客户端用公钥对密钥进行加密, 再发给服务器
+		5、服务器拿到客户端发来的加密后的密钥后, 再使用私钥解密密钥, 到此双方都获得通信的钥匙
+	4、网络七层模型
+		—— 物理层-数据链路层-网络层-传输层-会话层-表示层-应用层
+
+—— 浏览器缓存机制 304
+	
+	if(Cache-Control === no-store) {
+		// 绝对禁止缓存，浏览器本地不会进行缓存，每次请求资源都要从服务器重新获取。
+		直接向服务器获取资源（本地不缓存资源）
+	} else if (Cache-Control === no-cache) {
+		// 设置了no-cache之后并不代表浏览器不缓存，而是在获取缓存前要向服务器确认资源是否被更改。
+		每次请求都想服务器确认资源是否被更改（本地缓存资源），走下面的协商缓存
+	} else if (本地未过期=> max-age|| Expires) {
+		使用浏览器本地缓存
+	} else {
+		if (Etag有值) {
+			向服务器请求带 if-None-Match
+			if(Etag与原来的一致) {
+				返回304，直接使用本地缓存
+			} else {
+				返回200，获取新资源
+			}
+		} else if (Last-modified有值) {
+			向服务器请求带 if-Modified-Since
+			if (Last-modified与原来的一致) {
+				返回304，直接使用本地缓存
+			} else {
+				返回200，获取新资源
+			}
+		} else {
+			向服务器获取新资源，返回200
+		}
+	}
+
+—— 什么是纯函数（https://www.jianshu.com/p/bccb0e2dfd1d）
+	相同输入总是会返回相同的输出。
+	不产生副作用：纯函数不会产生任何副作用，意味着它无法更改任何外部状态。
+	不依赖于外部状态。
+
+
+—— webpack工作流程
+	从入口文件开始，建立依赖树 ——> 递归依赖树——> rules属性 -> test正则匹配文件，使用加载器，加载模块——> loader处理 ——> plugin ——> boundle.js 完成打包
+
+—— webpack的热更新机制是什么
+	模块热更新是webpack的一个功能，它可以使得代码修改之后，不用刷新浏览器就可以更新。在应用过程中替换添加删出模块，无需重新加载整个页面，是高级版的自动刷新浏览器。
+	（https://www.cnblogs.com/gaoht/p/11310365.html）
+	
+—— webpack
+	1、使用过webpack里面哪些plugin和loader
+	2、webpack打包的整个过程
+		从入口文件开始，建立依赖树 ——> 递归依赖树——> rules属性 -> test正则匹配文件，使用加载器，加载模块——> loader处理 ——> plugin ——> boundle.js 完成打包
+	3、dev-server是怎么跑起来
+	4、一般怎么组织CSS（Webpack）
+	5、如何配置把js、css、html单独打包成一个文件
+	6、webpack和gulp的优缺点
+	7、使用webpack构建时有无做一些自定义操作
+	8、webpack的热更新是如何做到的？说明其原理？
+	9、webpack的loader, plugles 
+		（Webpack配置(loader和plugin如何使用)：https://www.jianshu.com/p/d029a35d3501）
+		（https://blog.csdn.net/weixin_39645003/article/details/111138925）
+		（https://www.cnblogs.com/gaoht/p/11310365.html）
+		
+		style-loader(将处理结束的CSS代码存储在js中，运行时嵌入<style>后挂载至html页面上)  
+		css-loader(使webpack可以识别css模块)  
+		sass-loader(使webpack可以识别scss/sass文件)
+
+		—— loader用于加载某些资源文件。因为webpack本身只能打包common.js规范的js文件，对于其他资源如css，img等，是没有办法加载的，这时就需要对应的loader将资源转化，从而进行加载。
+		—— plugin用于扩展webpack的功能。不同于loader，plugin的功能更加丰富，比如压缩打包，优化，不只局限于资源的加载。
+		—— 常用 loader
+			1、处理 css
+				—— style-loader
+				—— css-loader
+			2、处理less
+				—— syle-loader
+				—— css-loader
+				—— less-loader (less-loader依赖于less，所以要一并安装)
+			3、处理css图片资源
+				—— url-loader (依赖于file-loader，所以要一并安装,可以指定其限制用base64 )
+			4、处理html图片资源
+				—— html-loader(注意该loader的模块化方式与url-loader不一致，需要将url-loader的配置中esModule改为false)
+			5、处理其他资源(如：字体文件等)
+				—— file-loader
+		—— 常用plugins
+			1、html编译
+				—— html-webpack-plugin
+			2、提取css文件
+				—— mini-css-extract-plugin（如果用了此插件，那么就不能使用style-loader处理css文件了，需要用mcep.loader替换style-loader）
+—— 安全性
+	—— 知识点
+		1、XSS 跨站请求攻击
+			—— 例如： 再新浪博客写一篇文章，同事偷偷插入一段<script>；攻击代码中，获取cookie，发送自己的服务器。发布博客，有人查看博客内容，会把查看者的cookie发送到攻击者的服务器。盗用了用户账号信息。
+			—— 预防：
+				1、前端替换关键字，例如替换< 为 &lt； > 为 &gt；
+				2、后端替换【替换速度更快，效率更高】
+
+		2、XSRF 跨站请求伪造
+			—— 你已登录一个购物网站，正在浏览商品；该网站付费接口是XXX.com/pay?id=100但是没有任何验证；然后你收到一封邮件，隐藏了<img src='XXX.com/pay?id=100'>;你查看邮件的时候，就已经悄悄的付费购买了
+			—— 预防：
+				1、增加验证流程，例如输入指纹、密码、短信验证码【前端配合后端】
+
+—— 性能优化
+	1、代码层面
+	2、缓存利用
+	3、请求数量
+	4、请求带宽
+	5、代码层面的优化
+	6、浏览器渲染机制JS阻塞怎么办?
+		—— 将js放在最后加载
+		—— 监听onload 异步 加载
+—— HTTPS的加密过程
+	1、服务器端用非对称加密(RSA)生成公钥和私钥
+	2、然后把公钥发给客户端, 服务器则保存私钥
+	3、客户端拿到公钥后, 会生成一个密钥, 这个密钥就是将来客户端和服务器用来通信的钥匙
+	4、然后客户端用公钥对密钥进行加密, 再发给服务器
+	5、服务器拿到客户端发来的加密后的密钥后, 再使用私钥解密密钥, 到此双方都获得通信的钥匙
+
+12、项目中如何处理安全问题（对安全有什么了解）
+
+—— 如何利用缓存做项目优化（https://blog.csdn.net/LuckyWinty/article/details/115019116）
+	1、缓存利用：缓存Ajax，使用CDN、外部 JavaScript和CSS文件缓存，添加 Expires头，在服务器端配置Etag，减少DNS查找等。
+
+—— 浏览器缓存（(http缓存是浏览器端缓存)）、DNS缓存、服务器缓存（(cdn是服务器端缓存)）、Nginx缓存 （https://blog.csdn.net/qq_37674616/article/details/94414002）
+	1、浏览器缓存（http缓存）
+	2、代理服务器缓存
+	3、CDN缓存（Content Delivery Network 内容分发网络）
+	4、数据库缓存
+	5、应用层缓存（代码层面上，通过代码逻辑将请求过的数据缓存起来）（https://www.jianshu.com/p/0764a335c292）
+
+
+—— 重绘、重排（回流）
+	1、重绘不一定需要重排（比如颜色的改变），重排必然导致重绘（比如改变网页位置）
+	2、重排：当渲染树的一部分必须更新并且节点的尺寸发生了变化，浏览器会使渲染树中受到影响的部分失效，并重新构造渲染树。
+		—— 触发重排的因素：
+			1、添加、删除可见的dom
+			2、元素的位置改变
+			3、元素的尺寸改变(外边距、内边距、边框厚度、宽高、等几何属性)
+			4、页面渲染初始化
+			5、浏览器窗口尺寸改变
+			6、获取某些属性。当获取一些属性时，浏览器为取得正确的值也会触发重排,它会导致队列刷新，
+				这些属性包括：offsetTop、offsetLeft、 offsetWidth、offsetHeight、scrollTop、scrollLeft、scrollWidth、scrollHeight、clientTop、clientLeft、clientWidth、clientHeight、getComputedStyle() (currentStyle in IE)。
+				因此，在多次使用这些值时应进行缓存。
+
+	3、重绘：在一个元素的外观被改变所触发的浏览器行为，浏览器会根据元素的新属性重新绘制，使元素呈现新的外观。（比如改变某个元素的背景色、文字颜色、边框颜色等等）
+	4、如何进行优化
+		—— 浏览器自己的优化：
+			1、浏览器会维护1个队列，把所有会引起重排，重绘的操作放入这个队列，等队列中的操作到一定数量或者到了一定时间间隔，浏览器就会flush队列，进行一批处理，这样多次重排，重绘变成一次重排重绘。
+		—— 减少重绘和重排
+			1、不要一条一条地修改 DOM 的样式。可以先定义好 css 的 class，然后修改 DOM 的 className。
+			2、不要把 DOM 结点的属性值放在一个循环里当成循环里的变量。
+			3、为动画的 HTML 元件使用 fixed 或 absolute 的 position，那么修改他们的 CSS 是不会 reflow 的。
+			4、千万不要使用 table 布局。因为可能很小的一个小改动会造成整个 table 的重新布局。
+			table及其内部元素除外，它可能需要多次计算才能确定好其在渲染树中节点的属性，通常要花3倍于同等元素的时间。这也是为什么我们要避免使用table做布局的一个原因。
+			5、不要在布局信息改变的时候做查询（会导致渲染队列强制刷新）
+
+
+—— vue3.0比2.0有哪些变化
+	1、Typescript：Vue3.0使用 TypeScript 重构，所以，别再纠结需要不需要学习TypeScript——学就对了！
+	2、Proxy：Vue3.0实现方式是通过 ES6 提供的 Proxy API，相比旧的 defineProperty API ，Proxy 可以代理数组&对象。
+	3、reactivity：Vue3.0 项目结构采用了 lerna 做 monorepo 风格的代码管理，简单来说就是源码的管理从多个包变成了集中管理。
+
+—— 常规问题
+	1、有什么印象深刻的项目
+	2、说一下自己的优缺点
+	3、平时是怎么学习的
+	4、未来几年的职业规划
+	5、工作中处理过的棘手问题 怎么处理的
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

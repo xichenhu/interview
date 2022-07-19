@@ -1,0 +1,36 @@
+Function.prototype.apply2 = function (context){
+
+  const ctx = context || window
+
+  ctx.func = this
+
+  //测试用例中这个this打印出来是：[function a]
+
+  //通过在ctx中新建一个 函数对象等于调用时的对象 来调用执行来修改this指向
+  const res = arguments[1] ? ctx.func(...arguments[1]) : ctx.func()
+
+  delete ctx.func//避免造成全局污染
+
+  return res
+}
+
+//测试用例：
+obj={c:2}
+
+function a(x,y){
+	console.log(this,x,y)
+}
+a.apply(obj,[1,2])		//{c:2} 1 2
+a.apply2(obj, [1,2])		//{c:2,func:[function a]} 1 2
+
+
+
+
+Function.prototype.myAppply = function(context, args) {
+	context = context || window // 获取需要被绑定的对象
+	context.func = this // this是谁在调用
+	let fn = context.func(...args)
+	delete context.func
+	return fn
+}
+

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		/*
+			类的声明
+		*/
+		function Animal () {
+			this.name = 'name'
+		}
+
+		/*
+			ES6 类的声明
+		*/
+		class Animal2 {
+			constructor() {
+				this.name = 'name'
+			}
+		}
+
+		/*
+			实例化
+		*/
+		console.log(new Animal2, new Animal)
+
+
+		/*
+		* 构造函数 实现继承
+		* 缺点：Parent1 原型链上的东西没有被 child1继承
+		*/
+		function Parent1() {
+			this.name = 'Parent1'
+		}
+		function Child1() {
+			Parent1.call(this)
+			this.type = 'child1'
+		}
+		console.log(new Child1)
+
+
+		/*
+		* 原型链 实现继承
+		* 缺点：所以实例化的实例都继承自同一个类，如果某一个实例改变了类中的值，另一个实例获取的到值也会跟着改变。
+		*/
+		function Parent2() {
+			this.name='Parent2'
+		}
+		function Child2() {
+			this.type='Child2'
+		}
+		Child2.prototype = new Parent2()
+		console.log(new Child2)
+
+		/*
+		* 组合方式 实现继承
+		* 缺点： 实例化子类的时候，父级的构造函数执行了两次。
+				s3.constructor直接继承自Parent4
+		*/
+		function Parent3() {
+			this.name = 'Parent3'
+			this.play = [1,2,3]
+		}
+		function Child3() {
+			Parent3.call(this)  // 执行一次
+			this.type = 'Child3'
+		}
+		Child3.prototype = new Parent3() // 执行一次
+		var s3 = new Child3()
+		var s4 = new Child3()
+		s3.play.push(4)
+		console.log(s3, s4)
+
+		/*
+		* 组合方式 实现继承优化 一
+		* 缺点：s5.constructor直接继承自Parent4
+		*/
+		function Parent4() {
+			this.name = 'Parent4'
+			this.play = [1,2,3]
+		}
+		function Child4() {
+			Parent4.call(this)  // 执行一次
+			this.type = 'Child4'
+		}
+		Child4.prototype = new Parent4() // 执行一次
+		var s5 = new Child4()
+		var s6 = new Child4()
+		s5.play.push(4)
+		console.log(s5 instanceof Child4, s5 instanceof Parent4)
+		console.log(s5.constructor)
+
+		/*
+		* 组合方式 实现继承优化 二
+		*/
+		function Parent5() {
+			this.name = 'Parent5'
+			this.play = [1,2,3]
+		}
+		function Child5() {
+			Parent5.call(this)  
+			this.type = 'Child5'
+		}
+		Child5.prototype = Object.create(Parent5.prototype)
+		Child5.prototype.constructor = Child5
+
+		var s7 = new Child5()
+		var s8 = new Child5()
+		s7.play.push(4)
+		console.log(s8 instanceof Child5, s8 instanceof Parent5)
+		console.log(s8.constructor)
+	</script>
+</body>
+</html>

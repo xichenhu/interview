@@ -1,0 +1,316 @@
+CSS/HTML
+	—— 介绍下重绘和回流（Repaint & Reflow），以及如何进行优化？ https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/24
+		—— 浏览器渲染机制
+
+	—— 让一个 div 水平垂直居中，有多少中方案（https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/92）
+
+	—— 如何解决移动端 Retina 屏 1px 像素问题（https://juejin.cn/post/6844903456717668359）
+
+	—— 介绍下 BFC、IFC、GFC 和 FFC（https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/122）
+
+	—— 分析比较 opacity: 0、visibility: hidden、display: none 优劣和适用场景。
+		总结一下：
+			结构：
+			display:none: 会让元素完全从渲染树中消失，渲染的时候不占据任何空间, 不能点击，
+			visibility: hidden:不会让元素从渲染树消失，渲染元素继续占据空间，只是内容不可见，不能点击
+			opacity: 0: 不会让元素从渲染树消失，渲染元素继续占据空间，只是内容不可见，可以点击
+
+			继承：
+			display: none和opacity: 0：是非继承属性，子孙节点消失由于元素从渲染树消失造成，通过修改子孙节点属性无法显示。
+			visibility: hidden：是继承属性，子孙节点消失由于继承了hidden，通过设置visibility: visible;可以让子孙节点显式。
+
+			性能：
+			displaynone : 修改元素会造成文档回流,读屏器不会读取display: none元素内容，性能消耗较大
+			visibility:hidden: 修改元素只会造成本元素的重绘,性能消耗较少读屏器读取visibility: hidden元素内容
+			opacity: 0 ： 修改元素会造成重绘，性能消耗较少
+
+			联系：它们都能让元素不可见
+
+	—— 请简要描述margin重合问题，及解决方式
+		问题：相邻两个盒子垂直方向上的margin会发生重叠，只会取比较大的margin
+		解决：
+		（1）设置padding代替margin
+		（2）设置float
+		（3）设置overflow
+		（4）设置position：absolute 绝对定位
+		（5）设置display： inline-block 
+
+	—— 重绘和回流（哪些情况重绘，哪些回流）
+		1、重绘： 不会影响页面布局的操作,比如更改颜色
+		2、回流： 布局的改变导致需要重新构建,就是回流
+		3、回流必将引起重绘,重绘不一定会引起回流，比如：只有颜色改变的时候就只会发生重绘而不会引起回流当页面布局和几何属性改变时就需要回流
+		1、重绘  
+   			当render tree中的一些元素需要更新属性，而这些属性只是影响元素的外观，风格，而不会影响布局的，比如background-color。则就叫称为重绘。
+   		2、回流   
+    		当render tree中的一部分(或全部)因为元素的规模尺寸，布局，隐藏等改变而需要重新构建。这就称为回流(reflow)。
+    		每个页面至少需要一次回流，就是在页面第一次加载的时候，这时候是一定会发生回流的，因为要构建render tree。在回流的时候，浏览器会使渲染树中受到影响的部分失效，并重新构造这部分渲染树，完成回流后，浏览器会重新绘制受影响的部分到屏幕中，该过程成为重绘。
+
+    		—— 居中为什么要使用transform（为什么不使用marginLeft/Top）
+				transform 属于合成属性，不会引起整个页面的回流重绘，节省性能消耗，但是占用内存会大些
+				top/left属于布局属性，会引起页面layout回流和repaint重绘。
+
+    —— 说说你对语义化的理解?
+		1、根据内容的结构选择适合的标签
+		2、样式丢失或者去掉样式后,页面任然可以呈现出清晰的结构
+		3、有利于SEO,让爬虫可以抓到更多有效信息
+		4、方便其他设备渲染网页(盲人阅读器等)
+		5、更具可读性,便于团队开发维护
+
+JavaScript
+	—— call、apply、bind 的区别是什么，哪个性能更好一些？
+	—— 什么是防抖和节流？有什么区别？如何实现？
+	—— 箭头函数与普通函数（function）的区别是什么？构造函数（function）可以使用 new 生成实例，那么箭头函数可以吗？为什么？
+	—— 介绍下深度优先遍历和广度优先遍历，如何实现？
+	—— Async/Await 如何把异步的代码写成“同步”的形式实现异步
+	—— JS 异步解决方案的发展历程以及优缺点【https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/11】
+	—— Promise 构造函数是同步执行还是异步执行，那么 then 方法呢？
+	—— 介绍下观察者模式和订阅-发布模式的区别，各自适用于什么场景
+	—— 介绍模块化发展历程
+	—— 冒泡排序如何实现，时间复杂度是多少， 还可以如何改进？（https://www.jianshu.com/p/5d44186b5263）（https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/94）
+
+ES6
+	—— 全局作用域中，用 const 和 let 声明的变量不在 window 上，那到底在哪里？如何去获取？。
+
+
+React
+	—— 写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么？
+
+	—— setState 为何需要异步
+		1、可能会一次执行多次setSate
+		2、你无法规定、限制用户如何使用setState
+		3、没必要每次setState都重新渲染，考虑性能
+		4、即便是每次重新渲染，用户也看不到中间的效果
+		5、只看到最后的结果即可
+
+	—— Redux
+	 	1、Redux遵循的三个原则是什么？
+	 		单一事实来源：整个应用的状态存储在单个 store 中的对象/状态树里。单一状态树可以更容易地跟踪随时间的变化，并调试或检查应用程序。
+	 		状态是只读的：改变状态的唯一方法是去触发一个动作。动作是描述变化的普通 JS 对象。就像 state 是数据的最小表示一样，该操作是对数据更改的最小表示。
+	 		使用纯函数进行更改：为了指定状态树如何通过操作进行转换，你需要纯函数。纯函数是那些返回值仅取决于其参数值的函数。
+	 	2、列出 Redux 的组件。
+	 		Action – 这是一个用来描述发生了什么事情的对象。
+			Reducer – 这是一个确定状态将如何变化的地方。
+			Store – 整个程序的状态/对象树保存在Store中。
+			View – 只显示 Store 提供的数据。
+		3、数据如何通过 Redux 流动？
+
+Vue
+	—— Vue 中的 computed 和 watch 的区别在哪里
+	—— 双向绑定和 vuex 是否冲突？（https://vuex.vuejs.org/zh/guide/forms.html）
+
+	—— 聊聊 Vue 的双向数据绑定，Model 如何改变 View，View 又是如何改变 Model 的
+		3、vue中如何实现响应式
+			—— 关键是理解Object.defineProperty
+			—— 将data的属性代理到vm上
+
+		4、vue中如何解析模版
+			—— 模板：字符串、有逻辑、嵌入JS变量……
+			—— 模版必须转换成为JS代码（有逻辑，渲染成html、JS变量）
+			—— render函数是什么样子的
+			—— render函数执行是返回vnode
+			—— updateComponent
+
+		5、VUE实现的整体流程
+			—— 第一步：解析模版成render函数
+			—— 第二步：响应式开始监听
+			—— 第三步：首次渲染、显示页面，且绑定依赖
+			—— 第四步：data属性变化，触发rerender
+
+	—— Vue 的响应式原理中 Object.defineProperty 有什么缺陷？
+		1. Object.defineProperty无法监控到数组下标的变化，导致通过数组下标添加元素，不能实时响应；
+		2. Object.defineProperty只能劫持对象的属性，从而需要对每个对象，每个属性进行遍历，如果，属性值是对象，还需要深度遍历。Proxy可以劫持整个对象，并返回一个新的对象。
+		3. Proxy不仅可以代理对象，还可以代理数组。还可以代理动态增加的属性。
+
+	—— vue3.0比2.0有哪些变化
+	1、Typescript：Vue3.0使用 TypeScript 重构，所以，别再纠结需要不需要学习TypeScript——学就对了！
+	2、Proxy：Vue3.0实现方式是通过 ES6 提供的 Proxy API，相比旧的 defineProperty API ，Proxy 可以代理数组&对象。
+	3、reactivity：Vue3.0 项目结构采用了 lerna 做 monorepo 风格的代码管理，简单来说就是源码的管理从多个包变成了集中管理。
+
+	—— vue 如何优化首页的加载速度？vue 首页白屏是什么问题引起的？如何解决呢？
+		代码拆分。code split、动态import
+		多页面+单页面组合，不是整个网站都是同一个页面切换前端路由，酌情拆分一些其他页面作为新页面
+		直出ssr。使用ssr减少前端跑js的时间，逻辑放服务端处理把完整的页面返回
+		部分直出。使用ssr服务端压力会变大，所以可以把页面重要的部分先直出，非重要部分放前端
+		接入quicklink，实际上就是检查页面链接然后在浏览器空闲时间进行prefetch
+		接入service worker缓存，和ssr一起搭配使用更佳
+		体验上。增加lodaing、骨架屏
+		有了各种缓存，热启动是没什么问题了。最后要优化冷启动时间，使用prefetch
+		前端渲染上。使用raf渲染，不阻塞主线程。react里面已使用异步渲染
+		服务端rpc上。使用pb协议而不是文本协议
+		传输层使用quic协议传输。貌似没多少个团队用上～
+		常规操作。cdn、减少请求、雪碧图、gzip、浏览器缓存什么的就不多说了
+
+
+
+webpack
+	—— 介绍下 webpack 热更新原理，是如何做到在不刷新浏览器的前提下更新页面的
+	—— webpack 中 loader 和 plugin 的区别是什么
+
+	WDS 启动本地服务 （new webpack --> 启动 server --> 启动 websocket{将 websocket 的代码注入到浏览器代码中} --> webpack 开始监听文件变动{变动了就重新编译构建} --> HMR-Plugin 将热更新代码注入到浏览器运行代码中，也就是 HRM runtime）--> HRM runtime 删除过期的模块，替换为新的模块，然后开始执行相关代码
+
+		1.当修改了一个或多个文件；
+		2.文件系统接收更改并通知webpack；
+		3.webpack重新编译构建一个或多个模块，并通知HMR服务器进行更新；
+		4.HMR Server 使用webSocket通知HMR runtime 需要更新，HMR运行时通过HTTP请求更新jsonp；
+		5.HMR运行时替换更新中的模块，如果确定这些模块无法更新，则触发整个页面刷新。
+
+		关于webpack的热更新原理，面试官比较想听到的是工作流程和关键点，非“流水账”式的源码分析。我认为可以这样的介绍：
+
+		首先，介绍webpack-dev-server:
+		webpack-dev-server 主要包含了三个部分：
+		1.webpack: 负责编译代码
+		2.webpack-dev-middleware: 主要负责构建内存文件系统，把webpack的 OutputFileSystem 替换成 InMemoryFileSystem。同时作为Express的中间件拦截请求，从内存文件系统中把结果拿出来。
+		3.express：负责搭建请求路由服务。
+
+		其次，介绍工作流程:
+		1.启动dev-server，webpack开始构建，在编译期间会向 entry 文件注入热更新代码；
+		2.Client 首次打开后，Server 和 Client 基于Socket建立通讯渠道；
+		3.修改文件，Server 端监听文件发送变动，webpack开始编译，直到编译完成会触发"Done"事件；
+		4.Server通过socket 发送消息告知 Client；
+		5.Client根据Server的消息（hash值和state状态），通过ajax请求获取 Server 的manifest描述文件；
+		6.Client对比当前 modules tree ，再次发请求到 Server 端获取新的JS模块；
+		7.Client获取到新的JS模块后，会更新 modules tree并替换掉现有的模块；
+		8.最后调用 module.hot.accept() 完成热更新；
+
+	—— webpack的loader, plugles 
+		（Webpack配置(loader和plugin如何使用)：https://www.jianshu.com/p/d029a35d3501）
+		（https://blog.csdn.net/weixin_39645003/article/details/111138925）
+		（https://www.cnblogs.com/gaoht/p/11310365.html）
+
+		style-loader(将处理结束的CSS代码存储在js中，运行时嵌入<style>后挂载至html页面上)  
+		css-loader(使webpack可以识别css模块)  
+		sass-loader(使webpack可以识别scss/sass文件)
+
+		—— loader用于加载某些资源文件。因为webpack本身只能打包common.js规范的js文件，对于其他资源如css，img等，是没有办法加载的，这时就需要对应的loader将资源转化，从而进行加载。
+		—— plugin用于扩展webpack的功能。不同于loader，plugin的功能更加丰富，比如压缩打包，优化，不只局限于资源的加载。
+		—— 常用 loader
+			1、处理 css
+				—— style-loader
+				—— css-loader
+			2、处理less
+				—— syle-loader
+				—— css-loader
+				—— less-loader (less-loader依赖于less，所以要一并安装)
+			3、处理css图片资源
+				—— url-loader (依赖于file-loader，所以要一并安装,可以指定其限制用base64 )
+			4、处理html图片资源
+				—— html-loader(注意该loader的模块化方式与url-loader不一致，需要将url-loader的配置中esModule改为false)
+			5、处理其他资源(如：字体文件等)
+				—— file-loader
+		—— 常用plugins
+			1、html编译
+				—— html-webpack-plugin
+			2、提取css文件
+				—— mini-css-extract-plugin（如果用了此插件，那么就不能使用style-loader处理css文件了，需要用mcep.loader替换style-loader）
+
+	—— babel的工作原理（parsing、transforming、generating）（https://blog.csdn.net/killbee365/article/details/106105232）
+		ES6代码输入 ——> babylon进行解析 ——> 得到AST ——> plugin用babel-traverse对AST树进行遍历转译 ——> 得到新的AST树 ——> 用babel-generator通过AST树生成ES5代码
+
+	—— ts中的装饰器（https://www.jianshu.com/p/c8aaba6e8ce0）
+		属性装饰器 -> 方法装饰器 -> 类装饰器
+		装饰器是一种特殊类型的声明，它能被附加在类、方法、属性、访问符、参数上。
+		装饰器使用@expression这种方式，expression求值后必须为一个函数，它在运行时调用，被装饰器声明的信息作为参数传入。
+
+	—— webpack工作流程
+		从入口文件开始，建立依赖树 ——> 递归依赖树——> rules属性 -> test正则匹配文件，使用加载器，加载模块——> loader处理 ——> plugin ——> boundle.js 完成打包
+
+	—— webpack的热更新机制是什么
+		模块热更新是webpack的一个功能，它可以使得代码修改之后，不用刷新浏览器就可以更新。在应用过程中替换添加删出模块，无需重新加载整个页面，是高级版的自动刷新浏览器。
+		（https://www.cnblogs.com/gaoht/p/11310365.html）
+
+	—— 使用路由时出现问题如何解决
+		—— history模式 刷新页面404 （需要Nginx做配置 指向根目录index。html）
+
+	—— WebView和原生是如何通信
+		1、目前js有三种调用原生Android的方式：
+			① 和上面Js调用原生iOS(OC或Swift)方法一样，通过schema方式，Native使用shouldOverrideUrlLoading方法对url协议进行解析。这种js的调用方式与ios的一样，使用iframe来调用native代码。(原理和使用方式与上面讲的iOS拦截url的一样，建议ios和android端都采用此方式，那么前端也将方便做兼容些)
+			② 往webview里面注入方法，前端角度理解就是Android创建了一个方法，添加到我们js的window对象里面了，直接调用就可以触发原生的方法。
+			③ 使用prompt、console.log、alert等方式，这三个方法对js里是属于原生的，例如当我们js代码中使用alert(data)时，原生这边可以抓到data数据，然后它们进行相应的操作，一般我们使用prompt，因为这个在js代码里面使用的很少，用来和native通讯副作用较少。
+		2、原生Android调用javascript方法通过在android代码里使用webview的loadUrl进行调用。需要被原生调用的js方法放全局。
+
+
+
+HTTP
+	—— 简单讲解一下 http2 的多路复用
+	—— 谈谈你对TCP三次握手和四次挥手的理解
+	—— 浏览器的缓存机制？（https://www.jianshu.com/p/54cc04190252）
+	—— 介绍下如何实现 token 加密
+	—— Http 状态码 301 和 302 的应用场景分别是什么
+
+
+性能优化
+	—— 如何在 H5 和小程序项目中计算白屏时间和首屏时间，说说你的思路
+	—— 前端项目如何找出性能瓶颈
+
+
+—— 什么是微前端、微前端的意义、介绍一下微前端的沙箱机制
+	1、微前端是一种类似于微服务的架构，它将微服务的理念应用于浏览器端，即将Web应用由单一的单体应用转变为多个小型前端应用聚合为一的应用。各个前端应用可以独立运行、独立开发、独立部署。
+	2、目前主流的single-spa框架
+		—— single-spa 社区公认的主流方案，可以基于它做二次开发
+		—— qiankun：基于 single-spa 封装，增加 umi 特色，增加沙箱机制（JS、ShadowDOM 等）
+		—— icestark：类似于 single-spa 实现，React 技术栈友好，阿里的另一个轮子
+		—— Micro-Frontends：类似于 single-spa 实现，React 技术栈友好，阿里的另一个轮子
+	3、关于是否使用微前端架构的思考
+		—— 系统是否臃肿，开发，构建性能很差，需要重构(自虐)，功能拆分
+		—— 多个系统，需要集成到一起，使用统一入口提供给用户使用
+		—— 能不能推动整个项目的规划和落实(多个系统配合 === 开发的噩梦， 流程失控)
+	4、微前端的特点
+		—— 代码库更小，可以将系统拆分成多个子系统。
+		—— 独立部署，子系统堵路部署，没有技术栈限制
+		—— 无需重新开发当前项目，可以直接集成
+	5、微前端的不足
+		—— 开发中
+			1、需要运行多个子系统才能开发和调试(至少是base系统和业务系统)
+			2、多个系统之间的约定，已经架构设计
+			3、性能问题（单页面系统=>ios， 微架构=> Android）
+		—— 生产环境
+			1、多个系统之间的版本控制(业务流程可能会出现耦合的情况)
+			2、浏览器会加载多个框架代码(子系统采用不同的技术框架，如vue, react, 以及UI框架)
+			3、多个系统之间通信复杂 ，数据共享操作很繁琐。
+	6、微前端的沙箱机制（https://segmentfault.com/a/1190000022684014?utm_source=tag-newest）
+
+
+—— 你会搭建私有的npm仓库吗？怎么搭建？
+—— 你有发布过自己的npm包吗？流程是怎样的？如何维护和迭代？（http://www.mianshigee.com/question/30604cfr/）
+
+22、Hooks的执行顺序问题（https://blog.csdn.net/lunahaijiao/article/details/99434993）
+
+
+—— 常规问题
+	1、怎么样合理分配开发资源  
+	2、怎么做组内技术更新迭代推广  
+	3、怎么保持组员的市场竞争力
+	4、怎么看待组内成员的稳定性和流动性
+	5、未来几年的职业规划
+	6、怎么搭建合理梯度的开发团队
+	7、工作中处理过的棘手问题 怎么处理的
+
+	3. 业务和技术的难点和痛点。解决思路，结果什么？
+	8. 怎么做性能优化？ 
+
+
+
+
+
+
+
+
+Virtual DOM真的比操作原生DOM快吗?谈谈你的想法。 https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/47
+深入理解浏览器的缓存机制 https://www.jianshu.com/p/54cc04190252
+面试题汇总：https://github.com/Advanced-Frontend/Daily-Interview-Question/blob/master/datum/summary.md
+
+
+
+
+
+1. 能了解一下你现在负责的工作吗？
+2. 理解业务，能讲清楚业务流程。
+3. 业务和技术的难点和痛点。解决思路，结果什么？
+5. 介绍整体架构信息，后续的规划？
+6. 技术选型（ROI）
+7. 怎么评价代码质量？
+8. 怎么做性能优化？ 
+9. 怎么做架构？
+10. 怎么做技术规划？
+11. 预判业务发展方向，怎么预判业务发展？ 
+12. 能分享一下你自己的学习方法吗？

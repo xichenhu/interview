@@ -1,0 +1,277 @@
+基础知识考察
+
+一、页面布局
+	1、题干的要求真的如字面要求这么简单吗
+	2、这道题的答案应该怎么去写，技巧在哪儿里
+	3、如果想向面试官证明自己的实力和能力，我们要给出几种答案
+	（浮动、绝对定位、flex、table-cell布局、网格布局）
+	4、拔高、延伸话题
+		—— 这五种方案各自的优缺点
+		—— 如果增加内容高度，哪些可以适用哪些不可以用了
+		—— 五种方案的兼容性如何，做项目时哪个最实用
+
+二、CSS盒模型
+	1、基本概念：标准模型 + IE模型
+	2、标准模型和IE模型
+	3、CSS是如何设置这两种模型的
+		—— box-sizing: content-box	【标准模型，浏览器默认模型】
+		—— box-sizing: border-box	【IE模型】
+
+	4、JS如何获取或设置，盒模型对应的宽和高
+		—— dom.style.width/height	【只能取到标签的内敛样式】
+		—— dom.currentStyle.width/height	【获取到的是当前标签最终的渲染以后的样式，只有IE支持】
+		—— window.getComputedStyle(dom).width/height	【获取到的是当前标签最终的渲染以后的样式，firefox和Chrome都支持】
+		—— dom.getBoundingClientRect().width/height	【获取到的是当前标签最终的渲染以后的样式，使用场景：拿到元素的绝对位置，获取的是top、left、width、height】
+
+
+	5、实例题（根据盒模型解释边距重叠）
+		—— 父子边距重叠
+		—— 兄弟边距重叠
+
+	6、BFC（边距重叠解决方案）
+		—— BFC的基本概念：块级格式化上下文
+		—— BFC的原理（BFC的渲染规则）
+			1、BFC的发生在这个垂直方向的边距会发生重叠
+			2、BFC的区域不会与浮动元素的box重叠
+			3、BFC在页面上是一个独立的容器，外面的元素不会影响到里边的元素，反过来里边的元素也不会影响到外面的元素【常用于清除浮动】
+			4、计算BFC高度的时候浮动元素也会参与高度计算
+		—— 如何创建一个BFC
+			1、float的值不为none
+			2、position的值不是stactic或是relative —— 【为absolute或fixed】
+			3、display的值是inline-box、flex、table-cell、table…………
+			4、overflow不为visible
+		—— BFC的使用场景
+
+三、DOM事件
+	1、基本概念：DOM事件的级别
+		—— DOM0：element.onclick = function(){}
+		—— DOM2：element.addEventListener('click',function(){},false)
+		—— DOM3：element.addEventListener('keyup',function(){},false) 【增加了事件类型】
+
+	2、DOM事件模型
+		—— 捕获：从上往下
+		—— 冒泡：从下往上【目标元素往上】
+
+	3、DOM事件流
+		—— 点击事件的交互过程：
+			1、浏览器在用户和页面做交互的过程中，点击事件是怎么传到页面上的、怎么响应的。
+			2、完整的事件流分三个阶段
+				—— 第一阶段是捕获，
+				—— 第二阶段是目标阶段，事件通过捕获元素到达目标元素即为目标阶段，
+				—— 第三阶段是冒泡，从目标元素直接上传到Windows对象
+
+	4、描述DOM事件捕获的具体流程
+		window ——> document ——> html  ——> body  ——> 父级元素 ——> 子集元素
+
+	5、Event对象的常见应用
+		event.preventDefault()		【阻止默认行为】
+		event.stopPropagation()		【阻止冒泡的行为】
+		event.stopImmediatePropagation()	【注册的两个click事件，可以阻止其中的一个事件，在要执行的事件中写入，可阻止其他事件的执行】
+		event.currentTarget		【当前所绑定的事件，被绑定事件的父级元素】
+		event.target		【事件委托，获取当前被点击的元素】
+
+	6、自定义事件
+		—— Event
+			var eve = new Event('custome')
+			ev.addEventListener('custome', function(){
+				console.log('custome')
+			})
+			ev.dispatchEvent(eve)
+
+			[ev：是dom节点]
+
+		—— CustomEvent：除了指定事件名，还可以给事件添加参数
+
+四、HTTP协议
+	1、HTTP协议的要点
+		—— 简单快速：每个资源URI都是固定的（统一资源）
+		—— 灵活：一个HTTP协议可以完成不同类型的传输
+		—— 无连接：一次连接完成就会断掉，不会保持连接
+		—— 无状态：客户端和服务端是两种身份，HTTP协议帮助建立连接帮助传输，传输完成连接断开，再次传输服务端无法区分两次连接者的身份。
+
+	2、HTTP报文的组成部分
+		—— 请求报文：请求行（请求方法+请求地址+HTTP协议+版本）+请求头（key+value值）+空行（空行表示以下部分不属于请求头部分了）+请求体（请求的数据部分）
+		—— 响应报文：状态行（http协议+版本+状态码+状态说明）+响应头+空行+响应体（返回的内容）
+
+	3、HTTP方法
+		—— GET：获取资源
+		—— POST：传输资源
+		—— PUT：更新资源
+		—— DELETE：删除资源
+		—— HEAD：获取报文首部
+
+	4、POST和GET的区别
+		—— GET的回退是无害的，而POST会再次提交请求
+		—— GET会被浏览器主动缓存，而POST不会，除非手动设置
+		—— GET请求参数会被完整保留在浏览器历史记录里，而POST中的参数不会被保留
+		—— GET请求URL中传递的参数是有长度限制的（2KB，过长会被截断），而POST没有限制
+		—— GET参数通过URL传递，POST放在Request body中。
+
+		—— GET产生的地址是可以收藏的，而POST不可以
+		—— GET请求只能进行URL编码，而POST支持多种编码方式
+		—— 对参数的数据类型，GET只接受ASCII字符，而POST没有限制
+		—— GET比POST更不安全，因为参数直接暴露在URL上，所以不能用来传递敏感信息。
+
+	5、HTTP状态码
+		—— 1XX：指示信息——表示请求已接收，继续处理
+		—— 2XX：成功——表示请求已被成功接收
+			200 OK
+			206 Partial Content：客户端发送了一个带有Range头的GET请求，服务器完成了它
+
+			301 Moved Permanently：所请求的页面已经转移至新的URL【永久重定向】
+			302 Found：所请求的页面已经临时转移至新的URL【临时重定向】
+			304 Not Modified：客户端有缓存的文档并发出了一个条件性的请求，服务器告诉客户端，原来缓存的文档还可以继续使用。
+
+			400 Bad Request：客户端请求有语法错误，不能被服务器所理解
+			401 Unauthorized：请求未经授权，这个状态码必须和WWW-Authenticate报文域一起使用。
+			403 Forbidden：对请求的页面的访问被禁止
+			404 Not Found：请求的资源不存在
+
+			500 Internal Server Error：服务器发生不可预期的错误，原来缓存的文档还可以继续使用
+			503 Server Unavailable：请求未完成，服务器临时过载或当机，一段时间后可能恢复正常。
+
+		—— 3XX：重定向——要完成请求必须进一步的操作
+		—— 4XX：客户端错误——请求有语法错误或请求无法实现
+		—— 5XX：服务器错误——服务器未能实现合法的请求
+
+	6、什么是持久化连接
+		HTTP 协议采用“请求-问答”模式，当使用普通模式，即非keep-Alive模式时，每个请求/应答客户和服务器都要建立一个连接，完成之后立即断开连接（HTTP协议为无连接的协议）
+
+		当使用keep-Alive模式（又称持久连接、连接重用）时，Keep-Alive功能使客户端到服务端的连接持续有效，当出现对服务器的后续请求时，keep-Alive功能避免了建立或重新建立连接
+
+	7、什么是管线化
+		在使用持久连接的情况下，某个连接上消息的传递类似于
+		请求1——>响应1——>请求2——>响应2——>请求3——>响应3
+
+		某个连接上的消息变成了类似这样
+		请求1——>请求2——>请求3——>响应1——>响应2——>响应3
+
+		管线化：通道持久建立，一次性把请求打包过去，服务器也一次把响应打包返回
+
+		—— 管线化机制通过持久化连接完成，仅HTTP/1.1支持此技术
+		—— 只有GET和HEAD请求可以进行管线化，POST有所限制
+		—— 初次创建连接时不应启动管线机制，因为对方（服务器）不一定支持HTTP/1.1版本协议
+
+		—— 管线化不会影响响应到来的位置，如上面的例子，响应到来的位置并为改变
+		—— HTTP/1.1 要去服务端支持管线化，但并不要求服务端也对响应也进行管线化处理，只是要求对于管线化的请求不要失败即可。
+		—— 由于上面提到的服务端的问题，开启管线化很可能并不会带来大幅度的性能提升，而且很多服务器端和代理程序对管线化的支持并不好，因此现代浏览器如Chrome和Firefox默认并为开启管线化支持。
+
+五、面向对象
+	1、类与实例
+
+	2、类与继承
+
+六、原型链
+	1、创建对象有几种方法
+		var o1 = {name: 'xiaotong'}
+		var o11 = new Object({name: 'xiaotong'})
+
+		var M = function(){this.name='xiaotong'}
+		var o2 = new M();
+
+		var P = {name: 'xiaotong'}
+		var o3 = Object.create(P)
+
+	2、原型、构造函数、实例、原型链
+		构造函数 ——（new）——> 实例
+		构造函数 ——（prototype）——> 原型对象
+		原型对象 ——（__proto__）——> 原型对象
+		构造函数 <——（constructor）—— 原型对象
+		实例 ——（__proto__）——> 原型对象
+
+	3、instanceof的原理
+		实例对象 ——（constructor）——> 构造函数 ——（prototype）——> 原型对象
+
+	4、new运算符
+		—— 一个新对象被创建。它继承自foo.prototype
+		—— 构造函数foo被执行，执行的时候，相应的参数会被传入，同时上下文（this）会被指定为这个新实例。new foo等同于new foo()，只能用在不传递任何参数的情况下。
+		—— 如果构造函数返回了一个“对象”，那么这个对象会取代整个new出来的结果。如果构造函数没有返回对象，那么new出来的结果为步骤1创建的对象
+
+		var new2 = function(func) {
+			var o = Object.create(func.prototype);
+			var k = func.call(0)
+			if (typeof k === 'object') {
+				return k
+			} else {
+				return o
+			}
+		}
+
+
+一、算法
+	面试无标准
+	—— 排序
+		1、快速排序：https://www.segmentfault.com/a/1190000009426421
+		2、选择排序：https://www.segmentfault.com/a/1190000009366805
+		3、希尔排序：https://www.segmentfault.com/a/1190000009461832
+	—— 堆栈、【队列、链表 可选】
+		1、堆栈：https://juejin.cn/post/6844903459993419790#heading-5
+		2、队列：https://juejin.cn/post/6844903459993419790#heading-8
+		3、链表：https://juejin.cn/post/6844903459993419790#heading-13
+	—— 递归
+		1、递归：https://www.segmentfault.com/a/1190000009857470
+
+	—— 波兰式和逆波兰式
+		1、波兰式和逆波兰式
+			—— 理论：http://www.cnblogs.com/chenying99/p/3675876.html
+			—— 源码：https://github.com/Tairraos/rpn.js/blob/master/rpn.js
+
+
+二、安全
+	CSRF
+		—— 基本概念和缩写
+			1、跨站请求伪造【Cross-site request forgery】
+		—— 攻击原理
+			1、被攻击网站的某个接口有漏洞并且用户在被攻击的网站登录过
+		—— 防御攻击
+			1、加Token验证
+			2、Referer验证，检测是否是合法的网站访问
+			3、隐藏令牌：Token隐藏在http head头中
+	XSS
+		—— 基本概念和缩写
+			1、跨域脚本攻击【Cross-site scripting】
+		—— 攻击原理
+			http://www.imooc.com/learn/812
+			不需要任何登录认证，直接向页面注入脚本
+		—— 防御攻击
+			
+
+	web安全XSS【慕课网】
+
+三、通信
+	1、什么是同源策略和限制
+		同源策略限制从一个源加载的文档或脚本如何与来自另一个源的资源进行交互，这是一个用于隔离潜在恶意文件的关键安全机制。
+		Cookie、LocalStorage 和 IndexDB无法读取
+		DOM无法获得
+		AJAX请求不能发送
+
+
+		协议、域名、端口有一个不一样就是跨域
+		不同源不能进行交互
+
+	2、前后端如何通讯
+		—— ajax：同源下的通讯
+		—— WebSocket：不限制
+		—— CORS：支持同源和非同源
+
+	3、如何创建ajax【使用原生JavaScript】
+		HTMLHttpRequest对象的工作流程
+		兼容性的处理
+		事件的触发条件
+		事件的触发顺序
+
+	4、跨域通讯的几种方式
+		—— JSONP
+		—— Hash
+		—— postMessage 
+		—— WebSocket
+		—— CORS
+
+
+
+
+
+
+
+
+

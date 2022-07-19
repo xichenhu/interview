@@ -1,0 +1,440 @@
+《HTML》		
+
+—— 盒子模型
+	1、把所有的网页元素都看成一个盒子，它具有： content，padding，border，margin 四个属性，这就是盒子模型
+	2、盒子模型有两种形式：标准盒子模型，怪异盒子模型
+		两种模式可以利用box-sizing属性进行自行选择：
+		　　标准模式：box-sizing:content-box;
+		　　怪异模式：box-sizing:border-box;
+	3、两种模式的区别
+
+# Canvas和SVG的区别
+	1. SVG：SVG可缩放矢量图形
+	    * 不依赖分辨率
+	    * 支持事件处理器
+	    * 最适合带有大型渲染区域的应用程序（比如谷歌地图）
+	    * 复杂度高会减慢渲染速度（任何过度使用 DOM 的应用都不快）
+	    * 不适合游戏应用
+	2. Canvas： Canvas是画布，通过Javascript来绘制2D图形，是逐像素进行渲染的。
+	    * 依赖分辨率
+	    * 不支持事件处理器
+	    * 能够以 .png 或 .jpg 格式保存结果图像
+	    * 最适合图像密集型的游戏，其中的许多对象会被频繁重绘
+
+# 行内元素有哪些？块级元素有哪些？ 空(void)元素有那些？
+	* 行内元素有：a b span img input select strong
+	* 块级元素有：div ul ol li dl dt dd h1 h2 h3 h4 h5 h6 p；
+	* 空元素，即没有内容的HTML元素。空元素是在开始标签中关闭的，也就是空元素没有闭合标签：
+	    * 常见的有：<br>、<hr>、<img>、<input>、<link>、<meta>；
+	    * 鲜见的有：<area>、<base>、<col>、<colgroup>、<command>、<embed>、<param>、<source>、<track>。
+
+# src和href的区别
+	src和href都是用来引用外部的资源
+### src
+	* 指向的内容会嵌入到当前标签所在的位置
+	* src会将其指向的资源下载并应⽤到⽂档内，如请求js脚本。
+	> 当浏览器解析到该元素时，会阻塞页面渲染，所以⼀般js脚本会放在页面底部。
+### href
+	* 表示超文本引用，它指向一些网络资源，建立和当前元素或本文档的链接关系。
+	> 当浏览器识别到它他指向的⽂件时，就会并⾏下载资源，不会停⽌对当前⽂档的处理。 常用在a、link等标签上。
+
+## 常用的meta标签
+	1. charset，用来描述HTML文档的编码类型
+	2. keywords，页面关键词
+	3. description，页面描述
+	4. refresh，页面重定向和刷新
+	``` Java
+	<meta http-equiv="refresh" content="0;url=" />
+	```
+	5. viewport，适配移动端，可以控制视口的大小和比例
+	``` Java
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	```
+	    * content 参数有以下几种
+	        * width viewport ：宽度(数值/device-width)
+	        * height viewport ：高度(数值/device-height)
+	        * initial-scale ：初始缩放比例
+	        * maximum-scale ：最大缩放比例
+	        * minimum-scale ：最小缩放比例
+	        * user-scalable ：是否允许用户缩放(yes/no）
+	6. 搜索引擎索引方式
+	``` Java
+	<meta name="robots" content="index,follow" />
+	```
+	    * content 参数有以下几种
+	        * all：文件将被检索，且页面上的链接可以被查询
+	        * none：文件将不被检索，且页面上的链接不可以被查询；
+	        * index：文件将被检索；
+	        * follow：页面上的链接可以被查询；
+	        * noindex：文件将不被检索；
+	        * nofollow：页面上的链接不可以被查询。
+
+《CSS》	
+# 1px 线
+	* viewport + rem
+	* 伪类 + transform: scale(0.5)
+	* border-image 可以使用图片或 svg
+	* box-shadow
+
+# 伪类与伪元素
+	伪类与伪元素的区别在于：有没有创建一个文档树之外的元素。
+
+	## 常见伪类
+		* :hover
+		* :checked
+		* :disabled
+		* :not
+		* :nth-child(an+b)
+	## 常见伪元素
+		* before
+		* after
+		* first-line
+		* selection
+		* first-letter
+
+—— 什么是BFC、如何产生BFC、BFC的作用（https://www.pianshen.com/article/40891580573/）
+	1、BFC 全称为 块格式化上下文 (Block Formatting Context) 。
+	## 特性
+		1. 同一个 BFC 下外边距会发生折叠
+		2. BFC 可以包含浮动的元素（清除浮动）
+		3. BFC 可以阻止元素被浮动元素覆盖
+
+	## 如何触发 BFC
+		* body 根元素
+		* 浮动元素：float 除 none 以外的值
+		* 绝对定位元素：position (absolute、fixed)
+		* display 为 inline-block、table-cells、flex
+		* overflow 除了 visible 以外的值 (hidden、auto、scroll)
+
+	## 应用场景
+		* 避免外边距的重叠
+		* 清除浮动
+		* 阻止元素被浮动元素覆盖（两栏布局）
+
+# CSS预处理器/后处理器是什么？为什么要使用它们？
+	预处理器， 如：less，sass，stylus，用来预编译sass或者less，增加了css代码的复用性。层级，mixin， 变量，循环， 函数等对编写以及开发UI组件都极为方便。
+	后处理器， 如： postCss，通常是在完成的样式表中根据css规范处理css，让其更加有效。目前最常做的是给css属性添加浏览器私有前缀，实现跨浏览器兼容性的问题。
+	使用原因：
+		* 结构清晰， 便于扩展
+		* 可以很方便的屏蔽浏览器私有语法的差异
+		* 可以轻松实现多重继承
+		* 完美的兼容了CSS代码，可以应用到老项目中
+
+# CSS中可继承与不可继承属性有哪些
+	## 无继承性的属性
+		* display：规定元素应该生成的框的类型
+		* 文本属性：
+		    * vertical-align：垂直文本对齐
+		    * text-decoration：规定添加到文本的装饰
+		    * text-shadow：文本阴影效果
+		    * white-space：空白符的处理
+		    * unicode-bidi：设置文本的方向
+		* 盒子模型的属性：width、height、margin、border、padding
+		* 背景属性：background、background-color、background-image、background-repeat、background-position、background-attachment
+		* 定位属性：float、clear、position、top、right、bottom、left、min-width、min-height、max-width、max-height、overflow、clip、z-index
+		* 生成内容属性：content、counter-reset、counter-increment
+		* 轮廓样式属性：outline-style、outline-width、outline-color、outline
+		* 页面样式属性：size、page-break-before、page-break-after
+		* 声音样式属性：pause-before、pause-after、pause、cue-before、cue-after、cue、play-during
+
+	## 有继承性的属性
+		* 字体系列属性
+		    * font-family：字体系列
+		    * font-weight：字体的粗细
+		    * font-size：字体的大小
+		    * font-style：字体的风格
+		* 文本系列属性
+		    * text-indent：文本缩进
+		    * text-align：文本水平对齐
+		    * line-height：行高
+		    * word-spacing：单词之间的间距
+		    * letter-spacing：中文或者字母之间的间距
+		    * text-transform：控制文本大小写（就是uppercase、lowercase、capitalize这三个）
+		    * color：文本颜色
+		* 元素可见性：visibility：控制元素显示隐藏
+		* 列表布局属性：list-style：列表风格，包括list-style-type、list-style-image等
+		* 光标属性：cursor：光标显示为何种形态
+
+	# link和@import的区别
+		两者都是外部引用CSS的方式：
+			* link是XHTML标签,无兼容问题
+			* @import属于CSS范畴，只能加载CSS，是在CSS2.1提出的，低版本的浏览器不支持。
+			* link引用CSS时，在页面载入时同时加载；@import需要页面网页完全载入以后加载。
+			* link支持使用Javascript控制DOM去改变样式；而@import不支持。
+
+《JavaScript》	
+# JS数据类型
+	* 基本类型：Number、Boolean、String、null、undefined、symbol(ES6 新增的)，BigInt(ES2020) 
+	* 引用类型：Object，对象子类型(Array，Function)
+# 判断类型
+	## typeof
+	## instanceof
+	## Object.prototype.toString.call()
+	## constructor
+
+## 箭头函数与普通函数的区别
+	* 箭头函数比普通函数更加简洁
+	    * 如果没有参数，就直接写一个空括号即可
+	    * 如果只有一个参数，可以省去参数的括号
+	    * 如果有多个参数，用逗号分割
+	    * 如果函数体的返回值只有一句，可以省略大括号
+	    * 如果函数体不需要返回值，且只有一句话，可以给这个语句前面加一个void关键字。最常见的就是调用一个函数：
+	        ``` Java
+	            let fn = () => void doesNotReturn();
+	        ```
+	* 箭头函数没有自己的this    
+	    箭头函数不会创建自己的this， 所以它没有自己的this，它只会在自己作用域的上一层继承this。所以箭头函数中this的指向在它在定义时已经确定了，之后不会改变。
+	* 箭头函数继承来的this指向永远不会改变
+	* call()、apply()、bind()等方法不能改变箭头函数中this的指向
+	* 箭头函数不能作为构造函数使用
+	    构造函数在new的步骤在上面已经说过了，实际上第二步就是将函数中的this指向该对象。 但是由于箭头函数时没有自己的this的，且this指向外层的执行环境，且不能改变指向，所以不能当做构造函数使用。
+	* 箭头函数没有自己的arguments
+	    箭头函数没有自己的arguments对象。在箭头函数中访问arguments实际上获得的是它外层函数的arguments值。
+	* 箭头函数没有prototype
+	* 箭头函数不能用作Generator函数，不能使用yeild关键字   
+
+## 如果new一个箭头函数的会怎么样
+	箭头函数是ES6中的提出来的，它没有prototype，也没有自己的this指向，更不可以使用arguments参数，所以不能New一个箭头函数。
+
+## 什么是 DOM 和 BOM？
+	* DOM 指的是文档对象模型，它指的是把文档当做一个对象，这个对象主要定义了处理网页内容的方法和接口。
+	* BOM 指的是浏览器对象模型，它指的是把浏览器当做一个对象来对待，这个对象主要定义了与浏览器进行交互的法和接口。BOM的核心是 window，而 window 对象具有双重角色，它既是通过 js 访问浏览器窗口的一个接口，又是一个 Global（全局）对象。这意味着在网页中定义的任何对象，变量和函数，都作为全局对象的一个属性或者方法存在。window 对象含有 location 对象、navigator 对象、screen 对象等子对象，并且 DOM 的最根本的对象 document 对象也是 BOM 的 window 对象的子对象。
+## JavaScript脚本延迟加载的方式有哪些？
+	延迟加载就是等页面加载完成之后再加载 JavaScript 文件。 js 延迟加载有助于提高页面加载速度。
+	* defer 属性：这个属性会让脚本的加载与文档的解析同步解析,设置多个按顺序执行
+	* async 属性：这个属性会使脚本异步加载，不会阻塞页面的解析过程，多个 async 属性执行顺序不可预测
+	* 动态创建 DOM 方式：可以对文档的加载事件进行监听，当文档加载完成后再动态的创建 script 标签来引入 js 脚本。
+	* 使用 setTimeout 延迟方法：设置一个定时器来延迟加载js脚本文件
+	* 让 JS 最后加载：将 js 脚本放在文档的底部，来使 js 脚本尽可能的在最后来加载执行。
+
+# 事件循环机制
+##  对原型、原型链的理解
+	什么是构造函数：
+		任何函数只要通过new操作符来调用，那么他就可以作为构造函数。
+	什么是实例：
+		只要是被new关键字调用构造函数所生成的对象就叫对象实例。
+	什么是原型：
+		所有生成的函数都会有一个prototype原型的属性，这个原型属性指向的是原型对象
+	原型对象的作用：
+		共享对象的所有属性和方法，该原型有个属性为constructor（构造函数），这个属性指向的是它的构造函数。
+	__proto__属性
+		指向原型对象（也可以理解为父对象）
+	prototype 属性
+		1、是函数独有的
+		2、从一个函数指向一个对象
+		3、用来共享属性和方法
+		4、任何函数创建的时候都会默认同时创建该函数的prototype对象。
+	constructor属性
+		1、是对象才拥有的属性
+		2、它是从一个对象指向一个函数（该对象的构造函数）
+		3、单从constructor这个属性来讲，只有prototype对象才有。
+
+	函数创建的对象.__proto__ === 该函数.prototype
+	该函数.prototype.constructor===该函数本身
+
+	原型链：当访问一个对象的属性时，如果这个对象内部不存在这个属性，那么它就会去它的原型对象里找这个属性，这个原型对象又会有自己的原型，于是就这样一直找下去，也就是原型链的概念。原型链的尽头一般来说都是 Object.prototype 所以这就是新建的对象为什么能够使用 toString() 等方法的原因。
+
+	总结一下
+		我们需要牢记两点：
+		1、__proto__和constructor属性是对象所独有的；② prototype属性是函数所独有的，因为函数也是一种对象，所以函数也拥有__proto__和constructor属性。
+		2、__proto__属性的作用就是当访问一个对象的属性时，如果该对象内部不存在这个属性，那么就会去它的__proto__属性所指向的那个对象（父对象）里找，一直找，直到__proto__属性的终点null，然后返回undefined，通过__proto__属性将对象连接起来的这条链路即我们所谓的原型链。
+		3、prototype属性的作用就是让该函数所实例化的对象们都可以找到公用的属性和方法，即f1.__proto__ === Foo.prototype。
+		4、constructor属性的含义就是指向该对象的构造函数，所有函数（此时看成对象了）最终的构造函数都指向Function。
+
+## 异步编程的实现方式？
+	* 回调函数 的方式
+		使用回调函数的方式有一个缺点是，多个回调函数嵌套的时候会造成回调函数地狱，上下两层的回调函数间的代码耦合度太高，不利于代码的可维护。
+	* Promise 的方式
+		使用 Promise 的方式可以将嵌套的回调函数作为链式调用。但是使用这种方法，有时会造成多个 then 的链式调用，可能会造成代码的语义不够明确。
+	* generator 的方式
+		它可以在函数的执行过程中，将函数的执行权转移出去，在函数外部还可以将执行权转移回来。当遇到异步函数执行的时候，将函数执行权转移出去，当异步函数执行完毕时再将执行权给转移回来。因此在 generator 内部对于异步操作的方式，可以以同步的顺序来书写。使用这种方式需要考虑的问题是何时将函数的控制权转移回来，因此需要有一个自动执行 generator 的机制，比如说 co 模块等方式来实现 generator 的自动执行。
+	* async 函数 的方式
+		async 函数是 generator 和 promise 实现的一个自动执行的语法糖，它内部自带执行器，当函数内部执行到一个 await 语句的时候，如果语句返回一个 promise 对象，那么函数将会等待 promise 对象的状态变为 resolve 后再继续向下执行。因此可以将异步逻辑，转化为同步的顺序来书写，并且这个函数可以自动执行。
+
+## 对Promise的理解
+	Promise是异步编程的一种解决方案，它是一个对象，可以获取异步操作的消息，他的出现大大改善了异步编程的困境，避免了地狱回调，它比传统的解决方案回调函数和事件更合理和更强大。
+	当把一件事情交给promise时，它的状态就是Pending，任务完成了状态就变成了Resolved、没有完成失败了就变成了Rejected。
+	注意：一旦从进行状态变成为其他状态就永远不能更改状态了。
+
+Promise的缺点：
+	* 无法取消Promise，一旦新建它就会立即执行，无法中途取消。
+	* 如果不设置回调函数，Promise内部抛出的错误，不会反应到外部。
+	* 当处于pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）
+
+## Promise解决了什么问题
+	解决了地狱回调的问题
+
+## Promise.all和Promise.race的区别的使用场景
+	* Promise.all 
+		Promise.all中传入的是数组，返回的也是是数组，并且会将进行映射，传入的promise对象返回的值是按照顺序在数组中排列的，但是注意的是他们执行的顺序并不是按照顺序的，除非可迭代对象为空。
+		需要注意，Promise.all获得的成功结果的数组里面的数据顺序和Promise.all接收到的数组顺序是一致的，这样当遇到发送多个请求并根据请求顺序获取和使用数据的场景，就可以使用Promise.all来解决。
+	* Promise.race
+		顾名思义，Promse.race就是赛跑的意思，意思就是说，Promise.race([p1, p2, p3])里面哪个结果获得的快，就返回那个结果，不管结果本身是成功状态还是失败状态。当要做一件事，超过多长时间就不做了，可以用这个方法来解决：
+		``` Java
+		Promise.race([promise1,timeOutPromise(5000)]).then(res=>{})
+		```
+
+# 垃圾回收与内存泄漏
+	## 垃圾回收的概念
+		* 垃圾回收：
+		JavaScript代码运行时，需要分配内存空间来储存变量和值。当变量不在参与运行时，就需要系统收回被占用的内存空间，这就是垃圾回收。
+		* 回收机制：
+		  * Javascript 具有自动垃圾回收机制，会定期对那些不再使用的变量、对象所占用的内存进行释放，原理就是找到不再使用的变量，然后释放掉其占用的内存。
+		  * JavaScript中存在两种变量：局部变量和全局变量。全局变量的生命周期会持续要页面卸载；而局部变量声明在函数中，它的生命周期从函数执行开始，直到函数执行结束，在这个过程中，局部变量会在堆或栈中存储它们的值，当函数执行结束后，这些局部变量不再被使用，它们所占有的空间就会被释放。
+		  * 不过，当局部变量被外部函数使用时，其中一种情况就是闭包，在函数执行结束后，函数外部的变量依然指向函数内部的局部变量，此时局部变量依然在被使用，所以不会回收。
+		* 垃圾回收的方式
+		  * 标记清除
+		  * 引用计数
+		* 减少垃圾回收
+		  * 对数组进行优化： 在清空一个数组时，最简单的方法就是给其赋值为[ ]，但是与此同时会创建一个新的空对象，可以将数组的长度设置为0，以此来达到清空数组的目的。
+		  * 对object进行优化：对象尽量复用，对于不再使用的对象，就将其设置为null，尽快被回收。
+		  * 对函数进行优化：在循环中的函数表达式，如果可以复用，尽量放在函数的外面。
+	## 哪些情况会导致内存泄漏
+	  * 意外的全局变量：由于使用未声明的变量，而意外的创建了一个全局变量，而使这个变量一直留在内存中无法被回收。
+	  * 被遗忘的计时器或回调函数：设置了 setInterval 定时器，而忘记取消它，如果循环函数有对外部变量的引用的话，那么这个变量会被一直留在内存中，而无法被回收。
+	  * 脱离 DOM 的引用： 获取一个 DOM 元素的引用，而后面这个元素被删除，由于一直保留了对这个元素的引用，所以它也无法被回收。
+	  * 闭包： 不合理的使用闭包，从而导致某些变量一直被留在内存当中。
+
+《HTTP》
+
+	3、HTTPS的加密过程
+		1、服务器端用非对称加密(RSA)生成公钥和私钥
+		2、然后把公钥发给客户端, 服务器则保存私钥
+		3、客户端拿到公钥后, 会生成一个密钥, 这个密钥就是将来客户端和服务器用来通信的钥匙
+		4、然后客户端用公钥对密钥进行加密, 再发给服务器
+		5、服务器拿到客户端发来的加密后的密钥后, 再使用私钥解密密钥, 到此双方都获得通信的钥匙
+—— 浏览器缓存机制 304
+	
+	if(Cache-Control === no-store) {
+		// 绝对禁止缓存，浏览器本地不会进行缓存，每次请求资源都要从服务器重新获取。
+		直接向服务器获取资源（本地不缓存资源）
+	} else if (Cache-Control === no-cache) {
+		// 设置了no-cache之后并不代表浏览器不缓存，而是在获取缓存前要向服务器确认资源是否被更改。
+		每次请求都想服务器确认资源是否被更改（本地缓存资源），走下面的协商缓存
+	} else if (本地未过期=> max-age|| Expires) {
+		使用浏览器本地缓存
+	} else {
+		if (Etag有值) {
+			向服务器请求带 if-None-Match
+			if(Etag与原来的一致) {
+				返回304，直接使用本地缓存
+			} else {
+				返回200，获取新资源
+			}
+		} else if (Last-modified有值) {
+			向服务器请求带 if-Modified-Since
+			if (Last-modified与原来的一致) {
+				返回304，直接使用本地缓存
+			} else {
+				返回200，获取新资源
+			}
+		} else {
+			向服务器获取新资源，返回200
+		}
+	}
+
+—— webpack工作流程
+	从入口文件开始，建立依赖树 ——> 递归依赖树——> rules属性 -> test正则匹配文件，使用加载器，加载模块——> loader处理 ——> plugin ——> boundle.js 完成打包
+
+—— webpack的热更新机制是什么
+	模块热更新是webpack的一个功能，它可以使得代码修改之后，不用刷新浏览器就可以更新。在应用过程中替换添加删出模块，无需重新加载整个页面，是高级版的自动刷新浏览器。
+	（https://www.cnblogs.com/gaoht/p/11310365.html）
+	
+—— webpack
+	1、使用过webpack里面哪些plugin和loader
+	2、webpack打包的整个过程
+		从入口文件开始，建立依赖树 ——> 递归依赖树——> rules属性 -> test正则匹配文件，使用加载器，加载模块——> loader处理 ——> plugin ——> boundle.js 完成打包
+	3、dev-server是怎么跑起来
+	4、一般怎么组织CSS（Webpack）
+	5、如何配置把js、css、html单独打包成一个文件
+	6、webpack和gulp的优缺点
+	7、使用webpack构建时有无做一些自定义操作
+	8、webpack的热更新是如何做到的？说明其原理？
+	9、webpack的loader, plugles 
+		（Webpack配置(loader和plugin如何使用)：https://www.jianshu.com/p/d029a35d3501）
+		（https://blog.csdn.net/weixin_39645003/article/details/111138925）
+		（https://www.cnblogs.com/gaoht/p/11310365.html）
+		
+		style-loader(将处理结束的CSS代码存储在js中，运行时嵌入<style>后挂载至html页面上)  
+		css-loader(使webpack可以识别css模块)  
+		sass-loader(使webpack可以识别scss/sass文件)
+
+		—— loader用于加载某些资源文件。因为webpack本身只能打包common.js规范的js文件，对于其他资源如css，img等，是没有办法加载的，这时就需要对应的loader将资源转化，从而进行加载。
+		—— plugin用于扩展webpack的功能。不同于loader，plugin的功能更加丰富，比如压缩打包，优化，不只局限于资源的加载。
+		—— 常用 loader
+			1、处理 css
+				—— style-loader
+				—— css-loader
+			2、处理less
+				—— syle-loader
+				—— css-loader
+				—— less-loader (less-loader依赖于less，所以要一并安装)
+			3、处理css图片资源
+				—— url-loader (依赖于file-loader，所以要一并安装,可以指定其限制用base64 )
+			4、处理html图片资源
+				—— html-loader(注意该loader的模块化方式与url-loader不一致，需要将url-loader的配置中esModule改为false)
+			5、处理其他资源(如：字体文件等)
+				—— file-loader
+		—— 常用plugins
+			1、html编译
+				—— html-webpack-plugin
+			2、提取css文件
+				—— mini-css-extract-plugin（如果用了此插件，那么就不能使用style-loader处理css文件了，需要用mcep.loader替换style-loader）
+
+—— 性能优化
+	1、代码层面
+	2、缓存利用
+	3、请求数量
+	4、请求带宽
+	5、代码层面的优化
+	6、浏览器渲染机制JS阻塞怎么办?
+		—— 将js放在最后加载
+		—— 监听onload 异步 加载	
+—— 浏览器缓存（(http缓存是浏览器端缓存)）、DNS缓存、服务器缓存（(cdn是服务器端缓存)）、Nginx缓存 
+	1、浏览器缓存（http缓存）
+	2、代理服务器缓存
+	3、CDN缓存（Content Delivery Network 内容分发网络）
+	4、数据库缓存
+	5、应用层缓存（代码层面上，通过代码逻辑将请求过的数据缓存起来）（https://www.jianshu.com/p/0764a335c292）
+
+# VUE 基础
+	## 双向数据绑定的原理
+		Vue.js 是采用数据劫持结合发布者-订阅者模式的方式，通过Object.defineProperty()来劫持各个属性的setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。
+
+		1. 需要observe的数据对象进行递归遍历，包括子属性对象的属性，都加上setter和getter，这样的话，给这个对象的某个值赋值，就会触发setter，那么就能监听到了数据变化。
+		2. compile解析模板指令，将模板中的变量替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，更新视图。
+		3. Watcher订阅者是Observer和Compile之间通信的桥梁，主要做的事情是: ①在自身实例化时往属性订阅器(dep)里面添加自己 ②自身必须有一个update()方法 ③待属性变动dep.notice()通知时，能调用自身的update()方法，并触发Compile中绑定的回调，则功成身退。
+		4. MVVM作为数据绑定的入口，整合Observer、Compile和Watcher三者，通过Observer来监听自己的model数据变化，通过Compile来解析编译模板指令，最终利用Watcher搭起Observer和Compile之间的通信桥梁，达到数据变化 -> 视图更新；视图交互变化(input) -> 数据model变更的双向绑定效果。
+
+	## 使用 Object.defineProperty() 来进行数据劫持有什么缺点？
+		* 在对一些属性进行操作时，使用这种方法无法拦截，比如通过下标方式修改数组数据或者给对象新增属性，这都不能触发组件的重新渲染，因为 Object.defineProperty 不能拦截到这些操作。更精确的来说，对于数组而言，大部分操作都是拦截不到的，只是 Vue 内部通过重写函数的方式解决了这个问题。
+		* 在 Vue3.0 中已经不使用这种方式了，而是通过使用 Proxy 对对象进行代理，从而实现数据劫持。使用Proxy 的好处是它可以完美的监听到任何方式的数据改变，唯一的缺点是兼容性的问题，因为 Proxy 是 ES6 的语法。
+
+—— vue3.0比2.0有哪些变化
+	1、Typescript：Vue3.0使用 TypeScript 重构，所以，别再纠结需要不需要学习TypeScript——学就对了！
+	2、Proxy：Vue3.0实现方式是通过 ES6 提供的 Proxy API，相比旧的 defineProperty API ，Proxy 可以代理数组&对象。
+	3、reactivity：Vue3.0 项目结构采用了 lerna 做 monorepo 风格的代码管理，简单来说就是源码的管理从多个包变成了集中管理。
+
+—— 常规问题
+	1、有什么印象深刻的项目
+	2、说一下自己的优缺点
+	3、平时是怎么学习的
+	4、未来几年的职业规划
+	5、工作中处理过的棘手问题 怎么处理的
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

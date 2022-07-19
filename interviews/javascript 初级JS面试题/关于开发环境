@@ -1,0 +1,75 @@
+目的：
+	—— 想通过开发环境了解候选人的实际工作情况
+	—— 开发环境的工具，能体现工作产出的效率
+	—— 会以聊天为主，不会问具体的问题
+
+—— 开发环境
+	—— git
+	—— 调试工具
+	—— 抓包
+	—— webpack babel
+	—— linux常用命令
+
+—— git
+	—— 介绍
+		1、最常用的代码版本管理工具
+		2、大型项目需要多人协作开发，必须熟用git
+		3、Mac OS自带git命令，windows可去官网下载安装
+		4、git 服务端常见的有github coding.net等
+		5、大公司会搭建自己的内网git服务
+	—— 常用命令
+		1、git add .
+		2、git checkout xxx
+		3、git commit -m "xxx"
+		4、git push origin master
+		5、git pull origin master
+		6、git branch
+		7、git checkout -b xxx/ git checkout xxx
+		8、git merge xxx
+
+—— Chrome调试工具
+	1、Elements
+	2、Console
+	3、debugger
+	4、Network
+	5、Application
+
+—— 抓包
+	1、抓包工具
+		—— 移动端h5页，查看网络请求，需要用工具抓包
+		—— windows 一般用fiddler
+		—— Mac OS 一般用charles
+
+	2、抓包过程
+		—— 手机和电脑连同一个局域网
+		—— 将手机代理到电脑上
+		—— 手机浏览网页，即抓包
+	3、要做的事情
+		—— 查看网络请求
+		—— 网址代理
+		—— https
+—— webpack babel
+	1、ES6模块化，浏览器暂不支持
+	2、ES6语法，浏览器并不完全支持
+	3、压缩代码，整合代码，让网页加载更快
+	
+—— linux常用命令
+	1、公司的线上机器一般都是Linux
+	2、测试机也需要保持一致，用Linux
+	3、测试机或者线上机出了问题，本地又不能复现，需要去排查
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

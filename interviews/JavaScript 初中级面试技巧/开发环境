@@ -1,0 +1,132 @@
+—— 关于开发环境
+	1、IDE（写代码的效率）
+		webstorm
+		sublime
+		vscode
+		atom
+
+	2、git（代码版本管理，多人协作开发）
+		git add .
+		git checkout XXX
+		git commit -m "XXX"
+		git push origin master
+		git pull origin master
+		git branch 
+		git checkout -b XXX/git checkout XXX
+		git merge XXX
+
+	3、JS模块化
+		—— 知识点
+			1、不使用模块化
+				<script src="util.js">
+				<script src="a-util.js">
+				<script src="a.js">
+
+				—— 这些代码中的函数必须是全局变量，才能暴露给使用方，全局变量污染
+				—— a.js知道引用a-util.js,但是他知道还需要依赖于util.js吗？
+			2、使用模块化
+				// util.js
+				export {
+
+				}
+				// a-util.js
+				var getUtil = require('util.js')
+				export {
+
+				}
+				// a.js
+				var getAUtils = require('a-util.js') // 依赖关系非常明确
+				var dt = new Date()
+				console.log(getAUtils(dt))
+
+				—— 直接<script src="a.js"></script> 其他的根据依赖关系自动引用
+				—— 那两个函数，没必要做成全局变量，不会带来污染和覆盖
+
+			3、AMD
+				—— require.js
+				—— 全局define函数
+				—— 全局require函数
+				—— 依赖JS会自动、异步加载
+
+			4、CommonJS
+				—— node.js模块化规范，现在前端被大量用，原因：
+					1、前端开发依赖的插件可库，都可以从npm中获取
+					2、构建工具的高度自动化，是的使用npm的成本非常低
+				—— commonJS 不会异步加载JS，二是同步一次性加载出来
+				—— module.exports = {
+					a: ()=>{}
+				}
+				—— var util = require('util.js')
+				—— 需要构建工具支持
+				—— 一般和npm 一起使用
+
+			5、AMD和CommonJS的使用场景
+				—— 需要异步加载JS，使用AMD
+				—— 使用了npm之后建议使用CommonJS
+
+	4、打包工具
+		—— grunt
+		—— gulp
+		—— fis3
+		—— webpack
+
+	5、上线回滚的流程
+		—— 口头交流
+		—— 知识点
+			1、上线和回滚的基本流程
+				—— 是个重要环节
+				—— 各个公司不同
+				—— 有专门工具完成，无需关系细节
+				—— 多少讲点
+					1、将测试完成的代码提交到git版本库的master分支
+					2、将当前服务器的代码全部打包并记录版本号，备份
+					3、将master分支的代码提交覆盖到线上服务器，生成新版本号
+				—— 回滚要点
+					1、将当前服务器的代码打包并记录版本号，备份
+					2、将备份的上一个版本号解压，覆盖到线上服务器，并形成新的版本号
+
+			2、Linux基本命令
+				1、服务器使用Linux居多，server版，只有命令行
+				2、测试环境要匹配线上环境，因此也是Linux
+				3、经常需要登录测试机来自己配置，获取数据
+				4、常用命令
+					—— mikdir file
+					—— ls
+					—— ll
+					—— cd file
+					—— pwd
+					—— rm -rf file
+					—— vi a.js
+					—— cp a.js a1.js
+					—— mv a1.js src/a1.js
+					—— ESC：wq
+					—— cat a.js
+					—— head a.js
+					—— tail a.js
+					—— tail -n 1 a.js
+					—— head -n 2 a.js
+					—— grep '2' a.js // 搜索包含2的内容
+
+一、版本管理
+二、模块化
+三、打包工具
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

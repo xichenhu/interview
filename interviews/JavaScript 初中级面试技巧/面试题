@@ -1,0 +1,79 @@
+
+3、window.onload和DOMContentLoaded的区别？
+	考点：浏览器的渲染过程
+
+4、用JS创建1个a标签，点击的时候弹出来对应的序列号
+	考点：作用域
+
+5、简述如何实现一个模块加载器，实现类似require.js的基本功能
+	考点：JS模块化
+
+6、实现数组的随机排序
+	考点：JS基础算法
+
+1、JS中使用typeof能得到哪些类型？
+	考点： JS变量类型
+	答：只能把值类型给区分出来 【值类型 VS 引用类型】
+		typeof undefined //undefined
+		typeof 'abc' // string
+		typeof 123 // number
+		typeof true // boolean
+		typeof {} // object
+		typeof [] // object
+		typeof null // object
+		typeof console.log // function
+
+	答：
+		var arr = []
+		arr instanceof Array // true
+		typeof arr //object, typeof是无法判断是否是数组的
+
+2、何时使用===何时使用==？
+	考点：强制类型转换
+	答：if(obj.a == null) {
+			// 这里相当于obj.a === null || obj.a === undefined的简写形式
+			// 这里是jquery源码的写法
+		}
+		
+		字符串拼接
+		== 运算符
+		if语句
+		逻辑运算
+
+
+3、JS中有哪些内置函数 —— 数据封装对象
+	Object
+	Array
+	Boolean
+	String
+	Function
+	Date
+	RegExp
+	Error
+
+4、JS变量按照存储方式区分为哪些类型，并描述其特点
+	// 值类型
+	var a=10
+	var b=a
+	a=11
+	console.log(b) // 10
+
+	// 引用类型
+	var obj1 = {x:10}
+	var obj2 = obj1
+	obj1.x = 20
+	console.log(obj2.x) //20
+
+5、如何理解JSON
+	// JSON 只不过是一个JS对象而已, 也是一个数据格式
+	JSON.stringify({a: 10})
+	JSON.parse('{"a": 10}')
+
+
+
+
+
+
+
+
+

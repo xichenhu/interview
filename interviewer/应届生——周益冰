@@ -1,0 +1,233 @@
+HTML、CSS、JavaScript、Vue、JQuery、响应式布局、Flex、Git、网络协议、浏览器缓存机制、性能优化、前端规范
+
+
+—— 行内元素有哪些？块级元素有哪些？ 空(void)元素有那些？行内元素和块级元素有什么区别？
+		1、行内元素有：a b span img input select strong
+		2、块级元素有：div ul ol li dl dt dd h1 h2 h3 h4… p
+		3、空元素：br hr img input link meta
+
+		—— 行内元素
+			1、设置宽高无效
+			2、对margin仅设置左右方向有效，上下无效；padding上下左右都有效，会撑大空间
+			3、不会自动进行换行
+
+		—— 块级元素
+			1、能够识别设置宽高
+			2、margin和padding的上下左右均对其有效
+			3、独占一行
+
+—— html5有哪些新特性？
+
+—— 阐述清楚浮动的几种方式（常见问题）
+		1、浮动的产生
+			float: left/right（设置后产生浮动）
+			初衷：浮动原先的设计初衷是为了实现文字环绕效果
+			结果：父元素高度塌陷，理解起来就是元素浮动飘起来了，失去高度，下面的元素会顶上来，就造成了原有的元素背景不见了，margin/padding也不能正常显示
+		2、解决浮动的方法
+			（1）clear: both，在元素最后下加一个元素设置clear：both属性，缺点是会增加多余无用的html元素
+			（2）使用after伪元素
+				.box 父元素
+				.box::after {
+				    content: ' ';
+				    display: block;
+				    clear: both;
+				 }
+			（3）给父元素设置明确的高度，缺点是并不是所有元素的高度都是固定
+			（4）给父级元素设置overflow:hidden, 缺点：不能和position配合使用
+
+—— 介绍一下标准的CSS的盒子模型？低版本IE的盒子模型有什么不同的？
+	IE盒模型的width包含：content+border+padding
+	W3C盒模型的width只包含：content
+
+—— box-sizing常用的属性有哪些？分别有什么作用？
+		（1）content-box
+			宽高是元素本身的宽高 不包含border+padding
+		（2）border-box
+			元素的宽高已经包含了border+padding
+		（3）inherit
+			从父元素继承box-sizing属性
+—— flex布局常用属性有哪些？
+—— flex 是什么属性的缩写?（https://course.51qux.com/2221.html）
+
+—— cookie、sessionStorage、localStorage不同点：
+	1、存储大小
+		cookie 数据大小不能超过4k；
+		sessionStorage 和 localStorage 虽然也有存储大小的限制，但比 cookie 大得多，可以达到 5M 或更大。
+	2、有效时间
+		localStorage 存储持久数据，浏览器关闭后数据不丢失除非主动删除数据；
+		sessionStorage 数据在当前浏览器窗口关闭后自动删除；
+		cookie 设置的 cookie 过期时间之前一直有效，即使窗口或浏览器关闭。
+	3、数据与服务器之间的交互方式
+		cookie 的数据会自动的传递到服务器，服务器端也可以写 cookie 到客户端 
+		sessionStorage 和 localStorage 不会自动把数据发给服务器，仅在本地保存。
+
+—— 描述new一个对象的过程
+	创建一个新对象
+	this指向这个新对象
+	执行代码，即对this赋值
+	返回this
+
+7、什么是闭包？（https://blog.csdn.net/weixin_43352901/article/details/107528020）
+	—— 一个函数的作用域是它定义时的作用域
+	—— 闭包的使用场景
+		1、函数作为返回值
+		2、函数作为参数传递
+
+8、描述下节流、防抖
+
+20、什么是原型
+①所有引用类型都有一个__proto__(隐式原型)属性，属性值是一个普通的对象 
+②所有函数都有一个prototype(原型)属性，属性值是一个普通的对象 
+③所有引用类型的__proto__属性指向它构造函数的prototype
+
+21、原型链
+	当访问一个对象的某个属性时，会先在这个对象本身属性上查找，如果没有找到，则会去它的__proto__隐式原型上查找，即它的构造函数的prototype，如果还没有找到就会再在构造函数的prototype的__proto__中查找，这样一层一层向上查找就会形成一个链式结构，我们称为原型链。
+
+		
+1、Vue中双向数据绑定是如何实现的?
+	—— vue.js则是采用数据劫持结合发布者-订阅者模式的方式。
+	—— 通过object.defineProperty()来劫持各个属性的setter , getter.
+	—— 在数据变动时发布消息给订阅者,触发相应的监听回调。我们先来看object.defineProperty()这个方法:
+		var obj ={};
+		object.defineProperty(obj, 'name', {
+			get: function() {
+				console. log('我被获取了')
+				return val;
+			},
+			set: function (newVal) {
+				console.log('我被设置了')
+			}
+		})
+		obj.name = 'fei';
+		//在给obj设置name属性的时候,触发了set这个方法
+		var val =obj.name;
+		//在得到obj的name属性,会触发get方法
+
+
+—— VUE
+	2、说一下对MVVM的理解
+		—— MVVM： model view viewModel
+		—— 三者之间的联系，以及如何对应到各段代码
+		—— ViewModel的理解，联系View和Model
+		—— 三要素
+			1、响应式：vue如何监听到data的每个属性变化
+			2、模版引擎：vue的模板如何被解析，指令如何处理？
+			3、渲染：vue的模版如何被渲染成html？以及渲染过程
+
+	3、vue中如何实现响应式
+		—— 关键是理解Object.defineProperty
+		—— 将data的属性代理到vm上
+
+	4、vue中如何解析模版
+		—— 模板：字符串、有逻辑、嵌入JS变量……
+		—— 模版必须转换成为JS代码（有逻辑，渲染成html、JS变量）
+		—— render函数是什么样子的
+		—— render函数执行是返回vnode
+		—— updateComponent
+
+	5、VUE实现的整体流程
+		—— 第一步：解析模版成render函数
+		—— 第二步：响应式开始监听
+		—— 第三步：首次渲染、显示页面，且绑定依赖
+		—— 第四步：data属性变化，触发rerender
+
+—— vue3.0比2.0有哪些变化
+	1、Typescript：Vue3.0使用 TypeScript 重构，所以，别再纠结需要不需要学习TypeScript——学就对了！
+	2、Proxy：Vue3.0实现方式是通过 ES6 提供的 Proxy API，相比旧的 defineProperty API ，Proxy 可以代理数组&对象。
+	3、reactivity：Vue3.0 项目结构采用了 lerna 做 monorepo 风格的代码管理，简单来说就是源码的管理从多个包变成了集中管理。
+
+
+—— 浏览器缓存机制 304
+	
+	if(Cache-Control === no-store) {
+		// 绝对禁止缓存，浏览器本地不会进行缓存，每次请求资源都要从服务器重新获取。
+		直接向服务器获取资源（本地不缓存资源）
+	} else if (Cache-Control === no-cache) {
+		// 设置了no-cache之后并不代表浏览器不缓存，而是在获取缓存前要向服务器确认资源是否被更改。
+		每次请求都想服务器确认资源是否被更改（本地缓存资源），走下面的协商缓存
+	} else if (本地未过期=> max-age|| Expires) {
+		使用浏览器本地缓存
+	} else {
+		if (Etag有值) {
+			向服务器请求带 if-None-Match
+			if(Etag与原来的一致) {
+				返回304，直接使用本地缓存
+			} else {
+				返回200，获取新资源
+			}
+		} else if (Last-modified有值) {
+			向服务器请求带 if-Modified-Since
+			if (Last-modified与原来的一致) {
+				返回304，直接使用本地缓存
+			} else {
+				返回200，获取新资源
+			}
+		} else {
+			向服务器获取新资源，返回200
+		}
+	}
+
+
+3、跨域
+	—— 什么是跨域
+		1、浏览器有同源策略，不允许ajax访问其他域的接口
+		2、跨域条件：协议、域名、端口号，有一个不同就算跨域
+		3、可以跨域的三个标签
+			—— 有三个标签允许跨域加载资源
+				1、<img src="XXX">
+				2、<link href="XXX">
+				3、<script src="XXX">
+			—— 三个标签的使用场景
+				1、<img> 用于打点统计，统计网站可能是其他域（img没有浏览器兼容问题）
+				2、<link> <script> 可以使用CDN，CDN也是其他域
+				3、<script> 可以用JSONP
+			—— 跨域注意事项
+				1、所有跨域请求都必须经过信息提供方允许
+				2、如果未经允许即可获取，那是浏览器同源策略出现漏洞
+
+	—— JSONP
+		1、JSONP的实现原理
+			—— 加载 https://coding.m.imooc/classindex.html
+			—— 不一定服务器真正存在一个classindex.html文件
+			—— 服务器可以根据请求，动态生成一个文件返回
+			—— 同理 <script src="https://coding.m.imooc/api.js">
+			—— 例子：
+				1、请求https://coding.m.imooc/api.js地址
+				2、返回内容格式callback({x: 100, y: 200})
+
+					<script>
+						window.callback = function(data) {
+							console.log(data)
+						}
+					</script>
+					<script src="https://coding.m.imooc/api.js">
+					<!---- 以上将返回 callback({x: 100, y: 200}) ---->
+
+	—— 服务器端设置 http header
+		response.setHeader("Access-Control-Allow-Origin", "http://a.com") // 第二个参数是允许跨域的域名，不建议直接写*
+		response.setHeader("Access-Control-Allow-Header", "X-Requested-With")
+		response.setHeader("Access-Control-Allow-Methods", "PUT,GET,POST,OPTION")
+
+		// 接收跨域的cookie
+		response.setHeader("Access-Control-Credentials", "true")
+
+
+—— 性能优化
+	1、代码层面
+	2、缓存利用
+	3、请求数量
+	4、请求带宽
+	5、代码层面的优化
+	6、浏览器渲染机制JS阻塞怎么办?
+		—— 将js放在最后加载
+		—— 监听onload 异步 加载	
+
+
+
+
+
+
+
+
+
+

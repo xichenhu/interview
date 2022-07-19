@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		p {margin: 0;padding: 0;}
+	</style>
+</head>
+<body>
+	<section id="sec">
+		<div class="child"></div>
+	</section>
+
+	<div style="margin-top: 100px"></div>
+
+	<section id="margin">
+		<style type="text/css">
+			#margin {
+				background: pink;
+				overflow: hidden;
+			}
+			#margin>p {
+				margin: 5px auto 25px;
+				background: red;
+			}
+		</style>
+		<p>1</p>
+		<div style="overflow: hidden;">
+			<p>2</p>
+		</div>
+		<p>3</p>
+	</section>
+
+	<div style="margin-top: 100px"></div>
+
+	<section id="layout">
+		<style type="text/css">
+			#layout {
+				background: red;
+			}
+			#layout .left {
+				float: left;
+				width: 100px;
+				height: 100px;
+				background: pink;
+			}
+			#layout .right {
+				height: 110px;
+				background: #ccc;
+				overflow: auto;
+			}
+		</style>
+
+		<div class="left">left</div>
+		<div class="center">center</div>
+		<div class="right">right</div>
+	</section>
+
+	<div style="margin-top: 100px"></div>
+
+	<section id="float">
+		<style type="text/css">
+			#float {
+				background: red;
+				overflow: auto;
+			}
+			#float .left {
+				float: left;
+				font-size: 23px
+			}
+		</style>
+		<div class="left">我是浮动元素</div>
+	</section>
+</body>
+</html>

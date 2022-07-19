@@ -1,0 +1,124 @@
+高级工程师来考察你基本原理
+
+一、知识面要广、理解要深刻、内心要诚实、态度要谦虚、回答要灵活、要学会赞美
+
+二、渲染机制
+	1、什么是DOCTYPE及作用
+		—— DTD：文档类型定义，用来定义XML或HTML的文件类型，浏览器会使用它来判断文档类型，决定使用何种类型来解析，以及切换浏览器模式。
+		—— DOCTYPE：声明文档类型和DTD规范的，一个主要用途是文件的合法性验证。
+
+		—— 常见的DOCTYPE的写法
+			1、HTML5：<!DOCTYPE html>
+			2、HTML4.01：strict严格模式 和 Transitinal传统模式
+				—— 严格模式：该DTD包含所有HTML元素和属性，但不包含展示性的和弃用的元素（如：font）
+				—— 传统模式（宽松模式）：该DTD包含所有HTML元素和属性，包含展示性的和弃用的元素（如：font）
+
+	2、浏览器的渲染过程
+
+	3、重排Reflow
+		—— 定义
+			DOM结构中的各个元素都有自己的盒子，这些都需要浏览器根据各自的样式来计算，并根据计算结果将元素放到它该出现的位置，这个过程称为Reflow。
+		—— 触发Reflow的条件
+			1、当你增加、删除、修改DOM节点的时候，会导致Reflow或Repaint
+			2、当你移动DOM位置，或是搞个动画的时候
+			3、当你修改CSS样式的时候
+			4、当你Resize窗口的时候（移动端没有这个问题），或是滚动的时候
+			5、当你修改网页的默认字体的时候
+
+	4、重绘Repaint
+		—— 定义
+			当各个盒子的位置、大小以及其他属性，例如：颜色、字体大小等都确定下来后，浏览器于是便把这些元素都按照各自的特性都绘制了一遍，于是页面的内容出现了，这个过程称为repaint。
+		—— 触发Repaint的条件
+			1、DOM改动
+			2、CSS改动
+	5、布局layout
+
+
+三、JS运行机制
+	1、如何理解JS单线程：一个时间之内JS只能执行一个任务
+	2、什么是任务队列：分为同步任务和异步任务，异步任务的放入时间和执行时间
+	3、什么是Event Loop
+		—— 执行栈
+		—— 任务队列
+	4、什么时候会开启异步任务
+		—— setTimeout 和 setInterval
+		—— DOM事件
+		—— ES6中的Promise
+
+
+四、页面性能
+	1、提升页面性能的方法有哪些？
+		—— 资源压缩合并，减少HTTP请求
+		—— 非核心代码异步加载 ——> 异步加载的方式有哪些 ——> 这些异步加载的区别
+		—— 利用浏览器缓存 ——> 缓存的分类 ——> 缓存的原理
+		—— 使用CDN
+		—— 预解析DNS
+			// 强制打开a标签的DNS预解析。
+			<meta http-equiv="x-dns-prefetch-control" content="on">
+			// 页面中所有a标签在很多高级浏览器中dns预解析默认是打开的，但是页面是https开头的，很多浏览器是默认关闭dns预解的。
+			<link rel="dns-prefetch" href="//host_name_to_prefetch.com"> 
+	2、异步加载
+		—— 异步加载的方式
+			1、动态脚本加载：使用JavaScript动态创建script，动态添加到body或head中。
+			2、defer
+			3、async
+		—— 异步加载的区别
+			1、defer是在HTML解析完之后才会执行，如果是多个，按照加载的顺序依次执行
+			2、async是在加载完之后立即执行，如果是多个，执行顺序和加载顺序无关，谁先加载完谁先执行
+	3、浏览器缓存
+		—— 缓存的分类
+			1、强制缓存
+				Expire ——> Expire：缓存的过期时间【服务器的绝对时间，不管客户端与服务端的时间是否一致】
+				Cache-Control ——> Cache-Control：max-age=3600【相对时间，以客户端的相对时间为准，获取资源之后开始计算，3600秒内不会去服务端去获取资源】
+
+				Expire和Cache-Control同时存在，以Cache-Control为准。
+
+			2、协商缓存
+				当强制缓存失效，开始使用协商缓存
+				Last-Modified【服务器返回资源的时候下发的值】
+				If-Modified-Since【再次请求的时候，http会把Last-Modified的值赋值给If-Modified-Since，然后服务器再去对比，资源文件是否有修改，但资源内容可能没有改动】
+				Etag【服务器返回资源的时候下发的值】
+				If-No-Match【再次请求的时候，http会把Etag的值赋值给If-No-Match，然后服务器再去对比，资源内容是否有修改】
+
+五、错误监控【1、如何监测JS的错误 2、如何保证你的产品质量】
+	1、前端错误的分类
+		—— 即时运行错误：代码错误
+		—— 资源加载错误：资源（如：图片，JS）加载失败
+
+	2、错误的捕获方式
+		—— 即时运行错误的捕获方式
+			1、try..catch
+			2、window.onerror【onerror是DOM0的，也可以使用addEventListener注册事件也可以】,window.onerror无法捕获资源加载错误
+
+		—— 资源加载错误【阻止了冒泡，不会向上冒泡到window】
+			1、object.onerror：给标签加上onerror捕获事件
+			2、performance.getEntries()：获取所有已加载资源的加载时长
+			3、Error事件捕获
+				—— window.addEventListener('error', function(e) {console.log('捕获', e)}, true)
+		—— 延伸问题
+			1、跨域的JS运行错误可以捕获吗，错误提示是什么，应该怎么处理？
+				—— 能拿到错误信息，但是只能拿到错误信息提示：script error，行号、列号、出错文件，错误详情都无法拿到。
+
+					处理办法：【前端代码中】在script标签增加crossorigin属性
+							【服务端添加】设置JS资源响应头Access-Control-Allow-Origin：* ，设置‘*’ 或者是‘访问端的域名’
+
+	3、上报错误的基本原理
+		—— 采用Ajax通信的方式上报 【一般不使用】
+			
+		—— 利用Image对象上报 【普遍的使用方式】
+			使用方法：
+			(new Image()).src='http://baidu.com/testjk?r=test'【该地址是上报错误的地址】
+
+
+
+
+
+
+
+
+
+
+
+
+
+

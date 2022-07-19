@@ -1,0 +1,20 @@
+源码视频解析：https://ustbhuangyi.github.io/vue-analysis/
+
+—— 准备工作
+	一、认识Flow（静态类型检查）
+	二、VUE源码的目录设计（重点分析src目录）
+	三、VUE源码构建（基于rollup构建的）
+	四、从入口开始
+
+—— 数据驱动（更新只修改数据）
+	1、new Vue 都发生了什么
+	2、$amount()
+	3、vm._render()
+	4、Virtual Dom
+	5、createElement()
+—— VUE组件化
+	1、createComponent
+	2、patch
+	3、生命周期
+	4、组件注册
+	5、异步组件

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript" src="./class-Promise.js"></script>
+<!-- 	<script type="text/javascript">
+		const p = new Promise((resolve, reject)=>{
+			// 让当亲状态变成pending状态
+			setTimeout(()=>{
+				reject(1);
+			}, 100)
+			console.log('pending状态改变之后');
+		}).then(value => {
+			console.log('onResolved 1', value)
+		},reason => {
+			console.log('onRejected 1', reason)
+			// return 322
+			throw 123
+		}).then(value => {
+			console.log('onResolved 2', value)
+		},reason => {
+			console.log('onRejected 2', reason)
+			return new Promise(()=>{})
+		}).then(value => {
+			console.log('onResolved 2', value)
+		},reason => {
+			console.log('onRejected 2', reason)
+		});
+	</script> -->
+	<script type="text/javascript">
+		const p1 = Promise.resolve(2);
+		const p2 = Promise.reject(2223);
+		const p3 = new Promise((resolve, reject) => {
+			setTimeout(()=>{
+				reject(999)
+			}, 1000);
+		});
+		const p4 = new Promise((resolve, reject) => {
+			setTimeout(()=>{
+				reject(99339)
+			}, 2000);
+		});
+
+		const pAll = Promise.race([p3, 4, p4])
+		pAll.then(value => {
+			console.log('resolve:', value)
+		}, reason => {
+			console.log('reject:', reason)
+		})
+
+
+		const p6 = Promise.resolveDelay(66, 2000)
+		const p7 = Promise.rejectDelay(63336, 3000)
+
+		p6.then(value => {console.log(value)})
+		p7.catch(reason => {console.log(reason)})
+	</script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+一、公司与技术点
+	1、前海联合网络科技有限公司
+		1、网络协议
+		2、移动端web绘图相关高级特性
+		3、表现和数据分离
+		4、语义化
+		5、模块化
+		6、前端编译
+		7、编译工具
+		8、高并发、高负载、高可用性系统的设计
+		9、react
+		10、vue 
+	2、湖北泰跃卫星技术发展股份有限公司
+		1、web前端架构设计及核心代码的实现
+		2、JavaScript模块封装和性能优化
+		3、更新和维护前端开发组件库
+		4、JavaScript、H5、Sass/Less/PostCSS
+		5、ECMAScript，Promise
+		6、Git，eslint，规范文档能力
+		7、面向对象JavaScript开发
+		8、JS框架或公共组件
+		9、使用Vue.js或React.js框架，并研究过其源码实现
+		10、Javascript引擎实现机制、浏览器渲染性能
+		11、webpack、Gulp等前端构建工具，具备工程性能优化能力
+		12、nodejs
+		13、cesium、three.js、unity3D
+		14、算法基础
+		15、leaflet、mapbox等地图库、gis相关项目经验
+	3、浙江大华
+		1、vue、vuex、vue-router、vue-axios、iview
+		2、ES6、html/html5、css/css3、ajax
+		3、熟悉W3C标准
+		4、Jquery、requireJS、Echarts、less/sass、webpack/gulp
+		5、有iview等第三方组件库封装经验者优先
+	4、安固士（天津）建筑材料有限公司
+		1、VUE（vue-cli/vue-router/vuex/axios）
+		2、微信小程序开发
+		3、熟悉主流前端UI框架vant、ElementUi、antd
+		4、熟悉并操作过Echarts;引用百度地图API
+		5、Github代码管理工具
+		6、前端自动化构建工具gulp、webpack
+		7、应用过nodeJS及express框架，数据库MongoDB，MySQL
+		8、了解css拓展语言Less
+	5、武汉时代地智科技股份有限公司
+		1、Echart、Hichart、D3、WebGL有深入的理解
+		2、项目前端架构设计经验
+	6、东华软件股份公司
+		1、兼容各主流浏览器
+	7、东华软件股份公司—分公司东华博泰
+		1、vue
+		2、可复用组件
+		3、打包上架流程化改进
+		4、模块设计
+		5、前端构建等工程化
+		6、webpack，npm
+		7、nodeJS
+		8、国际化经验
+	8、珈（jia）和科技
+		1、移动端html5页面的手势、动画、并且可以独立编写复杂的手势动画效果
+		2、jquery mobile 、sencha touch、phoneGap
+		3、了解PC不同浏览器的差异，重点IE Google Mozilla Firefox Safari
+		4、有android、iPhone、iPad等智能手机和平板开发经验优先考虑
+		5、VUE、REact、zepto
+		6、前端自动化工程（FIS、Grunt、gulp、webpack等）熟悉SVN或GIT代码管理流
+		7、nodeJS
+	9、天恒信息技术有限公司
+		1、JavaScript/ES6 HTML/HTML5。CSS/CSS3
+		2、表现与数据分离，web语义化等有深刻理解
+		3、VUE、react，redux等主流框架进行SPA开发
+		4、掌握webpack，gulp等构建工具配置和使用
+		5、前端工程化与模块化开发
+		6、主流浏览器的跨平台兼容性与web性能优化解决方案
+	10、海运迅捷
+		1、前端文档建设，制定前端技术框架、标准和规范
+		2、语义化、浏览器兼容
+		3、React、vue、angularJS，理解工作原理
+		4、Linux系统
+		5、seo
+	11、泛华保险销售服务集团有限公司
+		1、vue react angular等MVVM框架经验
+		2、组件化模块化开发模式和前端工程化实践
+		3、有高并发、高负载、高可用性系统设计经验者优先
+		4、小程序开发经验
+	12、海康威视
+		1、制定JS CSS HTML开发规范并推进执行
+		2、前端工程化、前后端分离开发技术研究并实行
+		3、主导web前沿技术研究和新技术调研，重点是HTML5和CSS3的研究
+		4、VUE 、react、angular
+		5、精通前端工程化开发方式
+		6、熟悉nodeJS
+		7、对用户体验 用户研究等相关知识有一定的了解和实践
+		8、有nodeJS开发经验优先
+	13、湖南益智寄网络科技有限公司
+		1、jquery vue 或者react
+		2、熟悉ajax，有web性能分析和调优能力
+	14、百仕锐达人力资源有限公司
+		1、VUE，jquery等前端框架
+		2、掌握JS、html5等开发语言
+		3、熟悉MVC、MVVM等前端开发模型
+		4、使用webpack等前端自动化构建工具
+		5、熟练使用svn或者git等版本控制软件
+	15、北京鼎亚科技有限公司
+		1、html css javascript ajax等web开发技术、html/xhtml、css等网页制作技术
+		2、gulp browser webpack了解前端工程化、模块化
+		3、vue/bootstrap/jquery/angular/react等开发框架，熟悉常用数据结构和算法
+		4、常用的调试方法firebug chrome fiddler等
+		5、echarts，websocket 相关开发经验
+		6、熟练跨域浏览器，跨终端开发
+		7、前端架构、前端性能、可访问性、可维护性等方面的实践经验
+		8、web安全相关知识，并能使用相关技术防范安全漏洞
+	16、软通动力信息技术（集团）股份有限公司
+		1、HTML、JavaScript、CSS 等相关语言和规范
+		2、了解JavaScript语言，熟悉ES6语法，对Vue框架有深入的应用并深入理解其设计原理
+		3、对模块化、重构、性能优化、跨浏览器兼容、提高系统的扩展性有一定的经验
+		4、具备快速切图能力、高度还原设计稿能力，对细节优化有狂热的追求
+	17、楚云天（医疗健康事业部）
+		1、负责过大型网站或复杂前端应用的研发
+		2、熟练掌握原生JS 熟悉JS面向对象编程 熟练掌握模块化
+		3、熟悉2种以上前端框架并有实际开发经验（react vue angular）并熟悉其原理
+	18、楚云天（城市智能管理服务事业部）
+		1、熟练掌握一种或多种前端架构（jquery bootstrap angular extJS EasyUI 等）
+		2、了解浏览器的渲染机制及js的性能瓶颈，有基于JS算法优化的经验，对于大中型项目的前端系统的前端性能有评测手段和优化技能
+		3、知道主流JS框架的区别和设计思想，阅读过至少一种框架的源码，了解其核心实现机制，有自己实现过JS代码库
+	19、东莞证券
+		1、熟悉HTML5、CSS3、Jquery、VuE等技术
+	20、江西国泰利民信息技术有限公司
+		1、If (your_passions.includes(‘coding')) {
+			    Switch (your_stacks) {
+			        Case: ’Node.js’:
+			        Case: ‘Redux’:
+			        Case: ‘REStful APIs' :
+			        Case: ‘LESS/SASS’:
+			       Console.log(‘we need you’)
+			        break;
+			    }
+			}
+		2、3年以上reactJS和redux经验
+		3、模块化思维能力
+		4、ES2015或以上相关经验
+	21、三亚崖州湾科技城开发建设有限公司
+		1、精通html/Xhtml css 熟悉页面架构和布局，对web标准和标签语义化有深入理解
+		2、熟悉ajax JavaScript（或actionScript）DOM等前端技术，掌握面向对象编程思想
+	22、三亚崖州湾科技城开发建设有限公司
+		1、JavaScript html css ajax jquery bootstrap node’s web pack es5 es6 sass/less
+		2、熟悉VUE react等前端框架及组件 熟悉vue生态圈及element-UI view vuetify antdesign 等前端ui框架，熟练掌握devTools调试工具及方法
+		3、熟悉webpack前端构建工具，对于前端模块化及构建有工程实践经验，熟练掌握git svn进行代码版本控制
+	23、北京洛斯达
+		1、擅长BS架构并有丰富的项目经验
+		2、HTML5、CSS、nodeJS，熟悉HTTP协议，懂得使用原生JavaScript API进行开发
+		3、VUE、react，熟练使用ES6，熟练编写前端组件
+	24、深圳市国电科技通信有限公司北京分公司
+		1、html cssJavaScript ajax等web开发技术 html/xhtml css等网页制作技术
+		2、掌握VUE/Bootstrap/jquery/angular/react等开发框架，熟悉常用的数据结构和算法，熟悉主流移动浏览器的技术特点，熟练掌握移动端H5开发
+		3、熟悉常用的调试方法firebug chrome fiddler等
+	25、汉阳市政
+		1、一年以上的webGL或OpenGL开发经验
+		2、ThreeJS OpenGL等相关3D图形项目开发经验，有3Dgis（如Cesium）GIS+BIM经验者更佳
+		3、具有底层3D引擎的开发或优化经验者优先
+		4、根据设计产品要求实现web GL及GIS BIM应用开发
+		5、负责web GL的三维平台的开发和维护工作
+
+
+
+————————————————————————————————————————————————————————
+一、准备的内容
+	—— 基础
+		1、网络协议
+		2、H5、Sass/Less/PostCSS、
+		3、ECMAScript，Promise
+		4、Git，eslint，规范文档能力
+		5、webpack、Gulp等前端构建工具
+		6、nodejs
+		7、常用的调试方法firebug chrome fiddler
+		8、ES6
+		9、REStful APIs
+	—— JS库
+		1、react 源码 reactJS和redux
+		2、vue 源码 及 套餐（vue-cli/vue-router/vuex/axios）
+	—— 高级
+		1、自动化
+		2、国际化经验
+
+
+
+
+
+
+
+
+	
+

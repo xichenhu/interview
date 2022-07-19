@@ -1,0 +1,473 @@
+—— JS基础知识，规定语法（ECMA 262标准）
+—— JS Web API，网页操作的API（W3C标准）
+—— 前者是后者的基础，两者结合才能真正实际应用
+
+—— JS Web API
+	1、DOM
+	2、BOM
+	3、事件绑定
+	4、ajax
+	5、存储
+
+—— 前言
+	1、vue 和 react框架应用广泛，封装了DOM操作
+	2、但DOM操作一直都会是前端工程师的基础，必备知识
+	3、只会vue而不懂DOM操作的前端程序员，不会长久
+
+—— DOM操作（Document Object Model）
+	—— 题目
+		1、DOM是哪种数据结构
+		2、DOM操作的常用API
+		3、attr和prototype的区别
+		4、一次性插入多个DOM节点，考虑性能
+	—— 知识点
+		1、DOM本质
+			—— html语言解析出来的树
+		2、DOM节点操作
+			—— 获取DOM节点
+				document.getElementById('div1')	// 元素
+				document.getElementByTagName('div')	// 集合
+				document.getEementByClassName('.container')	// 集合
+				document.querySelectorAll('p')
+
+			—— attribute
+				p.getAttribute('data-name')
+				p.setAttribute('data-name', 'imooc')
+				p.getAttribute('style')
+				p.setAttribute('style', 'font-size: 30px;')
+
+			—— property
+				console.log(p.style.width) // 获取样式
+				p.style.width = '100px' // 修改样式
+				p.className = 'p1'	// 修改class
+
+				// 获取nondeType 和 nodeName
+				console.log(p.nondeType)
+				console.log(p.nodeName)
+
+			—— attribute 和	property
+				1、property：修改对象属性，不会体现到html结构中
+				2、attribute： 修改html属性，会改变html结构
+				3、两者都可能引起DOM重新渲染
+
+		3、DOM结构操作
+			—— 新增/插入节点
+				cosnt div1 = document.getElementById('div1')
+				// 新增节点
+				cosnt p1 = document.createElement('p')
+				p1.innerHTML = 'this is p1'
+				// 插入节点
+				div1.appendChild(p1) //添加新创建的元素
+
+				// 移动已有节点。注意是移动！！！
+				const p2 = document.getElementById('p2')
+				div1.appendChild(p2)
+				console.log(div1ChildNodesP, 'div1ChildNodesP')
+
+
+			—— 获取子元素列表，获取父元素
+				// 获取父元素
+				console.log(p1.parentNode)
+
+				// 获取子元素列表
+				const div1ChildNodes = div1.childNodes
+				console.log(div1.childNodes)
+				const div1ChildNodesP = Array.prototype.slice.call(div1.childNodes).filter(child => {
+					if (child.nodeType === 1) { // 留下DOM节点
+						return ture
+					}
+					return false
+				})
+
+			—— 删除子元素
+				// 删除
+				div1.removeChild(div1ChildNodesP[0])
+
+		4、DOM性能
+			—— DOM操作非常“昂贵”，避免频繁的DOM操作
+			—— 对DOM查询做缓存
+			—— 将频繁操作改为一次性操作
+			—— 例子
+				// 不缓存 DOM 查询结果
+				for(let i = 0; i < document.getElementByTagName('p').length; i++) {
+					// 每次循环，都会计算length，频繁进行DOM查询
+				}
+
+				// 缓存DOM查询结果
+				const pList = document.getElementsByTagName('p')
+				const length = pList.length
+				for(let i = 0; i < length; i++) {
+					// 缓存 length，只进行一次DOM查询
+				}
+
+				// 例子2
+				cosnt listNode = document.getElementById('list')
+
+				// 创建一个文档片段，此时还没有插入到DOM树中
+				const frag = document.createDocumentFragmen()
+
+				// 执行插入
+				for(let x = 0; x < 10; x++) {
+					const li = document.createElement('li')
+					li.innerHTML = 'List item' + x
+					frag.appendChild(li)
+				}
+
+				// 都完成之后，再插入到DOM树中
+				listNode.appendChild(frag)
+	—— 题目解答
+		1、DOM是哪种数据结构
+			—— 树（DOM树）
+		2、DOM操作的常用API
+			—— DOM节点操作
+			—— DOM结构操作
+			—— attribute 和 property
+		3、attr和prototype的区别
+			—— property：修改对象属性，不会体现到html结构中
+			—— attribute： 修改html属性，会改变html结构
+			—— 两者都可能引起DOM重新渲染
+		4、一次性插入多个DOM节点，考虑性能
+			—— 通过createDocumentFragment()
+	—— 小结
+		1、DOM本质
+		2、DOM节点操作
+		3、DOM结构操作
+		4、DOM性能
+
+—— BOM操作
+	—— 题目
+		1、如何识别浏览器类型
+		2、分析拆解URL各个部分
+	—— 知识点
+		1、navigator
+			const ua = navigator.userAgent
+			const isChrome = ua.indexOf('Chrome')
+			console.log(isChrome)
+
+		2、screen
+			console.log(screen.width)
+			console.log(screen.height)
+
+		3、location
+			console.log(location.href)
+			console.log(location.protocol)	// 'http:' 'https:'
+			console.log(location.pathname)	// '/learn/199'
+			console.log(location.search)
+			console.log(location.hash)
+
+		4、history
+			history.back()	// 后退
+			history.forward() // 前进
+
+—— 事件
+	—— 题目
+		1、编写一个通用的事件监听函数
+		2、描述事件冒泡的流程
+		3、无限下拉的图片列表，如何监听每个图片的点击？
+	—— 知识点
+		1、事件绑定
+			const btn =document.getElementById('btn1')
+			btn.addEventListener('click', event => {
+				console.log('clicked')
+			})
+
+			// 通用的绑定函数
+			function bindEvent(elem, type, fn) {
+				elem.addEventListener(type, fn)
+			}
+
+			const a = document.getElementById('link')
+			bindEvent(a, 'click', e => {
+				console.log(e.target) // 获取触发的元素
+				e.preventDefault()
+				alert('clicked')
+			})
+
+		2、事件冒泡
+			const p1 = document.getElementById('p1')
+			const body = document.body
+			bindEvent(p1, 'click', e => {
+				e.stopPropagation() // 注释掉这一行，来体会事件冒泡
+				alert('激活')
+			})
+			bindEvent(body, 'click', e => {
+				alert('取消')
+			})
+
+		3、事件代理
+			const div1 = document.getElementById('div1')
+			div1.addEventListener('click', e => {
+				e.preventDefault()
+				const target = e.target
+				if (e.nodeName === 'A') {
+					alert(target.innerHTML)
+				}
+			})
+			—— 优点
+				1、代码简洁
+				2、减少浏览器内存占用
+				3、但是，不要滥用
+					—— 瀑布流可用
+
+		4、通用事件绑定函数优化
+			function bindEvent(elem, type, selector, fn) {
+				if (fn == null) {
+					fn = selector
+					selector = null
+				}
+				elem.addEventListener(type, event => {
+					const target = event.target
+					if (selector) {
+						// 代理
+						if (target.matches(selector)) {
+							fn.call(target, event)
+						}
+					} else {
+						// 普通绑定
+						fn.call(target, event)
+					}
+				})
+			}
+
+			// 普通绑定
+			const btn1 = document.getElementById('btn1')
+			bindEvent(btn1, 'click', function() {
+				event.preventDefault()
+				alert(this.innerHTML)
+			})
+
+			// 代理绑定
+			const div3 = document.getElementById('div3')
+			bindEvent(div3, 'click', 'a', function(event)) {
+				event.preventDefault()
+				alert(this.innerHTML)
+			}
+		5、描述事件冒泡的流程
+			—— 基于DOM树形结构
+			—— 事件会顺着出发元素往上冒泡
+			—— 应用场景：代理
+		6、无限下了图片列表，如何监听每一个图片的点击
+			—— 事件代理
+			—— 用e.target获取触发元素
+			—— 用matches来判断是否是触发元素
+
+—— ajax
+	—— 题目
+		1、手写一个ajax
+		2、跨域的常用实现方式
+	—— 知识点
+		1、XMLHttpRequest
+			// get请求
+			const xhr = new XMLHttpRequest()
+			xhr.open("GET", "/api", true)	// true是异步请求、false是同步请求
+			xhr.onreadystatechange = function () {
+				// 这里的函数异步执行，可参考之前JS基础中异步模块
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						alert(xhr.responseText)
+					} else {
+						console.log('其他情况')
+					}
+				}
+			}
+			xhr.send(null)
+
+			// post请求
+			const xhr = new XMLHttpRequest()
+			xhr.open("POST", "/api", true)	// true是异步请求、false是同步请求
+			xhr.onreadystatechange = function () {
+				// 这里的函数异步执行，可参考之前JS基础中异步模块
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						alert(xhr.responseText)
+					} else {
+						console.log('其他情况')
+					}
+				}
+			}
+			const postData = {
+				userName: 'zhangsan',
+				password: 'xxx'
+			}
+			xhr.send(JSON.stringfy(postData))
+
+		2、状态码
+			—— readyState
+				0 - (未初始化) 还没有调用send()方法
+				1 - (载入) 已调用send()方法，正在发送请求
+				2 - (载入完成) send()方法执行完成，已经接收到全部响应内容
+				3 - (交互) 正在解析响应内容
+				4 - (完成) 响应内容解析完成，可以在客户端调用
+			—— status
+				2XX - 表示成功处理请求，如 200
+				3XX - 需要重定向，浏览器直接跳转，如301（永久重定向） 302（临时重定向） 304（资源未改变）
+				4XX - 客户端请求错误，如404 403（没有权限）
+				5XX - 服务器端错误
+
+		3、跨域：同源策略、跨域解决方案
+			—— 什么是同源策略（仅限浏览器，server端没有同源策略）
+				1、ajax请求时，浏览器要求当前网页和server必须同源（安全）
+				2、同源：协议、域名、端口、三者必须一致
+			—— 加载图片css js可无视同源策略
+				1、<img src=跨域的图片地址 />
+				2、<link href=跨域的css地址 />
+				3、<script src=跨域的js地址></script>
+
+				4、<img />可用于统计打点，可使用第三方统计服务
+				5、<link /><script>可使用CDN，CDN一般都是外域
+				6、<script>可实现JSONP
+
+			—— 什么是跨域
+				1、所有的跨域，都必须经过server端允许和配合
+				2、未经server端允许就实现跨域，说明浏览器有漏洞，危险信号
+
+			—— JSONP
+				1、访问http://imooc.com/，服务端一定返回一个html文件吗？
+				2、服务器可以任意动态拼接数据返回，返回页面只要符合html格式要求，返回JS只要符合JS的格式不报错
+				3、同理于<script src="http://imooc.com/getData.js">
+
+				4、<script>可绕过跨域限制
+				5、服务器可以任意动态拼接数据返回
+				6、所以，<script>就可以获得跨域的数据，只要服务端愿意返回
+
+				7、示例
+					<script>
+						window.abc = function (data) {
+							// 这是我们跨域得到信息
+							console.log(data)
+						}
+					<scirpt>
+					<scirpt src="https://imooc.com/getData.js?username=xxx&callback=abc"></script> // 可以动态插入
+					< !-- 将返回callback({x: 100, y: 200}) -->
+
+				8、jQuery实现jsonp
+					$.ajax({
+						url: 'http://xxx',
+						dataType: 'jsonp',
+						jsonpCallback: 'abc',
+						success: function(data) {
+							console.log(data)
+						}
+					})
+
+			—— CORS（服务端支持）- 服务端设置http header
+				//  第二个参数填写允许跨域的名称，不建议直接写“*”
+				response.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
+				response.setHeader("Access-Control-Allow-Headers", "X-Requested-Width");
+				response.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+
+				// 接收跨域的cookie
+				response.setHeader("Access-Control-Allow-Credentials", "true");
+	—— 问题解答
+		1、手写一个ajax
+			function ajax(url) {
+				const p = new Promise((resolve,reject)=>{
+					xhr.open("GET", "/data", ture)
+					xhr.onreadystatechange = function () {
+						if (xhr.readyState === 4) {
+							if (xhr.status === 200) {
+								resolve(
+									JSON.parse(xhr.responseText)
+								)
+							} else if (xhr === 404) {
+								reject(new Error('404 not found'))
+							}
+						}
+					}
+					xhr.send(null)
+				})
+				return p
+			}
+
+			const url = '/data/test.json'
+			ajax(url)
+			.then(res => console.log(res))
+			.catch(err=>{console.error(err)})
+
+		2、跨域的常用实现方式
+			—— JSONP
+			—— CORS
+	—— 小结
+		1、XMLHttpRequest
+		2、状态码：readyState status
+		3、跨域：同源策略（如何绕过），JSONP，CORS
+	—— ajax的插件
+		1、jQuery
+		2、fetch
+		3、axios
+		
+—— 存储
+	—— 题目
+		1、描述cookie localStorage sessionStorage 区别
+	—— 知识点
+		1、cookie
+			—— 本身用于浏览器和server通讯
+			—— 被“借用”到本地存储起来
+			—— 可用document.cookie = '...' 来修改
+
+			—— cookie缺点
+				1、存储大小，最大4KB
+				2、http请求时需要发送到服务端，增加请求数据量
+				3、只能用document.cookie = ''来修改，太过简陋
+
+		2、localStorage 和 sessionStorage
+			—— HTML5专门为存储而设计，最大可存5M
+			—— API简单易用setItem getItem
+			—— 不会随着http请求被发送出去
+
+			—— localStorage 和 sessionStorage 区别
+				1、localStorage数据会永久存储，除非代码或手动删除
+				2、sessionStorage数据只存在于当前会话，浏览器关闭则清空
+				3、一般localStorage会更多一些
+	—— 问题解答
+		1、描述cookie localStorage sessionStorage 区别
+			—— 容量
+			—— API易用性
+			—— 是否跟随http请求发送出去
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+			
+
+
+
+
+
+
+
+
+
+
+
+
+

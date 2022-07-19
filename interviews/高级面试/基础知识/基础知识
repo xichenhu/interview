@@ -1,0 +1,1744 @@
+—— ES6 常用语法（Class module Promise 等）
+	—— 模块化的使用和编译环境
+	—— Class和JS构造函数的区别
+	—— Promise的用法
+	—— ES6的其它的常用功能
+	—— 问题
+		1、ES6模块化如何使用，开发环境如何打包
+			—— 模块化的基本语法
+				// util1.js
+				export default {
+					a: 100
+				}
+				// util2.js
+				export function fn1 () {
+					alert('fn1')
+				}
+				export function fn2 () {
+					alert('fn2')
+				}
+				// index.js
+				import util1 from './util1.js'
+				import {fn1, fn2} from './util2.js'
+				console.log(util1.a)
+				fn1()
+				fn2()
+
+			—— 开发环境的配置
+				1、babel
+					—— 电脑有node环境，运行npm init
+					—— npm insatll --save-dev babel-core babel-preset-es2015 babe-preset-latest
+					—— 创建 .babelrc文件
+						{
+							"presets": ["es2015", "latest"],
+							"plugins": []
+						}
+					—— sudo npm install --global babel-cli
+					—— babel --version
+					—— 创建 .src/index.js
+					—— 内容：cosnt obj = () => {console.log(1,2)}
+					—— 运行babel ./src/index.js
+
+				2、webpack
+					—— npm install webpack babel-loader --save-dev
+					—— 配置 webpack.config.js
+						module.exports = {
+							entry: './src/index.js'
+							output: {
+								path: __dirname
+								filename: './build/bundle.js'
+							},
+							module: {
+								rules: [{
+									test: /\.js?$/,
+									exclude: /(node_modules)/,
+									loader: 'babel-loader'
+								}]
+							}
+						}
+
+						—— npm run start
+						—— http-server -p 8881
+
+					—— 配置package.json中的script
+					—— 运行npm start
+
+			—— 关于JS众多模块化的标准
+				1、没有模块化
+				2、AMD成为标准，require.js（也有CMD）
+				3、前端打包工具，是的nodeJS模块化可以被使用
+				4、ES6出现，想统一现在所有模块化标准
+				5、nodeJS积极支持，浏览器尚未统一
+				6、你可以自造lib，但是不要自造标准！！！
+
+			—— 问题解答
+				1、语法：import export （注意有无default）
+				2、环境：babel编译ES6语法，模块化可以用webpack和rollup
+				3、扩展：说一下自己对模块化标准统一的期待
+
+		2、Class 和 普通函数有何区别
+			—— 普通函数
+				function Animal（name）{
+					this.name = name
+				}
+				Animal.prototype.say = function() {
+					console.log('hello')
+				}
+
+				const dog = new Animal('dog')
+				console.log(dog.name)
+
+			—— Class
+				Class Animal {
+					constructor (name) {
+						this.name = name
+					}
+					say() {
+						console.log('hello')
+					}
+				}
+
+				const cat = new Animal('dog') 
+				console.log(cat.name)
+
+			—— 联系
+				语法糖
+				typeof Animal // "function"
+				Animal === Animal.prototype.constructor // true
+				cat.__proto__ === Animal.prototype // ture
+
+				// 这种语法糖形式，看起来和实际原理不一样的东西，我个人不太赞同
+				// 形式上强行模仿Java C# ，却失去了它的本性和个性
+			—— 继承
+				—— 普通函数
+					function Animal（name）{
+						this.eat = function() {
+							console.log("animal eat")
+						}
+					}
+					function Dog（name）{
+						this.bark = function() {
+							console.log("dog bark")
+						}
+					}
+
+					// 绑定原型，实现继承
+					Dog.prototype = new Animal()
+					var hashiqi = new Dog()
+					hashiqi.bark()
+					hashiqi.eat()
+				
+				—— Class
+					Class Animal{
+						constructor (name) {
+							this.name = name
+						}
+						eat() {
+							console.log(`${this.name} eat`)
+						}
+					}
+					Class Dog extends Animal{
+						constructor (name) {
+							super(name)
+							this.name = name
+						}
+						say() {
+							console.log(`${this.name} say`)
+						}
+					}
+					const dog = new Dog('哈士奇')
+					dog.say()
+					dog.eat()
+			—— 问题解答
+				1、Class在语法上更加贴合面向对象的写法
+				2、Class实现继承更加易读、易理解
+				3、更易于写Java等后端语言的使用
+				4、本质还是语法糖，使用的还是prototype
+
+		3、Promise的基本使用和原理
+			—— Callback Hell
+				function loadImg(src, callbakc, fail) {
+					var img = document.createElement('img')
+					img.onload = function () {
+						callback(img)
+					}
+
+					img.error = function () {
+						fail()
+					}
+					img.src = src
+				}
+
+				var src = 'http://imageurl'
+				loadImg(src, function(img) {
+					console.log(img.width)
+				}, function() {
+					console.log('failed')
+				})
+
+			—— Promise语法
+				function loadImg(src) {
+					const promise = new Promise(function(resolve, reject) {
+						var img = document.createElement('img')
+						img.onload = function() {
+							resolve(img)
+						}
+						img.onerror = function () {
+							console.log('falled')
+						}
+					})
+
+					return promise
+				}
+
+				var src = 'http://imageurl'
+				var result = loadImg(src)
+
+				result.then(function(img) {
+					console.log(img.width)
+				}, function() {
+					console.log('failed')
+				})
+
+				result.then(function(img) {
+					console.log(img.height)
+				})
+			—— 问题解答
+				1、new Promise 实例，而且要return
+				2、new Promise 时要传入函数，函数有resolve reject 两个参数
+				3、成功时执行resolve()失败时执行reject()
+				4、then()监听结果
+
+		4、总结一下ES6的常用功能
+			—— let/const
+				// JS
+				var a = '1'
+				// ES6
+				const a = '2'
+				let b = '3'
+				b = '5'
+			—— 多行字符串/模版变量
+				// JS
+				var name = 'zhangsan', age = 20, html = '';
+				html += '<div>';
+				html += '<p>' + name + '</p>';
+				html += '<p>' + age + '</p>';
+				html += '</div>'
+
+				// ES6
+				const name = 'zhangsan', age = 20;
+				const html = `<div>
+								<p>${name}</p>
+								<p>${age}</p>
+							  </div>`;
+				console.log(html);
+			—— 结构赋值
+				// JS
+				var obj = {a: 100, b:200}
+				var a = obj.a
+				var b = obj.b
+
+				var arr = ['xxx','yyy', 'zzz']
+				var x = arr[0]
+				// ES6
+				const obj = {a: 10, b: 20, c: 30}
+				const {a, c} = obj
+				console.log(a)
+				console.log(c)
+
+				const arr = ['xxx','yyy','zzz']
+				cosnt [x,y,z] = arr
+				console.log(x)
+				console.log(y)
+				console.log(z)
+			—— 块级作用域
+				// JS
+				var obj = {a: 100, b: 200}
+				for (var item in obj) {
+					console.log(item)
+				}
+				console.log(item) // 'b'
+
+				// ES6
+				const obj = {a: 100, b:200}
+				for(let item in obj) {
+					console.log(item)
+				}
+				console.log(item) // undefined
+			—— 默认参数
+				// JS 
+				function(a,b) {
+					if (b === null) {
+						b = 0
+					}
+				}
+				// ES6
+				function(a, b=0) {
+
+				}
+			—— 箭头函数
+				// JS
+				var arr = [1,2,3]
+				arr.map(funciton(item) {
+					return item + 1
+				})
+
+				// ES6
+				const arr = [1,2,3]
+				arr.map(item => item+1)
+				arr.map((item, index)=>{
+					consoe.log(index)
+					return item + 1
+				})
+
+				function fn () {
+					console.log('real', this) // {a: 100}
+					var arr = [1,2,4]
+					// JS
+					arr.map(function(item){
+						console.log('js', this) //window
+						return item + 1
+					})
+					// ES6: 指向的是函数体外最近的一个this
+					arr.map(item => {
+						console.log('es6', this) //{a: 100}
+						return item + 1
+					})
+				}
+				fn.call({a:100})
+
+			—— 问题解答
+				1、let/const
+				2、多行字符串/模版变量
+				3、结构赋值
+				4、块级作用域
+				5、函数默认参数
+				6、箭头函数
+
+—— 原型高级应用（结合jquery和zeptoJS）
+	—— 原型如何实际应用
+		—— jquery和zepto的简单使用
+		—— zepto如何使用原型
+			1、简单使用
+				var zepto = {}
+				aepto.init = function(selector) {
+					var slice = Array.prototype.slice
+					var dom = silce.call(document.querySelectAll(selector))
+					return zepto.Z(dom, selector)
+				}
+
+				zepto.Z = function(dom,selector) {
+					return new Z(dom, selector)
+				}
+
+				function Z(dom,selector){
+					var i,len = dom ? dom.length : 0
+					for(i=0;i<len;i++) {
+						this[i]=dom[i]
+					}
+					this.length = len
+					this.selector = selector || ''
+				}
+
+				$.fn = {
+					constructor: zepto.Z,
+					css: function(key, value){},
+					html: function(value){}
+				}
+				zepto.Z.prototype = Z.prototype = $.fn
+
+				var $ = function(selector){
+					return zepto.init(selector)
+				}
+		—— jquery如何使用原型
+			1、简单使用（体现继承）
+				<script type="text/javascript">
+					var $p = $('p')
+					$p.css('color', 'red') // css 是原型方法
+					console.log($p.html()) // html 是原型方法
+
+					var $div1 = $('#div1')
+					$div1.css('color', 'red') // css 是原型方法
+					console.log($div1.html()) // html 是原型方法
+				</script>
+		—— 问题解答
+			1、描述一下jquery如何使用原型
+			2、描述一下zepto如何使用原型
+			3、再结合自己的项目经验，说一个自己开发的例子
+
+	—— 原型如何体现它的扩展
+		// jqueryJS
+			(function(){
+
+				var jQuery = (selector) => {
+					return new jQuery.fn.init(selector)
+				}
+
+				// 初始化jQuery.fn
+				jQuery.fn = {
+					css: function(key, value) {
+						alert('css')
+					},
+					html: function(value) {
+						return 'html'
+					}
+				}
+
+				//定义构造函数
+				var init = jQuery.fn.init = function (selector) {
+					var slice = Array.prototype.slice
+					var dom = slice.call(document.querySelectorAll(selector))
+					var i, len = dom ? dom.lenght : 0
+					for (i = 0; i < len; i++) {
+						this[i] = dom[i]
+					}
+					this.length = len
+					this.selector = selector || ''
+				}
+				init.prototype = jQuery.fn
+
+
+				window.$ = jQuery 
+
+			})(window)
+
+			// 使用
+			$.fn.getNodeName = function() {
+				return this[0].nodeName
+			}
+
+			// 好处
+				—— 只有$ 会暴露在window全局变量
+				—— 将插件扩展统一到$.fn.xxx这一个接口，方便使用
+
+		// zeptoJS
+			var zepto = {}
+			function Z(dom, selector) {
+				var i, len = dom ? dom.length : 0
+				for(i=0; i < len; i++) {
+					this[i] = dom[i]
+				}
+				this.length = len
+				this.selector = selector || ''
+			}
+			zepto.Z = function(dom, selector) {
+				return new Z(dom, selector)
+			}
+			zepto.init = function (selector) {
+				var slice = Array.prototype.slice
+				var dom = slice.call(document.querySelectorAll(selector))
+				return zepto.Z(dom, selector)
+			}
+
+			var $ = function(selector) {
+				return zepto.init(selector)
+			}
+			$.fn = {
+				constructor: zepto.Z,
+				css: function (key, value) {
+
+				},
+				html: function(value) {
+
+				}
+			}
+			zepto.Z.prototype = Z.prototype = $.fn
+	—— 总结
+		1、原型的实际应用
+		2、如何扩展原型（怎么写的，扩展到是什么地方去了（没有开放构造函数））
+
+—— 异步全面讲解（从原理到jquery再到Promise）
+	—— 什么是单线程，和异步有什么关系
+		1、单线程：只有一个线程，同一时间，只能做一件事情
+			// 循环运行期间，JS执行和DOM渲染暂时卡顿
+			var i, sum =0;
+			for(i = 0; i < 1000000000; i++) {
+				sum += i;
+			}
+			console.log(sum)
+
+			// alert 不处理，JS执行和DOM渲染暂时卡顿
+			console.log(1)
+			alert('hello')
+			console.log(2)
+
+		2、原因：避免DOM渲染的冲突
+			—— 浏览器需要渲染DOM
+			—— JS可以修改DOM结构
+			—— JS执行的时候，浏览器DOM渲染会暂停
+			—— 两段JS也不能同时执行（都修改DOM就冲突了）
+			—— webworker支持多线程，但是不能访问DOM
+
+		3、解决方案：异步
+			—— setTimeout
+				console.log(100)
+				setTimeout(function(){
+					console.log(200) 
+				},1000)
+				console.log(300)
+				console.log(400)
+			—— ajax
+				console.log(100)
+				$.ajax({
+					url: 'XXXXX',
+					success: function () { // ajax加载完才执行
+						console.log(result) // 先不管它，先让其它JS代码运行
+					}
+				})
+				console.log(300)
+				console.log(400)
+			—— 问题
+				1、没按照书写方式执行，可读性差
+				2、callback中不容易模块化（JS中函数是一等公民，可以作为参数传来传去，不好排查问题）
+			—— 回答问题
+				1、单线程就是同时只做一件事，两段JS不能同时执行
+				2、原因就是为了避免DOM渲染冲突
+				3、异步是一种“无奈”的解决方案，虽然有很多问题
+
+	—— 什么是event-loop（event-loop是异步的实现方式）
+		1、文字解释
+			—— 时间轮询，JS实现异步的具体解决方案
+			—— 同步代码，直接执行
+			—— 异步函数先放在异步队列中
+			—— 待同步函数执行完毕，轮询执行，异步队列的函数
+
+		2、实例分析
+			setTimeout(function(){ // 异步队列
+				console.log(100)
+			})
+			console.log(200) // 主进程
+
+
+
+			setTimeout(function(){  // 100ms之后被放入异步队列中
+				console.log(1)
+			}, 100)
+			setTimeout(function(){ // 立即被放入异步队列中
+				console.log(2)
+			})
+			console.log(3)
+
+		3、实战代码
+
+		4、回答问题
+			—— 事件轮询，JS异步的解决方案
+			—— 什么事异步队列，何时被放入异步队列
+			—— 轮询的过程
+
+	—— 是否用过jQuery的Deferred【如果只用jquery如何解决异步】 （不要以为所有的网站都用的VUE和REact）
+		1、jQuery1.5 的变化
+			—— jQuery1.5之前
+				var ajax = $.ajax({
+					url: 'data.json',
+					success: function () {
+						console.log('success1')
+						console.log('success2')
+						console.log('success3')
+					},
+					error: function () {
+						console.log('error')
+					}
+				})
+				console.log(ajax) // 返回一个 XHR 对象
+			—— jQuery1.5之后
+				var ajax = $.ajax('data.json')
+				ajax.done(function(){
+
+				}).fail(function(){
+
+				}).done(function(){
+
+				}).fail(function(){
+
+				})
+				console.log(ajax) // 返回一个 deferred 对象
+
+				// 很像Promise的写法
+				var ajax = $.ajax('data.json')
+				ajax.then(function(){
+					console.log(1)
+				}, function(){
+					console.log(2)
+				}).then(function(){
+					console.log(3)
+				}, function(){
+					console.log(4)
+				})
+
+			—— jQuery1.5改变前后的好处
+				1、无法改变JS异步和单线程的本质，
+				2、只能从写法上杜绝callback这种形式
+				3、它是一种语法糖，但是解藕了代码
+				4、很好的体现了：开放封闭原则（对扩展开放，对修改封闭）
+
+		2、使用jQuery Deferred
+			—— 代码演示
+				var wait = function() {
+					var task = function(){
+						console.log('执行完成')
+					}
+					setTimeout(task, 2000)
+				}
+				wait()
+
+				function waitHandle() {
+					var dtd = $.Defferd()
+					var wait = function(){
+						var task = function (){
+							console.log('执行完成')
+							dtd.resolve()
+							// dtd.reject()
+						}
+						setTimeout(task, 2000)
+						return dtd
+					}
+					return wait(dtd)
+				}
+				// 使用
+				var w = waitHandle()
+				w.then(function(){
+					console.log('ok 1')
+				}, function(){
+					console.log('err 1')
+				})
+				w.then(function(){
+					console.log('ok 2')
+				}, function(){
+					console.log('err 2')
+				})
+				w.then(function(){
+					console.log('ok 3')
+				}, function(){
+					console.log('err 3')
+				})
+			—— 总结
+				1、dtd的API可分为两类，用意不同
+				2、第一类：dtd.resolve dtd.reject
+				3、第二类：dtd.then dtd.done dtd.fail
+				4、这两类应该分开，否则后果很严重
+				5、可以在上面代码最后执行dtd.reject()试一下后果
+					function waitHandle() {
+						var dtd = $.Defferd()
+						var wait = function(){
+							var task = function (){
+								console.log('执行完成')
+								dtd.resolve()
+								// dtd.reject()
+							}
+							setTimeout(task, 2000)
+							return dtd
+						}
+						return wait(dtd)
+					}
+					// 使用
+					var w = waitHandle()
+					w.reject() // 主动执行 reject（很不老实的做法，这种封装不是很好） 
+					w.then(function(){
+						console.log('ok 1')
+					}, function(){
+						console.log('err 1')
+					})
+					w.then(function(){
+						console.log('ok 2')
+					}, function(){
+						console.log('err 2')
+					})
+					// 输出结果为：'err 1' 'err 2'
+
+		3、初步引入Promise概念（解决了执行w.reject()的问题）
+			function waitHandle () {
+				var dtd = $.Deferred()
+				var wait = function(){
+					var task = function(){
+						console.log('执行完成')
+						dtd.resolve()
+					}
+					setTimeout(task, 20000)
+					return dtd.promise() // 注意这里返回的事promise而不是直接返回deferred对象
+				}
+				return wait(dtd)
+			}
+
+			var w = waitHalde()
+			$.when(w).then(function(){
+				console.log(1)
+			}).then(function(){
+				console.log(2)
+			})
+
+		4、问题解答
+			—— 可以jQuery1.5对ajax的改变举例
+			—— 说明如何简单的封装，使用Deferred
+			—— 说明promise（只能被动监听没法主动修改） 和 Deferred（主动触发的函数 和 被动监听的函数混合在一起）的区别 
+
+	—— Promise的基本使用和原理
+		1、基本语法回顾
+			—— loadImg 的代码
+				function loadImg (src) {
+					var promise = new Promise(function(resolve, reject){
+						var img = document.createElement('img')
+						img.onload = function (){resolve(img)}
+						img.error = function (){reject()}
+						img.src = src
+					})
+					return promise
+				}
+		2、异常捕获
+			result.then(function(img){
+				console.log(img.width)
+			}).then(function(img){
+				console.log(img.height)
+			}).catch(function(ex){
+				// 最后统一捕获异常（非程序逻辑的语法错误【throw new Error()】 和 逻辑之内的错误 都能捕获）
+				console.log(ex)
+			})
+
+		3、多个串联
+			var src1 = 'http://'
+			var result1 = loadImg(src1)
+			var src1 = 'http://'
+			var result2 = loadImg(src2)
+
+			// 链式操作
+			result1.then(function(img){
+				console.log('第1张图片')
+				return result2
+			}).then(function(img){
+				console.log('第2张图片')
+			}).catch(function(ex){
+				console.log(ex)
+			})
+
+		4、Promise.all 和 Promise.race
+			// Promise.all 接收一个promise对象的数组，待全部完成之后，统一执行success
+			Promise.all([result1, result2]).then(datas=>{
+				console.log(data[0])
+				console.log(data[1])
+			})
+
+			// Promise.reace 接收一个包含多个promise对象的数组，只要有一个完成，就执行success
+			Promise.reace([result2, result2]).then(data=>{
+				// data 即最先执行完成的promise的返回值
+				console.log(data)
+			})
+
+		5、Promise的标准
+			—— 关于“标准”闲谈
+				1、任何技术推广使用都需要一套标准来支撑
+				2、如html、css、http等，无规矩不成方圆
+				3、任何不符合标准的东西，终将会被用户抛弃
+				4、不要挑战标准，不要自造标准
+
+			—— 状态变化
+				1、三种状态：pending fulfilled rejected
+				2、初始状态是pending
+				3、pending变成fulfilled 或者 pending变成rejected
+				4、状态变化不可逆
+
+			—— then
+				1、Promise实例必须实现then这个方法
+				2、then()必须接受两个函数作为参数
+				3、then()返回的必须是一个Promise实例
+
+		6、回答问题
+			—— 基本语法
+			—— 如何异常捕获（Error 和 reject都要考虑,通过catch统一捕获）
+			—— 多个串联-链式执行的好处
+			—— promise.all 和 Promise.race
+			—— Promise标准 —— 状态变化，then函数
+
+	—— 介绍一下async/await（和Promise的区别、联系）
+		1、then只是将callback拆分了
+		2、async/await是最直接的同步写法
+		3、用法
+			—— 使用await，函数必须使用async标识
+			—— await 后面跟的是一个Promise实例
+			—— 需要babel-polyfill
+		4、问题解答
+			—— 基本用法
+			—— 使用了Promise，并没有和Promise冲突
+			—— 完全是同步的写法，再也没有回调函数
+			—— 但是：改变不了JS单线程，异步的本质（https://www.cnblogs.com/woodyblog/p/6061671.html）
+		5、总结
+			—— 什么是单线程，和异步有什么关系
+				1、单线程就是同时只做一件事，两段JS不能同时执行
+				2、原因就是为了避免DOM渲染的冲突
+				3、异步是一种“无奈”的解决方案，虽然有很多问题
+
+			—— 什么是event-loop
+				1、事件轮询，JS异步的解决方案（解决JS异步存在的问题）
+				2、什么是异步队列，何时被放入异步队列（JS代码中同步的代码要立刻执行，异步的函数放入异步队列中，1、setTimeout没有时间参数，2、setTimeout有时间参数，3、网络请求图片或ajax加载完成之后，把回调函数放入异步队列中）
+				3、轮询的过程（监控异步队列，如果异步队列中有函数被放入，就放入主线程中执行）
+
+			—— 是否用过jquery的Deferred
+				1、可以jQuery1.5对ajax的改变举例
+				2、说明如何简单的封装，使用Deferred
+				3、说明promise和Deferred的区别
+
+			—— Promise的基本使用和原理
+				1、基本语法
+				2、如何异常捕获
+				3、多个串联-链式执行的好处
+				4、Promise.all 和 Promise.race
+				5、Promise标准-状态变化，then函数（Promise必须要实现then函数）
+
+			—— 介绍一下async/await
+				1、基本语法
+				2、使用了Promise，并没有和Promise冲突
+				3、完全是同步的写法，再也没有回调函数
+				4、但是，改变不了JS单线程、异步的本质
+				
+			—— 总结一下当前JS异步的方案
+				1、jQuery Deferred
+				2、Promise（浏览器原生支持）
+				3、Async/Await
+				4、Generator（不讲的原因）
+					—— 原理复杂，跟编辑器有关，是新的语法
+					—— 不是异步的直接替代方案（被提出来并不是为了解决异步的）
+					—— 有更好更简洁的解决方案async/await
+					—— koa 也早已“弃暗投明”（放弃了generator的使用）
+
+—— 虚拟DOM
+	—— vdom是vue和react的核心，先讲哪个都绕不开它
+	—— vdom比较独立，使用也比较简单
+	—— 如果面试问到vue和react和实现，免不了问vdom
+	—— 问题
+		1、vdom是什么？为何会存在vdom？
+			—— 什么是vdom
+				1、virtual dom，虚拟DOM
+				2、用JS模拟DOM结构
+				3、DOM变化的对比，放在JS层来做（图灵完备语音：能实现各种逻辑的语言，循环、算法等）
+				4、提高重绘性能
+				5、举例(浏览器最耗费性能的是DOM操作，JS操作一万遍都没关系，DOM操作一边都有损耗，DOM操作最昂贵，所以VDOM存在有价值)
+					<ul i="list">
+						<li class="item">Item 1</li>
+						<li class="item">Item 2</li>
+					</ul>
+
+					{
+						tag: 'ul',
+						attrs: {
+							id: 'list'
+						},
+						children: [
+							{
+								tag: 'li',
+								attrs: {
+									className: 'item'
+								},
+								children: ['Item 1']
+							},
+							{
+								tag: 'li',
+								attrs: {
+									className: 'item'
+								},
+								children: ['Item 2']
+							}
+						]
+					}
+
+			—— 设计一个需求场景
+				1、将该数据展示成一个表哥
+				2、随便修改一个信息，表格也跟着修改
+					var data = [
+						{
+							name: '章三'
+							age: '20',
+							address: '北京'
+						},
+						{
+							name: '李四'
+							age: '21',
+							address: '上海'
+						},
+						{
+							name: '王五'
+							age: '22',
+							address: '广州'
+						},
+					]
+
+					function render(data){
+						var $container = $("$container")
+						$container.html('')
+
+						var $table = $('<table>')
+						$table.append($('<tr><td>name</td><td>age</td><td>address</td></tr>'))
+						data.forEach(function(){
+							$table.append($('<tr><td>' + item.name + '</td><td>' + item.age + '</td><td>' + item.address + '</td></tr>'))
+						})
+
+						$container.append($table)
+					}
+
+					$('#btn-change').click(function(){
+						data[1].age = 30
+						data[2].address = '深圳'
+						render(data)
+					})
+
+					render(data)
+				3、遇到的问题
+					var div = document.createElement('div')
+					var item, result = ''
+					for (item in div) {
+						result += item
+					}
+					console.log(result) // 一个标签有非常多的属性
+
+					—— DOM操作是“昂贵”的，JS运行效率高
+					—— 尽量减少DOM操作，而不是将DOM“推到重来”
+					—— 项目越复杂，影响就越严重
+					—— vdom即可解决这个问题
+				4、问题解答
+					—— virtual dom，虚拟DOM
+					—— 用JS模拟DOM结构
+					—— DOM操作非常“昂贵”
+					—— 将DOM对比操作放在JS层，提高效率
+
+			—— 用jQuery实现
+			—— 遇到的问题
+		2、vdom的如何应用，核心API是什么？
+			—— snabbdom （vdom的开源库）
+			—— 重做之前的demo
+			—— 核心API
+				1、h('<标签名>',{...属性...},[...子元素... ])
+				2、h('<标签名>',{...属性...},'....')
+				3、patch(container, vnode)
+				4、patch(vnode, newVnode)
+			 —— 问题解答
+			 	1、如何使用？可用snabbdom的用法来举例
+			 	2、核心API： h函数、patch函数的用法
+
+		3、介绍一下diff算法
+			—— 什么事diff算法
+
+				—— diff
+					git: diff
+					linux: diff
+
+				—— 实例演示
+					1、linux
+						// log1.txt
+						123
+						123
+						123
+						123
+						// log2.txt
+						123
+						123aaa
+
+						运行命令：diff log1.txt log2.txt
+					2、git diff 查看文件修改前后的对比
+					3、diff在线对比
+
+			—— 去繁就简
+				1、diff算法非常复杂，实现难度很大，源码量很大
+				2、去繁就简，讲明白核心流程，不关心细节
+				3、面试官也大部分都不清楚细节，但是很关心核心流程
+				4、去繁就简之后，依然具有很大的挑战性，并不简单
+
+			—— vdom为何用diff算法
+				1、DOM操作事“昂贵”的，因此尽量减少DOM操作
+				2、找出本次DOM必须更新的节点来更新，其它的不更新
+				3、这个“找出”的过程，就需要diff算法
+
+			—— diff算法的实现流程
+				1、patch(container, vnode)
+					—— 伪代码
+						function createElement (vnode) {
+							var tag = vnode.tag
+							var attrs = vnode.attrs || {}
+							var childre = vnode.children || []
+							if (!tag) {
+								return null
+							}
+
+							var elem = document.createElement(tag)
+
+							var attrName
+							for(attrName in attrs) {
+								if (attrs.hasOwnproperty(attrName)) {
+									elem.setAttribute(attrName, attrs[attrName])
+								}
+							}
+							children.forEach(function(childVnode){
+								elem.appendChild(createElement(childVnode))
+							})
+							return elem
+						}
+
+				2、patch(vnode, newVnode)
+					—— 伪代码
+						function updateChildren (vnode, newVnode) {
+							var children = vnode.children || []
+							var newChildren = newVnode || []
+							children.forEach((childVnode, index)=>{
+								var newChildren = newChildren[index]
+								if (childVnode.tag === newChildren.tag) {
+									updateChildren(childVnode, newChildren)
+								} else {
+									replaceNode(childVnode, newChildren)
+								}
+							})
+						}
+
+
+						function replaceNode(vnode, newVnode) {
+							var elem = vnode.elem
+							var newElem = createElement(neVnode)
+
+							// 替换
+						}
+
+					—— 不仅仅是以上内容
+						1、节点新增和删除
+						2、节点重新排序
+						3、节点属性、样式、事件绑定
+						4、如何极致压榨性能
+					—— diff实现过程
+						1、patch(container,vnoe)和patch(vnode,newVnode)
+						2、createElement
+						3、updateChildren
+				3、问题解答
+					—— 知道什么是diff算法，是linux的基础命令
+					—— vdom中应用diff算法是为了找出需要更新的节点
+					—— diff实现，patch(container, vnode) patch(vnode, newVnode)
+					—— 核心逻辑，createElement 和 updateChildren
+	—— 总结
+		1、vdom是什么？为何会存在vdom？
+			—— virtural dom，虚拟DOM
+			—— 用JS模拟DOM结构
+			—— DOM操作非常“昂贵”
+			—— 将DOM操作放到JS层，提高效率
+
+		2、vdom如何应用，核心API是什么
+			—— 如何使用？可用snabbdom的用法来举例
+			—— 核心API：h函数、patch函数
+		3、介绍下diff算法
+			—— 说明白diff是什么，是Linux的基础命令
+			—— vdom中应用diff算法是为了找出需要更新的节点
+			—— 实现，patch(container,vnode) 和 patch(vnode,newVndoe)
+			—— 核心逻辑，createElement 和 updateChildren
+
+—— MVVM
+	—— 如何理解MVVM
+	—— 如何实现MVVM
+	—— 是否解读过vue的源码
+	—— 题目
+		1、说下使用jQuery和使用框架的区别
+			—— jQuery实现todo-list
+				var $txtTitle = $('#txt-title') // input 输入框
+				var $uList = $('#ul-list')
+				var $btnSubmit.click(function(){
+					var title = $txtTitle
+					if(!title){
+						return
+					}
+					var $li = $('<li>'+title+'</li>')
+					$uList.append($li)
+					$txtTitle.val('')
+				})
+			—— VUE实现 todo-list
+
+				// 视图
+				<div>
+					<input v-model="title">
+					<button @click="add"></button>
+				</div>
+				<ul>
+					<li v-for="item in list">{item}</li>
+				</ul>
+
+				var vm = new Vue({
+					el: '#app',
+					// 数据
+					data: {
+						title: '',
+						list: []
+					},
+					methods: {
+						add: function(){
+							this.list.push(this.title)
+							this.title = ''
+						}
+					}
+				})
+			—— jQuery和框架的区别
+				1、数据和视图的分离，解藕（开发封闭原则）
+				2、以数据驱动视图，只关心数据变化，DOM操作被封装。
+
+		2、说一下对MVVM的理解
+			—— MVC （是应用到后端的模式）
+				1、view：视图、界面
+				2、Controller：控制器、逻辑处理（控制view的变化，也能控制model的变化）
+				3、Model：数据（标题，列表数据）
+			—— MVVM （是应用到前端的模式）
+				1、VM：viewModel,是view和model之间的桥 ——> var vm = new Vue({})；view通过事件绑定【DOM Listeners】来操作数据（v-on:click="add"），modal通过数据绑定【Data Bindings】来操作view（数据变化视图也会变化）
+
+			—— 关于viewModel
+				1、MVVM不算是一种创新
+				2、但其中的ViewModel却是一种创新
+				3、真正结合前端场景应用的创建 
+
+			—— 回答问题
+				1、MVVM：Model View ViewModel
+				2、三者之间的联系，以及如何对应到各个代码
+				3、ViewModel的理解，联系View和Model
+
+			—— 补充问题：MVVM框架的三大要素
+				1、再次分析demo
+					—— 响应式：vue如何监听到Data的每个属性的变化
+					—— 模版引擎：vue的模版如何被解析，指令如何处理？
+					—— 渲染：vue的模板如何被渲染成html？以及渲染的过程
+				2、三要素总结
+
+		3、vue如何实现响应式
+			—— 什么是响应式
+				1、修改data属性之后，vue立刻监听到
+				2、data属性被代理到vm上
+				3、演示
+
+			—— Object.defineProperty
+				// 静态值类型
+				var obj = {
+					name: 'zhangsan',
+					age: '20'
+				}
+				console.log(obj.name)
+				obj.name = 'wangwu'
+
+				// demo
+				var obj = {}
+				var _name = 'zhangsan'
+				Object.defineProperty(obj, 'name', {
+					get: function() {
+						return _name
+					},
+					set: function(newValue) {
+						_name = value
+					}
+				})
+
+			—— 模拟
+				var mv = {}
+				var data = {
+					price: 10,
+					name: 'zhangsan'
+				}
+				var key, value
+				for(key in data) {
+					(function(key){
+						Object.defineProperty(mv, key, {
+							get: functin() {
+								console.log('get')
+								return data[key]
+							},
+							set: function (newVal) {
+								console.log('set')
+								data[key]=newVal
+							}
+						})
+					})(key)
+				}
+
+			—— 回答问题
+				1、关键是理解Object.defineProperty
+				2、将data的属性代理到vm上
+
+		4、vue如何解析模板
+			—— 模版是什么
+				1、本质：字符串
+				2、有逻辑，如v-if v-for等
+				3、与html格式很像，但有很大区别
+				4、最终还要转换为html来显示
+				5、模版最终必须转换成JS代码，因为：
+					—— 有逻辑（v-if v-for），必须用JS才能实现（图灵完备）
+					—— 转换成html渲染页面，必须用JS才能实现
+					—— 因此，模版最终要转换成一个JS函数（render函数）
+
+			—— render函数
+				1、with的用法
+				2、render函数
+					with(this) {
+						return _c(
+							'div',
+							{
+								attrs: {"id": "app"}
+							},
+							[
+								_c('p',[_v(_s(price))])
+							]
+						)
+					}
+					—— 如何监听属性的变化
+					—— data要代理到vm上
+				3、总结
+					—— 模版种的所有信息都包含在了render函数中
+					—— this即vm
+					—— price即this.price即vm.price，即data中的price
+					—— _c即this._c即vm._c
+
+				4、从哪里可以看到render函数？
+					—— 源码中搜索code.render,alert出来，拷贝粘贴，查看当前页面模版的render函数
+				5、复杂一点的例子，render函数是什么样子的？
+				6、 vi-if v-for v-on都是怎么处理的？
+
+				7、根据todo list demo的render函数
+					—— v-model是怎么实现的？（既有get又有set数据双向绑定）
+					—— v-model是怎么实现的？（渲染拜button绑定一个click事件，click能直接定义上事件函数）
+					—— v-for是怎么实现的？（针对list数组进行遍历，遍历的每个元素封装成一个li的标签，把每个标签封装成一个数组，一起返回，作为ul的字元素）
+
+			—— render函数与vdom
+				1、已经解决了模版中的“逻辑”(v-if v-for)的问题
+				2、还剩下模版生成html的问题
+				3、另外，vm._c是什么？render函数返回了什么？
+
+				4、vdom核心API是什么
+					—— 介绍snabbdom
+						1、h函数—— 返回的是vNode
+						2、patch函数
+					—— 重做之前的demo
+					—— 核心API介绍
+				5、问题解答
+					—— updateComponent中实现了vdom的patch
+					—— 页面首次渲染执行updateComponent
+					—— data中每次修改属性，执行updateComponent
+			—— 问题解答
+				1、模版：字符串、有逻辑、嵌入JS变量……
+				2、模版必须转换成JS代码（有逻辑、渲染html、JS变量）
+				3、render函数是什么样子的（有with语法、snabbdom的h函数的样子）
+				4、render函数执行是返回vnode
+				5、updateComponent（更新的时候对比patch，首次渲染怎么执行，属性修改的时候怎么执行）
+
+		5、vue的整个实现流程
+			—— 第一步：解析模版成render函数
+				1、with的用法
+				2、模版中所有的信息都被render函数包含
+				3、模版中用到的data中的属性，都变成了JS变量
+				4、模版中的v-modal v-for v-on都变成了JS逻辑
+				5、render函数返回vnode
+
+			—— 第二步：响应式开始监听
+				1、Object.defineProperty
+				2、将data的属性代理到vm上
+
+			—— 第三步：首次渲染，显示页面，且绑定依赖
+				1、初次渲染，执行updateComponent，执行vm._render()
+				2、执行render函数，会访问到vm.list和vm.title
+				3、会被响应式的get方法监听到（后面详细讲）
+					—— 为什么要监听get，直接监听set不行吗
+						1、data中有很多属性，有些被用到，有些可能不被用到
+						2、被用到的会走get，不被用到的就不会走get
+						3、未走到get中的属性，set的时候我们也无需关心
+						4、避免不必要的重复渲染
+
+				4、执行updateComponent，会走到vdom的patch方法（data属性变化）
+					—— 修改属性，被响应式的set监听到
+					—— set中执行updateComponent
+					—— updateComponent重新执行vm._render()
+					—— 生成vnode和preVnoe，通过patch进行对比
+					—— 渲染到html中
+
+				5、patch将vnode渲染成DOM，初次渲染完成
+
+
+				—— 代码
+					vm._updata(vnode) {
+						const prevVonde = vm._vnode
+						vm._vnode = vnode
+						if (!prevVnode) {
+							vm.$el = vm.__patch__(vm.$el, vnode)
+						} else {
+							vm.$el = vm.__patch__(prevVnode, vnode)
+						}
+					}
+					function updatacomponent() {
+						// vm._render 即上面的render函数，返回vnode
+						vm._update(vm._render())
+					}
+
+			—— 第四步：data属性变化，触发rerender
+
+			—— 问题解答
+				1、第一步：模版解析成render函数
+				2、第二步：响应式开始监听
+				3、第三步：首次渲染，显示页面，且绑定依赖
+				4、第四步：data属性变化，触发rerender
+	—— 总结
+		1、说一下使用jQuery和使用框架的区别
+			—— 数据和视图的分离，解藕
+			—— 以数据驱动视图，只关心数据变化，DOM操作被封装
+
+		2、说一下对MVVM的理解
+			—— MVVM： model view viewModel
+			—— 三者之间的联系，以及如何对应到各段代码
+			—— ViewModel的理解，联系View和Model
+			—— 三要素
+				1、响应式：vue如何监听到data的每个属性变化
+				2、模版引擎：vue的模板如何被解析，指令如何处理？
+				3、渲染：vue的模版如何被渲染成html？以及渲染过程
+
+		3、vue中如何实现响应式
+			—— 关键是理解Object.defineProperty
+			—— 将data的属性代理到vm上
+
+		4、vue中如何解析模版
+			—— 模板：字符串、有逻辑、嵌入JS变量……
+			—— 模版必须转换成为JS代码（有逻辑，渲染成html、JS变量）
+			—— render函数是什么样子的
+			—— render函数执行是返回vnode
+			—— updateComponent
+
+		5、VUE实现的整体流程
+			—— 第一步：解析模版成render函数
+			—— 第二步：响应式开始监听
+			—— 第三步：首次渲染、显示页面，且绑定依赖
+			—— 第四步：data属性变化，触发rerender
+
+—— 组件化和React
+	1、是否做过React开发？
+	2、React以及组件化的一些核心概念
+	3、实现流程
+	4、题目
+		—— 说一下对组件化的理解
+			1、组件的封装
+				—— 视图
+				—— 数据
+				—— 变化逻辑（数据驱动视图变化）
+
+			2、组件的复用
+				—— props传递
+			3、问题解答
+				—— 组件的封装：封装视图、数据、变化逻辑
+				—— 组件的复用：props传递、复用
+
+		—— JSX本质是什么
+			1、JSX语法
+				—— html形式
+				—— 引入JS变量和表达式
+				—— if...else...
+				—— 循环
+				—— style 和 className
+				—— 事件
+
+			2、JSX解析成JS
+				—— JSX语法根本无法被浏览器所解释
+					1、JSX其实是语法糖（JSX的解析结果是React.createElement）
+					2、开发环境将JSX编译成JS代码
+					3、JSX的写法大大降低了学习成本和编码工作量
+
+				—— 那么它如何在浏览器运行？
+					1、所有JSX都要解析成JS代码来执行，这个JS代码执行的时候要返回vnode
+
+			3、独立的标准
+				—— JSX是React引入的，但不是React独有的
+				—— React已经将它作为一个独立标准开放，其他项目也可以用
+				—— React.createElement 是可以自定义修改的
+				—— 说明：本身功能已经完备；和其它标准兼容和扩展性没问题
+			4、解答问题
+				—— JSX语法（标签、JS表达式、判断、循环、事件绑定）
+				—— JSX是语法糖，需被解析成JS才能运行
+				—— JSX是独立的标准，可被其他项目使用
+
+		—— JSX和vdom的关系是什么
+			1、分析：为何需要vdom
+				——  vdom是React初次推广开来的，结合JSX
+				—— JSX就是模版，最终要渲染成html
+				—— 初次渲染 + 修改state后的re-render
+				—— 正好符合vdom的应用场景
+
+			2、React.createElement 和 h
+
+			3、何时patch？
+				—— 初次渲染-ReactDOM.render(<App/>, container)
+				—— 会触发patch(container, vnode)
+				—— re-render - setState
+				—— 会触发patch(vnode,newVnode)
+
+			4、自定义组件的解析
+				—— 'div'- 直接渲染<div>即可，vdom可以做到
+				—— Input和List，是自定义组件（class），vdom默认不认识
+				—— 因此Input和List定义的时候必须声明render函数
+				—— 根据props初始化实例，然后执行实例的render函数
+				—— render函数返回的还是vnode对象
+
+			5、问题解答
+				—— 为何需要vdom: JSX（是模版是个语法糖）需要渲染成html，数据驱动视图
+				—— React.createLement（React.createLement除了考虑html自定义标签还要考虑自定义组件） 和 h（h函数只需要考虑html标签） ，生成vnode
+				—— 何时patch：ReactDOM.render(...)[最外层的渲染结果中] 和 setState
+				—— 自定义组件的解析：初始化实例，然后执行render
+
+		—— 说一下setSate的过程
+			1、setState的异步
+				—— setState 为何需要异步
+					1、可能会一次执行多次setSate
+					2、你无法规定、限制用户如何使用setState
+					3、没必要每次setState都重新渲染，考虑性能
+					4、即便是每次重新渲染，用户也看不到中间的效果
+					5、只看到最后的结果即可
+
+			2、vue修改属性也是异步
+				—— 效果和原因和setState一样
+				—— 对比记忆，印象深刻
+				—— 权当复习一下vue的渲染过程
+			3、setState的过程
+				—— 每个组件实例，都有rederComponent方法
+				—— 执行renderComponent 会重新执行实例的render
+				—— render函数返回newVnode，然后拿到preVnode
+				—— 执行patch(preVnode, newVnode)
+			4、问题解答
+				—— setSate 的异步： 效果、原因（提高效率）
+				—— vue修改属性也是异步：效果、原因（防止重复修改提高性能，提高效率）
+				—— setState的过程：最终走到patch(preVnode, newVnode)
+
+		—— 总结
+			1、说一下对组件化的理解
+				—— 组件的封装：封装视图、数据、变化逻辑
+				—— 组件的复用：props传递、复用（把属性传递进去是复用、模版复用数据不重复） 
+
+			2、JSX本质是什么
+				—— JSX语法（标签、JS表达式、判断、循环、事件绑定）
+				—— JSX是语法糖，需要被解析成JS才能执行
+				—— JSX是独立标准，可被其他项目使用
+
+			3、JSX和vdom的关系
+				—— 为何使用 vdom：JSX需要渲染成html，还有rerender
+				—— React.createElement和h，都生成vnode
+				—— 何时patch: ReactDOM.redner(...)和setSate
+				—— 自定义组件的解析：初始化实例，然后执行render
+
+
+			4、说一下setSate的过程
+				—— setSate的异步：效果、原因
+				—— vue修改属性也是异步：效果、原因
+				—— setState的过程：最终走到patch(preVnode,newVnode)
+
+			5、阐述一下自己对React和vue的认识
+				—— 两者的本质区别
+					1、vue-本质是MVVM框架，由MVC发展而来
+					2、React-本质是前端组件化框架，由后端组件化发展而来
+					3、但不妨碍它们两者都能实现相同的功能
+
+				—— 看模版和组件化的区别
+					1、vue-使用模版（最初由angular提出）
+					2、React-使用JSX
+					3、模版语法上，我更加倾向于JSX
+					4、模版分离上，我更加倾向于vue
+						
+					—— 区别
+						React：只需要知道大括号里可以写JS表达式即可，学习成本更低。
+						React：模版和JS混合在一起，未分离。（模板应该和JS逻辑分离）（回顾：“开放封闭原则）
+						
+						React本身就是组件化，没有组件化就不是React
+						Vue也支持组件化，不过是在MVVM上的扩展
+						查阅vue组件化的文档，洋洋洒洒很多（侧面反映，越简单越好）
+
+						对于组件化，我更加倾向于React，做的彻底而清晰
+
+				—— 两者的共同点
+					1、都支持组件化
+					2、都是数据驱动视图
+
+				—— 总结问题答案
+					1、国内使用，首推vue。文档更易读、易学、社区够大（没有框架使用的经验推荐使用vue）
+					2、如果团队水平较高，推荐使用React。组件化和JSX
+
+—— hybrid
+	1、前言
+		1、APP和前端混合开发
+		2、移动端占大部分流量，以及远远超过PC
+		3、一线互联网公司都有自己的APP
+		4、这些APP中有很大比例的前端代码
+		5、拿微信举例，你每天浏览微信的内容，多少是前端？
+		
+	2、题目
+		—— hybrid是什么，为何用hybrid？
+			1、hybrid文字解释
+				—— hybrid即“混合”，即前端和客户端的混合开发
+				—— 需前端开发人员和客户端开发人员配合完成
+				—— 某些环节也可能涉及server端
+				—— PS：不要以为自己是前端就可以不理会客户端的知识（大前端）
+
+			2、存在价值，为何会用hybrid
+				—— 可以快速迭代更新【关键】（无需APP审核，思考为何？）
+					1、原生代码，都有权利访问手机隐私的权限（横屏竖屏二维码相册通讯录），所以需要审核。
+				—— 体验流程（和NA的体验基本类似）
+				—— 减少开发和沟通成本，双端公用一套代码
+				—— 
+			3、webview （浏览器内核，能承载html页面并把它显示出来）
+				—— 是APP中的一个组件（app可以有webview，也可以没有）
+				—— 用于加载h5页面，即一个小型的浏览器内核
+
+			4、file://协议
+				—— 其实在一开始接触html开发，就已经使用了file协议
+				—— 只不过你当时没有“协议”“标准”等这些概念
+				—— 再次强调“协议”“标准”的重要性！！!
+				—— file:// 协议和 http://协议的区别
+					1、file协议：本地文件、快
+					2、http(s):：网络加载、慢
+
+				—— 演示
+					1、http(s)协议
+					2、file协议，借用webpack的测试页面
+					3、看file://和整个url的关系【重要】
+
+			5、hybrid实现流程
+				—— 不是所有场景都适合使用hybrid
+				—— 使用NA：体验要求极致，变化不频繁（如头条的首页）
+				—— 使用hybrid：体验要求高，变化频繁（如头条的新闻详情页）
+				—— 使用h5：体验无要求，不常用（如：举报、反馈等页面）
+				—— 具体实现流程
+					1、前端做好静态页面（html js css），将文件交给客户端
+					2、客户端拿到静态页面，以文件形式存储在app中
+					3、客户端在一个webview中
+					4、使用file协议加载静态页面（本地文件快）
+
+				—— 遗留问题
+					1、app发布之后，静态文件如何实时更新？
+						—— 回顾hybrid实现流程
+							1、更新的是server端中的静态文件（html 、JavaScript、css)
+
+						—— 思考（目的、实现途径）
+							1、要替换每个客户端的静态文件
+							2、只能客户端来做（客户端是我们开发的）【JS权限很小的】
+							3、客户端去server下载最新的静态文件
+							4、我们维护server的静态文件
+							5、完整流程
+								—— 分版本，有版本号，如：2021803211015
+								—— 将静态文件压缩成zip，上传到服务器
+								—— 客户端每次启动，都去服务端检查版本号
+								—— 如果服务端版本号大于客户端版本号，就去下载最新的zip包
+								—— 下载完之后解压包，然后将现有文件覆盖
+
+						—— 更新流程
+
+						—— 问题解答
+							1、掌握流程图
+							2、要点1:服务端的版本和zip包维护
+							3、要点2: 更新zip包之前，先对比版本号
+							4、要点3: zip下载解压和覆盖
+
+					2、静态页面如何获取内容？
+
+			6、解答问题
+				—— hybrid是客户端和前端的混合开发
+				—— hybrid存在的核心意义在于快速迭代，无需审核
+				—— hybrid实现流程图（图），以及webview和file协议
+
+
+		—— 介绍一下hybrid更新和上线流程？
+
+		—— hybrid和h5的区别？
+			1、优点
+				—— 体验更好，跟NA体验一致
+				—— 可快速迭代，无需app审核【关键】
+			2、缺点
+				—— 开发成本高。联调、测试、查bug都比较麻烦。
+				—— 运维成本高。参考此前讲过的更新上线的流程。
+
+			3、适用的场景
+				—— hybrid：产品的稳定功能，体验要求高，迭代频繁
+				—— h5： 单次的运营活动（如：XX红包）或不常用功能
+
+			4、解答问题
+				优点：体验好，可快速迭代
+				缺点：开发成本高，运维成本高
+				适用的场景：hybrid适合产品型，h5使用运营型
+
+		—— 前端JS和客户端如何通讯？
+			1、回顾之前遗留的问题
+				—— 新闻详情页用hybrid，前端如何获取新闻内容？
+				—— 不能用ajax获取。第一跨域，第二速度慢
+				—— 客户端获取新闻内容（点击之后进入页面前提前获取），然后JS通讯拿到内容，再渲染
+
+			2、JS和客户端通讯的基本形式
+				—— JS访问客户端能力，传递参数和回调函数
+				—— 客户端通过毁掉函数返回内容
+
+			3、schema协议简介和使用
+				—— 之前介绍了htttp(s)协议和file协议
+				—— schema协议 —— 前端和客户端通讯的约定
+					1、例如
+						weixin://dl/scan  扫一扫
+						weixin://dl/feedback 反馈
+						weixin://dl/moments  朋友圈
+						……………… 
+				—— 使用
+					var iframe = document.createElement('iframe');
+					iframe.style.display = 'none';
+					iframe.src ="weixin://dl/scan";
+					var body = document.body || document.getElementsByTagName('body')
+					body.appendChild(iframe);
+					setTimeout(function(){
+						body.removeChild(iframe);
+						iframe = null
+					})
+
+					// 加上传参数和callback
+					window['_weixin_scan_callback'] = function(result) {
+						alert(result)
+					}
+
+					// .....省略....
+					iframe.src = 'weixin://dl/scan?k1=v1&k2=v2&callback=_weixin_scan_callback'
+					//  .....省略....
+
+			4、schema使用的封装
+				// 傻瓜式调用，而且不用再自己定义全局函数
+				window.invoke.share({title:'xxx',content: 'xxx'},function(result){
+				 	if (result.errno===0) {
+				 		alert('分享成功')
+				 	}else{
+				 		//分享失败
+				 		alert(result.message)
+				 	}
+				})
+
+
+				// 使用的封装
+				(function(window, undefine){
+				 	function _invoke (action, data, callback) {
+					 	var schema = 'myapp://utils'
+					 	schema += '/' + action
+
+					 	schema += '?a=a'
+					 	var key
+					 	for(key in data) {
+					 		if (data.hasOwnProperty(key)) {
+					 			schema += "&" + key + "=" data[key]
+					 		}
+					 	}
+					 	var callbackName = ''
+					 	if (typeof callback === 'string') {
+					 		callbackName =callback
+					 	} else {
+					 		callbackName = action + Date.now()
+					 		window[callbackName] = callback
+					 	}
+					 	schema += '&callback=' + callbackName
+
+					 	// 触发
+					 	var iframe = document.createElement('iframe')
+					 	iframe.style.display = 'none'
+					 	iframe.src = schema
+					 	var body = document.body
+					 	body.appendChild(iframe)
+					 	setTimeout(function(){
+					 		body.removeChild(iframe)
+					 		iframe = null
+					 	})
+
+					}
+
+					// 分享
+					function invokeShare(data,callback) {
+					 	_invoke('share', data, callback)
+					}
+					//  登录
+					function invokeLogin(data,callback) {
+					 	_invoke('login', data, callback)
+					}
+					// 分享
+					function invokeScan(data,callback) {
+					 	_invoke('share', data, callback)
+					}
+
+					window.invoke = {
+					 	share: invokeShare,
+					 	login: invokeLogin,
+					 	scan: invokeScan
+					}
+
+				})(window)
+
+			5、内置上线
+				—— 将以上封装的代码打包，叫做invoke.js，内置到客户端
+				—— 客户端煤气启动webview，都默认执行invoke.js
+				—— 本地加载，免去网络加载的时间，更快
+				—— 本地加载，没有网络请求，黑客看不到shcema协议，更安全。
+			6、解答问题
+				—— 通讯的基本形式：调用能力，传递参数，监听回调
+				—— 对schema协议的理解和使用
+				—— 调用schema代码的封装
+				—— 内置上线的好处： 更快、更安全
+			7、总结
+				—— hybrid是什么，为何使用hybrid？
+					1、hybrid是客户端和前端的混合开发
+					2、hybrid存在的核心意义在于快速迭代，无需审核
+					3、hybrid实现流程图，以及webview 和 file协议
+
+				—— 介绍一下hybrid更新和上线的流程？
+					1、掌握流程图
+					2、要点1: 服务端的版本和zip包维护
+					3、要点2: 更新zip包之前，先对比版本号
+					4、要点3: zip下载解压和覆盖
+
+				—— hybrid 和 h5的区别？
+					1、优点：体验好和快速迭代
+					2、缺点：开发成本高，运维成本高
+					3、适用场景：hybrid适合产品型，h5适合运营型
+
+				—— 前端JS和客户端如何通讯？
+					1、通讯的接本形式： 调用能力、传递参数、监听回调
+					2、对schema协议的理解和使用
+					3、调用schema代码的封装
+					4、内置上线的好处：更快、更安全
+
+—— 其他
+	1、不讲nodeJS
+
+	2、如何热爱编程
+		—— 如何证明
+			1、看书（手不离书）
+				—— 构建知识体系的最好方式
+				—— 自己买书，不要借书
+				—— 看书有技巧
+				—— 想要2W元的月薪？那你得看完2K元的书！（人前显贵，人后受罪）
+				—— 看书有产出
+					1、列出看不懂的
+					2、总结看懂的
+
+			2、写博客（合格程序员必备）
+				—— 自我总结和交流的过程
+				—— 写博客的好处，认识人，实现内推进入某公司
+				—— 如何让更多的人看，去人多的地方写
+				—— 面对质疑和打击，有则改之，无则无视
+
+			3、做开源（github的star是硬通货）
+				—— 开源编辑器
+				—— 做什么？另外，立刻开始写，不要思考太多，选一个工具型的，比较通用的。
+				—— 做好官网和文档，以及QQ群，微信群等社区
+				—— 及时回复issue，及时迭代发版
+				—— 如何推广？写博客
+
+	3、总结
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

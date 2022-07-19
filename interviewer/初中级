@@ -1,0 +1,231 @@
+—— cookie、sessionStorage、localStorage不同点：
+	1、存储大小
+		cookie 数据大小不能超过4k；
+		sessionStorage 和 localStorage 虽然也有存储大小的限制，但比 cookie 大得多，可以达到 5M 或更大。
+	2、有效时间
+		localStorage 存储持久数据，浏览器关闭后数据不丢失除非主动删除数据；
+		sessionStorage 数据在当前浏览器窗口关闭后自动删除；
+		cookie 设置的 cookie 过期时间之前一直有效，即使窗口或浏览器关闭。
+	3、数据与服务器之间的交互方式
+		cookie 的数据会自动的传递到服务器，服务器端也可以写 cookie 到客户端 
+		sessionStorage 和 localStorage 不会自动把数据发给服务器，仅在本地保存。
+		
+—— 盒子模型
+	1、把所有的网页元素都看成一个盒子，它具有： content，padding，border，margin 四个属性，这就是盒子模型
+	2、盒子模型有两种形式：标准盒子模型，怪异盒子模型
+		两种模式可以利用box-sizing属性进行自行选择：
+		　　标准模式：box-sizing:content-box;
+		　　怪异模式：box-sizing:border-box;
+	3、两种模式的区别
+
+—— 什么是BFC、如何产生BFC、BFC的作用（https://www.pianshen.com/article/40891580573/）
+	1、BFC 全称为 块格式化上下文 (Block Formatting Context) 。
+	2、https://www.jianshu.com/p/0d713b32cd0d
+	3、如何产生BFC
+		1、根元素(整个页面就是一个大的BFC)；
+		2、float为 left | right；
+		3、overflow为 hidden | auto | scroll；
+		4、display为 inline-block | table-cell | table-caption | flex | inline-flex；
+		5、position为 absolute | fixed；
+
+	4、BFC的作用
+		1、BFC的发生在这个垂直方向的边距会发生重叠
+		2、BFC的区域不会与浮动元素的box重叠
+		3、BFC在页面上是一个独立的容器，外面的元素不会影响到里边的元素，反过来里边的元素也不会影响到外面的元素【常用于清除浮动】
+		4、计算BFC高度的时候浮动元素也会参与高度计算
+
+—— flex布局常用属性有哪些？
+	Flex布局意为”弹性部分”，为盒模型提供最大的灵活性。任何一个容器都可以指定为Flex布局（display:flex）；行内元素也可以使用Flex布局（display:inline-Flex）。设为Flex布局以后，子元素的float、clear和vertical-align属性都会失效。
+	1、 六个设置在容器上的属性（父）：
+		1、flex-direction属性决定主轴的方向
+		2、flex-wrap属性决定是否换行
+		3、flex-flow属性是flex-direction和flex-wrap的简写形式
+		4、justify-content属性定义了项目在主轴上的对齐方式
+		5、align-items属性定义项目在交叉轴（竖轴）上的对齐方式
+		6、align-content属性定义了多根轴线的对齐方式。如果项目只是一根轴线，该属性不起作用。
+	2、 六个设置在项目上的属性（子）
+		1、order属性定义项目的排列顺序。数值越小，排列越靠前，默认都为0，可以为负数。
+		2、flex-grow属性定义项目的放大比例，默认为0，即如果存在空间也不会放大；如果多个项目都为1， 将等分剩余空间；如果有一个为2，其将是其它的2倍。
+		3、flex-shrink属性定义了项目的缩小比例，默认为1，即如果空间不足，多个项目将会等比缩小；如果其中一个为0，其它为1，其将不会缩小。
+		4、flex-basis属性定义了在分配多余空间之前，项目占据的主轴空间。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。它可以设置跟width和height属性一样的值，则项目占据固定空间。
+		5、flex属性是flex-grow、flex-shrink和flex-basis的简写，默认为（0 1 auto）；该属性有两个快捷键：auto（1 1 auto）和none（0 0 auto）。建议优先使用这个属性，而不是分开。
+		6、align-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
+
+
+5、写一个原型继承的例子
+	function Fun(name, age) {
+		this.name = name
+		this.age = age
+
+		// return this //默认有这行
+	}
+
+	var f = new Fun('zhangsan', 20) // 创建多个对象
+6、描述new一个对象的过程
+	创建一个新对象
+	this指向这个新对象
+	执行代码，即对this赋值
+	返回this
+7、什么是闭包？（https://blog.csdn.net/weixin_43352901/article/details/107528020）
+	—— 一个函数的作用域是它定义时的作用域
+	—— 闭包的使用场景
+		1、函数作为返回值
+		2、函数作为参数传递
+8、描述下节流、防抖
+9、Promise的基本规则
+	1. 首先Promise构造函数会立即执行，而Promise.then()内部的代码在当次事件循环的结尾立即执行(微任务)。
+	2. promise的状态一旦由等待pending变为成功fulfilled或者失败rejected。那么当前promise被标记为完成，后面则不会再次改变该状态。
+	3. resolve函数和reject函数都将当前Promise状态改为完成，并将异步结果，或者错误结果当做参数返回。
+	4. Promise.resolve(value)
+		返回一个状态由给定 value 决定的 Promise 对象。如果该值是 thenable(即，带有 then 方法的对象)，返回的 Promise 对象的最终状态由 then 方法执行决定；否则的话(该 value 为空，基本类型或者不带 then 方法的对象),返回的 Promise 对象状态为 fulfilled，并且将该 value 传递给对应的 then 方法。通常而言，如果你不知道一个值是否是 Promise 对象，使用 Promise.resolve(value) 来返回一个 Promise 对象,这样就能将该 value 以 Promise 对象形式使用。
+	5. Promise.all(iterable)/Promise.race(iterable)
+		简单理解，这2个函数，是将接收到的promise列表的结果返回，区别是，all是等待所有的promise都触发成功了，才会返回，而arce有一个成功了就会返回结果。其中任何一个promise执行失败了，都会直接返回失败的结果。
+	6. promise对象的构造函数只会调用一次，then方法和catch方法都能多次调用，但一旦有了确定的结果，再次调用就会直接返回结果。
+10、ES6的常用功能 
+	1、let/const
+	2、多行字符串/模版变量
+	3、解构赋值
+	4、块级作用域
+	5、函数默认参数
+	6、箭头函数
+
+
+20、什么是原型
+①所有引用类型都有一个__proto__(隐式原型)属性，属性值是一个普通的对象 
+②所有函数都有一个prototype(原型)属性，属性值是一个普通的对象 
+③所有引用类型的__proto__属性指向它构造函数的prototype
+
+21、原型链
+	当访问一个对象的某个属性时，会先在这个对象本身属性上查找，如果没有找到，则会去它的__proto__隐式原型上查找，即它的构造函数的prototype，如果还没有找到就会再在构造函数的prototype的__proto__中查找，这样一层一层向上查找就会形成一个链式结构，我们称为原型链。
+
+5、DOM 渲染在 哪个周期中就已经完成？
+	DOM 渲染在 mounted 中就已经完成了。
+
+23、简述每个周期具体适合哪些场景
+	beforecreate : 可以在这加个loading事件，在加载实例时触发
+	created : 初始化完成时的事件写在这里，如在这结束loading事件，异步请求也适宜在这里调用
+	mounted : 挂载元素，获取到DOM节点
+	updated : 如果对数据统一处理，在这里写上相应函数
+	beforeDestroy : 可以做一个确认停止事件的确认框
+	nextTick : 更新数据后立即操作dom
+
+24、created和mounted的区别
+	created:在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图。
+	mounted:在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
+
+
+11、发布订阅模式的实现
+	class PubSub {
+		constructor () {s
+			this.list = {}
+		}
+
+		subscribe(type, handler) {
+			if (!this.list[type]) {
+				this.list[type] = []
+			}
+			this.list[type].push(handler)
+		};
+		publish(type, params) {
+			if (!(type in this.list)) {
+				return;
+			}
+			this.list[type].forEach((handler) => {
+				handler(params)
+			})
+		};
+		removeSub(type, handler) {
+			if (!(type in this.list)) {
+				return;
+			}
+			if (!handler) {
+				delete this.list[type]
+			} else {
+				let idx = this.list[type].findIndex((item)=>{
+					return item == handler
+				})
+				if (idx < 0) {
+					return;
+				}
+				this.list[type].splice(idx, 1);
+				if (this.list[type].length <= 0) {
+					delete this.list[type]
+				}
+			}
+		}
+	}
+12、什么是typescript（http://www.srcmini.com/3507.html）
+	它是一个强类型的JavaScript超集，，支持ES6语法，支持面向对象编程的概念，如类、接口、继承、泛型等。可编译为纯JavaScript。
+13、为什么需要typeScript
+	TypeScript的设计目的应该是解决JavaScript的“痛点”：弱类型和没有命名空间，导致很难模块化，不适合开发大型程序。另外它还提供了一些语法糖（TypeScript可以实现类，接口，枚举，泛型，方法重载等，用简洁的语法丰富了JavaScript的使用。）来帮助大家更方便地实践面向对象的编程。
+14、Typescript有哪些基础类型？
+	1：number
+	2：string
+	3：boolean
+	4：Symbol
+	5：Array
+	6：Tuple(元组)
+	7：enum(枚举)
+	8：object
+	9：never
+		表示那些永不存在的值类型。如总是抛出异常或者根本不会有返回值的函数的返回值类型。
+	10：void
+		与any相反表示没有任何类型。函数没有返回值时用void。
+	11：null和undefined
+		它们是所有类型的子类型。当你指定structNullChecks时，它们只能赋值给void或者它们自己本身。
+	12：any
+15、解释TypeScript中的泛型？
+	TypeScript泛型是一个提供创建可重用组件方法的工具。它能够创建可以处理多种数据类型而不是单一数据类型的组件。泛型在不影响性能或生产率的情况下提供类型安全性。泛型允许我们创建泛型类、泛型函数、泛型方法和泛型接口。
+	在泛型中，类型参数写在开(<)和闭(>)括号之间，这使得它是强类型集合。泛型使用一种特殊类型的类型变量<T>，它表示类型。泛型集合只包含类似类型的对象。
+	function identity<T>(arg: T): T {      
+   		return arg;      
+	}      
+	let output1 = identity<string>("myString");      
+	let output2 = identity<number>( 100 );    
+	console.log(output1);    
+	console.log(output2);     
+
+
+
+16、setState到底是异步还是同步?
+17、React组件间通信方式
+	父组件向子组件通信：父组件通过向子组件传递 props，子组件得到 props 后进行相应的处理。
+	子组件向父组件通信：父组件将一个函数作为 props 传递给子组件，子组件调用该回调函数，便可以向父组件通信。
+	跨级组件之间通信：所谓跨级组件通信，就是父组件向子组件的子组件通信，向更深层的子组件通信。跨级组件通信可以采用下面两种方式：（1、中间组件层层传递 props 2、使用 context 对象）
+	非嵌套组件间通信：非嵌套组件，就是没有任何包含关系的组件，包括兄弟组件以及不在同一个父级中的非兄弟组件。对于非嵌套组件，可以采用下面两种方式：（1、利用二者共同父组件的 context 对象进行通信。2、使用自定义事件的方式）
+
+	本文总结了 React 中组件的几种通信方式，分别是：
+		父组件向子组件通信：使用 props
+		子组件向父组件通信：使用 props 回调
+		跨级组件间通信：使用 context 对象
+		非嵌套组件间通信：使用事件订阅
+
+18、React 中 refs 做什么用的
+	Refs 是 React 提供给我们的安全访问 DOM元素或者某个组件实例的句柄
+	可以为元素添加ref属性然后在回调函数中接受该元素在 DOM 树中的句柄该值会作为回调函数的第一个参数返回
+
+19、state 和 props 区别是啥？（https://www.yuque.com/yanghui-xazj3/uu7edw/qnu0v1）
+	props是传递组件的(类似函数的形参)，而state是在组件内被组件自己管理的(类似在一个函数内声明变量)。
+	props是不可修改的，所有React组件必须向纯函数一样保护它们的props不被更改
+	state是在组件中创建的，一般在constructor中初始化state
+	state是多变的、可修改的，每次setState都异步更新的
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,2223 @@
+一、面向对象
+	1、ES6 class 语法
+	2、三要素
+	3、UML类图
+
+二、设计原则
+	1、何为设计？
+	2、5大设计原则
+	3、从设计到模式
+
+三、设计模式
+	1、分优先级讲解
+	2、结合核心技术
+	3、结合框架应用
+
+四、综合分析
+	1、设计方案
+	2、代码演示
+	3、设计模式对应关系
+
+五、课程安排
+	—— 面向对象
+		1、使用webpack 和 label 搭建 ES6 编译环境
+		2、ES6class 面向对象的语法
+		3、面向对象三要素：继承、封装、多态
+
+	—— 设计原则
+		1、通过《LINUX/UNIX设计哲学》理解何为设计
+		2、5大设计原则分析和理解，以及代码演示
+		3、“设计模式” ——> 从“设计”到“模式”
+	—— 设计模式
+		1、概述：创建型、结构型、行为型
+		2、常用设计模式，详细讲解，结合经典使用场景
+		3、非常用的设计模式，理解概念、示例演示
+		4、有主有次，掌握重点
+	—— 综合示例
+		1、用JQuery实现一个简单的购物车
+		2、设计分析，画UML类图
+		3、代码演示
+		4、总结使用的7种设计模式
+
+--------------------------------------------------------------------------------------------------
+一、面向对象
+	1、搭建开发环境
+		—— 初始化npm 环境
+		—— 安装webpack
+		—— 安装 webpack-dev-server
+		—— 安装babel
+		
+	2、什么是面向对象
+		—— 概念
+			1、类 和 对象
+				—— 类， 即模板
+					// 父类
+					class People {
+						constructor(name, age) {
+							this.name = name
+							this.age = age
+						}
+						eat() {
+							alert(`${this.name} eat food`)
+						}
+					}
+					// 创建实例
+					let zhang = new Pople('zhang', 28)
+					zhang.eat()
+
+		—— 三要素： 继承 封装 多态
+			1、继承、子类继承父类
+				// 子类继承
+				class Student extends People {
+					constructor(name, age, number) {
+						super(name, age)
+						this.number = number
+					}
+					study() {
+						alert(`${this.name} study`)
+					}
+				}
+				// 实例
+				let xia0fang = new Student('xiaofang', 20, 'A1')
+				xiaofang.study()
+				console.log(xiaofang.number)
+				xiaofang.eat()
+
+				—— People是父类，公共的，不仅仅服务于Student
+				—— 继承可以将公共方法抽离出来，提高复用，减少冗余
+
+			2、封装、数据的权限和保密
+				—— public 完全开放
+				—— protected 对子类开放
+				—— private 对自己开放
+					class peple {
+						name
+						age
+						private weight
+						construtor(name, age) {
+							this.name = name
+							this.age = age
+							this.weight = 100
+						}
+					}
+					class student extends peple {
+						number
+						private girlfriend
+						constructor(name, age, number) {
+							super(name, age)
+							this.name = name
+							this.girlfriend = 'xiaofang'
+						}
+						getWeigth() {
+							alert(`${this.name} weight is ${this.weight}`)
+						}
+					}
+
+				—— （ES6尚不支持，可以用typescript来演示）
+				—— 特点
+					1、减少耦合，不该外露的不外露
+					2、利于数据、接口的权限管理
+					3、ES6目前不支持，一般认为“_”开头的属性是private
+					
+
+			3、多态，同一接口不同实现
+				—— 同一接口不同表现
+				—— JS应用极少
+				—— 需要结合Java等语言的接口、重写、重载等功能
+					class People {
+						constructor(name) {
+							this.name = name
+						}
+						saySomething() {
+
+						}
+					}
+
+					class A extends People {
+						constructor(name) {
+							super(name)
+						}
+						saySomething() {
+							alert('I am A')
+						}
+					}
+
+					class B extends People {
+						constructor(name) {
+							super(name)
+						}
+						saySomething() {
+							alert('I am B')
+						}
+					}
+
+					let a = new A('a')
+					let b = new B('b')
+				—— 特点
+					1、保持子类的开放性和灵活性
+					2、面向接口编程
+					3、（JS引用极少，了解即可）
+
+
+		—— JS的应用举例
+			—— jQuery就是个class
+				1、$('p')是jquery的一个实例
+				class jQuery {
+					constructor (selector) {
+						let slice = Aarray.prototype.slice
+						let dom = slice.call(document.querySelectorAll(selector))
+						let len = dom ? dom.length : 0
+						for (let i = 0; i < len; i++) {
+							this[i] = dom[i]
+						}
+						this.length = len
+						this.selector = selector || ''
+					}
+				}
+				append(node) {
+
+				}
+
+				window.$ = function (selector) {
+					// 工厂模式
+					return new jQuery(selector)
+				}
+
+		—— 面向对象
+			1、为何使用面向对象
+				—— 程序执行： 顺序、判断、循环 ———— 结构化
+				—— 面向对象 ———— 数据结构化，对于计算机，结构化的才是最简单的、编程应该简单&抽象
+			2、总结
+				—— 概念和demo
+				—— 三要素： 继承、 封装、多态，以及演示
+				—— jquery 的应用实例
+				—— 意义： 数据结构化
+
+	3、UML类图
+		—— Unified Modeling Language 统一建模语言
+		—— 类图，UML 包含很多种图，和本课相关的是类图
+		—— 关系，主要讲解泛化和关联
+		—— 演示，代码和类图结合
+		—— 画图工具
+			1、MS Office Visio
+			2、https://www.processon.com
+		—— 类图
+			1、关系
+				—— 泛化，表示继承
+				—— 关联，表示引用
+				class People {
+					construcor(name, house) {
+						this.name = name
+						this.house = house
+					}
+					saySomething() {
+
+					}
+				}
+				class A extends People {
+					construtor(name, house) {
+						super(name, house)
+					}
+					saySomething() {
+						alert('I am A')
+					}
+				}
+				class B extends People {
+					construtor(name, house) {
+						super(name, house)
+					}
+					saySomething() {
+						alert('I am B')
+					}
+				}
+				class House {
+					constructor(city) {
+						this.city = city
+					}
+					showCity {
+						alert(`hose in ${this.city})
+					}
+				}
+				// 测试
+				let aHouse = new House('北京')
+				let a = new A('aaa', aHouse)
+
+			—— 总结：
+				1、 类图、属性、方法
+				2、 关系、泛化、关联
+				3、 示例演示
+
+	4、总结
+		—— 搭建开发环境： npm init、webpack、bable
+		—— 面向对象：概念、三要素、应用举例、意义
+		—— UML类图：类图、关系、示例
+
+
+二、设计原则
+	—— 何为设计？
+		1、描述
+			—— 即按照哪一种思路或者标准来实现功能
+			—— 功能相同，可以有不同设计方案来实现
+			—— 伴随着需求增加，设计的作用才能体现出来
+
+		2、结合《UNIX/LINUX设计哲学》
+			—— 准则1：小即是美
+			—— 准则2：让每一个程序只做好一件事
+			—— 准则3：快速建立原型
+			—— 准则4：舍弃高效率而取可移植性
+			—— 准则5：采用纯文本来存储数据
+			—— 准则6：充分利用软件的杠杆效应（软件复用）
+			—— 准则7：使用shell脚本来提高杠杆效应和可移植性
+			—— 准则8：避免强制性的用户界面
+			—— 准则9：让每个程序都成为过滤器
+
+			—— 结合《UNIX/LINUX设计哲学》- 小准则
+				1、允许用户定制环境
+				2、尽量使用操作系统内核小而轻量化
+				3、使用小写字母并尽量简写
+				4、沉默是金
+				5、各部分之和大于整体
+				6、寻求90%的解决方案
+
+			—— 演示：沉默是金 + 让每个程序成为过滤器
+
+	—— 五大设计原则
+		1、S - 单一职责原则
+			—— 一个程序只做好一件事
+			—— 如果功能过于复杂就拆分开，每个部分保持独立
+
+		2、O - 开放封闭原则
+			—— 对扩展开发，对修改封闭
+			—— 增加需求时，扩展新代码，而非修改已有代码
+			—— 这是软件设计的终极目标
+
+		3、L - 李氏置换原则
+			—— 子类能覆盖父类
+			—— 父类能出现的地方子类就能出现
+			—— JS中使用较少（弱类型 & 继承使用较少）
+
+		4、I - 接口独立原则
+			—— 保持接口的单一独立，避免出现“胖接口”
+			—— JS中没有接口（typescript除外）使用较少
+			—— 类似于单一职责原则，这里更关注接口
+
+		5、D - 依赖倒置原则
+			—— 面向接口编程，依赖于抽象而不依赖于具体
+			—— 使用方只关注接口而不关注具体类的实现
+			—— JS中使用较少（没有接口 & 弱类型）
+
+		—— 总结：
+			1、S 和 O 体现较多，详细介绍
+				—— 示例
+					function loadImg(src) {
+						var promise = new Promise(function(resolve, reject) {
+							var img = documnt.createElement('img')
+							img.onload = function () {
+								resolve(img)
+							}
+							img.onerror = function() {
+								reject('图片加载失败')
+							}
+							img.src = src
+						})
+						return promise
+					}
+					var src = 'https://www/imooc.com/static/img/index/logo_new.png'
+					var result = loadImg(src)
+					result.then(function(img){
+						console.log('img.width', img.width)
+						return img
+					}).then(function(img) {
+						console.log('img.heigh', img.height)
+					}).catch(function(x){
+						// 统一捕获异常
+						console.log(ex)
+					})
+
+					—— 总结：
+						1、单一职责原则： 每个then中的逻辑只做好一件事
+						2、开放封闭原则：如果有新增需求，扩展then
+						3、对扩展开放、对修改封闭
+
+			2、L、I、D 体现较少，但是要了解其用意
+
+	—— 从设计到模式
+		1、设计
+		2、模式
+		3、从设计到模式
+
+	—— 介绍23种设计模式
+		1、创建型
+			—— 工厂模式（工厂方法模式，抽象工厂模式，建造者模式）
+			—— 单例模式
+			—— 原型模式
+
+		2、结构型
+			—— 适配器模式
+			—— 装饰器模式
+			—— 代理模式
+			—— 外观模式
+
+			—— 桥接模式
+			—— 组合模式
+			—— 享元模式
+
+		3、行为型
+			—— 策略模式
+			—— 模板方法模式
+			—— 观察者模式
+			—— 迭代器模式
+			—— 职责链模式
+			—— 命令模式
+			—— 备忘录模式
+			—— 状态模式（重点讲）
+			—— 访问者模式
+			—— 中介者模式
+			—— 解释器模式
+
+			—— 优先级：
+				—— 前端常用设计模式，详讲
+				—— 前端非 常用 设计模式，略讲
+				—— 前端少用设计模式，介绍
+			—— 如何讲解设计模式
+				1、介绍和举例（生活中易理解的示例）
+				2、画UML类图写demo代码
+				3、结合经典应用场景， 讲解该设计模式如何被使用
+			—— 该如何学习设计模式
+				1、明白每个设计的道理和用意
+				2、通过经典应用体会它的真正使用场景
+				3、自己编码时多思考，尽量模仿
+		4、面试题示例(面试有可能遇到，有可能遇不到)
+			—— 考察面向对象和设计能力
+				1、打车时，可以打专车或者快车。任何车都有车牌号和名称，不同车价格不同，快车每公里1元，专车每公里2元。行程开始时，显示车辆信息，行程结束时，显示打车金额（假定行程就5公里）
+					—— 画出 UML 类图
+					—— 用ES6语法写出该示例
+						class Card {
+							constructor (number, name) {
+								this.name = name
+								this.number = number
+							}
+						}
+
+						class Kuaiche extends Card {
+							constructor(number, name) {
+								spuer(number, name)
+								this.price = 1
+							}
+						}
+
+						class Zhuanche extends Card {
+							constructor(name, number) {
+								spuer(number, name)
+								this.price = 2
+							}
+						}
+
+						class Trip {
+							constructor(card) {
+								this.card = card
+							}
+							start () {
+								console.log(`${this.car.name}${this.car.number}`)
+							}
+							end () {
+								console.log(`${this.car.price} * 5`)
+							}
+						}
+
+						// 使用
+						let car = new Kuaiche(100， '桑塔纳')
+						let trip = new Trip(car)
+						trip.start()
+						trip.end()
+
+				2、某停车场，分三层，每层100车位，每个车位都能监控到车辆的行驶和离开，车辆进入前，显示每层的空余车位数量，车辆进入时，摄像头可识别车牌号和时间，车辆出来时，出口显示器显示车牌号和停车时长。
+					—— 画 UML 类图
+					—— 代码实现
+						class Park {
+							constructor (floors) {
+								this.floors = floors || []
+								this.camera = new CameraC()
+								this.screen = new Screen()
+
+							}
+							in(car) {
+								const info = this.camera.shot(car)
+								const i = parseInt(Math.random() * 100 % 100)
+								const place = this.floors[0].places[i]
+								place.in()
+								info.place = place
+								this.carList[car.number] = info 
+							}
+
+							out(car) {
+								const info = this.carList[car.number]
+								const place = info.place
+								place.out()
+								this.screen.show(car, info.inTime)
+								delete this.carList[car.number]
+							}
+							emptyNum () {
+								return floors.map(floor => {
+									return `${floor.index}层还有${floor.emptyPlaceNumber()}`
+								}).join('/n')
+							}
+						}
+
+						class Car {
+							construcotr(number) {
+								this.number = number
+							}
+						}
+
+						class Floor {
+							constructor (index, places) {
+								this.index = index
+								this.places = places
+							}
+							emptyPlaceNumber() {
+								let num = 0
+								this.places.forEach(p => {
+									if (p.empty) {
+										num = num + 1
+									}
+								})
+								return num
+							}
+						}
+
+						class Place {
+							constructor() {
+								this.empty = true
+							}
+							out() {
+								this.empty = false
+							}
+							in() {
+								this.empty = true
+							}
+						}
+
+						class Camera {
+							shot (car) {
+								return {
+									number: car.number,
+									inTime: Date.now()
+								}
+							}
+						}
+						class Screen {
+							show(car, inTime) {
+								console.llog('车牌号', car.num)
+								console.log('停车时间', Date.now - inTime)
+							}
+						}
+
+						// 测试
+						const floors = []
+						for(let i = 0; i < 3; i++) {
+							const places = []
+							for(let j=0; j < 100; j++) {
+								places[j] = new Place()
+							}
+							floors[i] = new Floor(i+1, places)
+						}
+						const park = new Park(floors)
+						const car1 = new Car(100)
+						const car2 = new Car(200)
+						const car3 = new Car(300)
+
+						console.log('第一辆车进入')
+						console.log(park.emptyNum())
+						park.in(car1)
+						console.log('第二辆车进入')
+						console.log(park.emptyNum())
+						park.in(car2)
+						console.log('第三辆车进入')
+						console.log(park.emptyNum())
+						park.in(car3)
+						console.log('第三辆车离开')
+						park.out(car3)
+
+		5、模式详解
+			—— 工厂模式
+				1、 介绍
+					—— 将new操作单独封装
+					—— 遇到new时，就要考虑是否该使用工厂模式
+
+				2、 演示
+					—— 你去购买汉堡，直接点餐、取餐，不会自己亲手做，商店要“封装做汉堡的工作，做好直接给购买者
+					—— UML类图
+					—— 代码
+						class Product {
+							constructor(name) {
+								this.name = name
+							}
+							init() {
+								alert('init')
+							}
+							fn1() {
+								alert('fn1')
+							}
+							fn2() {
+								alert('fn2')
+							}
+						}
+
+						class Creator {
+							create() {
+								reurn new Product(name)
+							}
+						}
+
+						// 测试
+						let creator = new Creator()
+						let p = creator.create('p1')
+						p.init()
+						p.fn1
+				3、 场景
+					—— jQuery - $('div')
+						1、$('div') 和 new $('div') 有何区别
+
+					—— React.createElement
+						1、 var profile = React.createElement("div", null, React.createElement("img", {src: 'avatar.png', className: "profole"}))
+
+							class Vnode(tag,attrs,children){
+								// 代码省略……………………
+							}
+							React.createElement = function(tag,attrs,children) {
+								return new Vnode(tag, attrs, children)
+							}
+
+					—— Vue异步组件
+						1、Vue.component('async-example', function(resolve, reject) {
+							setTimeout(function() {
+								resolve({
+									template: '<div> I am async ! </div>'
+								})
+							}, 1000)
+						})
+				3、设计原则验证
+					—— 构造函数和创建者分离，符合开放封闭原则
+				4、总结
+					—— 介绍和示例
+					—— UML类图和演示
+					—— 经典使用场景
+			—— 单例模式
+				1、介绍
+					—— 系统中被唯一使用
+					—— 一个类只有一个实例
+				2、演示
+					—— 登录框
+					—— 购物车
+					—— 说明：单例模式需要用到Java的特性（private），ES6中没有（typescript除外），只能用Java代码来演示UML图的内容
+
+						class SingleObject {
+							login() {
+								console.log('login....')
+							}
+						}
+
+						SingleObject.getInstance = (function(){
+							let instance
+							return function () {
+								if (!instance) {
+									instance = new SingleObject()
+								}
+								return instance
+							}
+						})()
+
+						let obj1 = SingleObject.getInstance()
+						obj1.login()
+						let obj2 = SingleObject.getinstance()
+						obj2.login()
+
+						console.log('obj1===obj2', obj === obj2)
+
+						console.llog('-----分割线------')
+						let obj3 = new SingleObject() // 无法完全控制单例模式(可以通过模块化控制住)
+						obj3.login()
+						console.log('obj1===obj3', obj1 === obj3)
+
+				3、场景
+					—— jQuery 只有一个$
+						if (window.jQuery != null) {
+							return window.jQuery
+						} else {
+							// 初始化
+						}
+
+					—— 模拟登录框
+						class LoginForm {
+							constructor() {
+								this.sate = 'hide'
+							}
+							show() {
+								if (this.state === 'show') {
+									alert('已经显示')
+									return
+								}
+								this.sate = 'show'
+								console.log('登录框显示成功')
+							}
+							hide() {
+								if (this.state === 'hide') {
+									alert('已经隐藏')
+									return
+								}
+								this.state = 'hide'
+								console.log('登录框隐藏成功')
+							}
+						}
+						LoginForm.getInstance = (function(){
+							let instance
+							return function() {
+								if(!instance){
+									instance = new LoginForm(0)
+								}
+								return instance
+							}
+						})()
+
+						// 测试
+						let login1 = LoginForm.gtInstance()
+						login1.show()
+
+						let login2 = LoginForm.getInstance()
+						login2.hide(0)
+
+
+
+						console.log('login1 === login2', login1 === login2)
+
+					—— 其他
+						—— 购物车（和登录框类似）
+						—— vuex 和 redux 中的store
+					—— 设计验证原则
+						1、符合单一职责原则，只实例化唯一的对象
+						2、没法具体开发封闭原则，但是绝对不违反开放封闭原则
+				4、总结
+					—— 介绍和示例
+					—— UML类图和演示
+					—— 经典使用场景
+			—— 适配器模式
+				1、介绍
+					—— 旧接口格式和使用者不兼容，中间加一个适配器转换接口
+				2、演示
+					—— UML类图
+					—— 代码演示
+						class Adaptee {
+							specificReauest() {
+								return '德国标准插头'
+							}
+						}
+
+						class Target {
+							constructor() {
+								this.adaptee = new Adaptee()
+							}
+							request() {
+								let info = this.adaptee.specificReauest()
+								return `${info} - 转换器 - 中国标准头`
+							}
+						}
+
+						// 测试
+						var target = new Target()
+						let res = target.request()
+						console.log(res)
+				3、场景
+					—— 封装旧接口
+						ajax({
+							url: '/getData',
+							type: 'Post',
+							dataType: 'json',
+							data: {
+								id: '123'
+							}
+						})
+						.done(function(){})
+
+						// 但因为历史原因，代码全是
+						$.ajax({...})
+
+						// 适配器
+						var $ = {
+							ajax: function() {
+								return ajax(options);
+							}
+						}
+					—— vue computed
+						var vm = new Vue({
+							el: '#app',
+							data: {
+								message: 'hello'
+							}
+							computed: {
+								reversedMessage: function() {
+									return this.message.split(''),reverse().join()
+								}
+							}
+						})
+					—— 设计原则验证
+						 1、将旧接口和使用者进行分离，符合开放封闭原则
+				4、总结
+					—— 介绍和示例
+					—— UML类图和演示
+					—— 经典使用场景
+			—— 装饰器模式
+				1、介绍
+					—— 为对象添加新功能，不改变其原有的结构和功能
+				2、演示
+					——代码演示
+						class Circle {
+							draw() {
+								console.log('画一个圆形')
+							}
+						}
+						class Decorator {
+							constructor(circle) {
+								this.circle = circle
+							}
+							draw() {
+								this.circle.draw()
+								this.setReadBorder(cirlce)
+							}
+							setReadBorder(circle) {
+								console.log('设置红色边框')
+							}
+						}
+						// 测试代码
+						let circle = new circle()
+						circle.draw()
+
+						let dec = new Decorator(circle)
+						dec.draw()
+				3、场景
+					—— ES7 装饰器
+						@decorator
+						class A {}
+
+						// 等同于
+						class A {}
+						A = decorator(A) || A;
+
+
+						function testDec(isDec) {
+							return function (target) {
+								target.isDesc = isDec
+							}
+						}
+
+						@testDec(false)
+						class Demo {
+
+						}
+						alert(Demo.isDesc)
+
+						// minxin
+						function mixins(...list) {
+							return function (target) {
+								Object.assign(target.prototype, ...list)
+							}
+						}
+						const Foo = {
+							foo() {
+								alert('foo')
+							}
+						}
+						@minxins(Foo)
+						class MyClass {
+
+						}
+						let obj = new MyClass() 
+						obj.foo()
+
+						// 只读
+						function readonly(target, name, descriptor) {
+							descriptor.writable = false
+							return descriptor
+						}
+
+						class Person {
+							constructor() {
+								this.first = 'A'
+								this.last = 'B'
+							}
+
+							@readonly
+							name() {
+								return `${this.first}${this.last}`
+							}
+						}
+
+						let p = new Person()
+						alert(p.name())
+
+						// 打印日志
+						class Math {
+							@log
+							add(a,b) {
+								return a+b
+							}
+
+						}
+						function log(target, name, descriptor) {
+							var oldValue = descriptor.value;
+							descriptor.value = function() {
+								console.log(`Calling ${name} with`, arguments);
+								return oldValue.apply(this, arguments)
+							}
+							return descriptor;
+						} 
+
+					—— core-decorators
+						1、第三方开源lib
+						2、提供常用的装饰器
+						3、查阅文档：github.com/jayphelps/core-decorators
+							// 开始编码
+							import {readonly } from 'core-decoraors'
+							class Person {
+								@readonly
+								name() {
+									return 'zhang'
+								}
+							}
+
+							let p = new Person()
+							alert(p.name())
+					—— 设计原则验证
+						1、 将现有对象和装饰器进行分离，两者独立存在，符合开放封闭原则
+				4、 总结
+					1、介绍和示例
+					2、UML类图和演示
+					3、经典使用场景
+			—— 代理模式
+				1、介绍
+					—— 使用者无权访问目标对象，中间加代理，通过代理做授权和控制
+				2、示例
+					—— 科学上网，访问github.com
+					—— 明星经纪人
+						class ReadImg {
+							constructor (fileName) {
+								this.fileName = fileName
+								this.loadFromDisk()
+							}
+
+							display() {
+								console.llog('display...' + this.fileName)
+							}
+
+							loadFromDisk() {
+								console.log('loading...' + this.fileName')
+							}
+						}
+						class ProxyImg {
+							constructor(fileName) {
+								this.realImg = new ReadImg()
+							}
+							display() {
+								this.realImag.display()
+							}
+						}
+						// test
+						let proxyImg = new ProxyImg('1.png')
+						proxyImg.display()
+				3、场景
+					—— 网页事件代理
+						var div1 = document.getElementById('div1')
+						div1.addEventListener('click', function(e){
+							var target = e.target
+							if(target.nodeName === 'A'){
+								alert(target.innerHTML)
+							}
+						})
+
+					—— jQuery $.proxy
+						$('#div').click(function() {
+							// this符合期望
+							$(this).addClass('red')
+						})
+
+						$('#div1').click(function() {
+							setTimeout(function() {
+								// this 不符合期望
+								$(this).addClass('red')
+							}, 1000)
+						})
+
+						// 可以用如下方法解决
+						$('#div1').click(function(){
+							var _this = this
+							setTimeout(function() {
+								// _this 符合期望
+								$(_this).addClass('red')
+							}, 1000)
+						})
+
+						// 但推荐使用$.proxy 解决这样就少定义一个变量
+						$('#div1').click(function(){
+							setTimeout($.proxy(function(){
+								//this 符合期望
+								$(this).addClass('red')
+							}, this), 1000);
+						})
+
+					—— ES6 Proxy
+						// 明星
+						let star = {
+							name: '张XX',
+							age: 25,
+							phone: '13837272727'
+						}
+
+						// 经纪人
+						let agent = new Proxy(star, {
+							get: function(target, key) {
+								if (key === 'phone') {
+									return '1872727272'
+								}
+								if (key === 'price') {
+									return 120000
+								}
+								return target[key]
+							},
+							set: function (target, key, val) {
+								if (key === 'customPrice') {
+									if (val < 100000) {
+										throww new Error('价格太低')
+									} else {
+										target[key] = val
+										return true 
+									}
+								}
+							}
+						})
+
+						// test 
+						console.log(agent.name)
+						console.log(agent.age)
+						console.log(agent.phone)
+						console.log(agent.price)
+						agent.customPrice = 150000
+						console.log(agent.customPrice)
+
+					—— 设计原则验证
+						1、代理类和目标类分离，隔离开目标类和使用者，符合开放封闭原则
+					—— 总结
+						—— 介绍和示例
+						—— UML类图和演示
+						—— 经典使用场景
+
+					—— 代理模式 VS 适配器模式
+						适配器模式：提供一个不同的接口（如不同版本的插头）
+						代理模式：提供一模一样的接口
+
+					—— 代理模式 VS 装饰器模式
+						装饰器模式：扩展功能，原有功能不变且可直接使用
+						代理模式：显示原有功能，但是经过限制或者阉割之后的
+			—— 外观模式
+				1、介绍
+					—— 为子系统中的一组接口提供了一个高层接口，使用者使用这个高层接口
+				2、示例
+					 去医院看病，接待员去挂号、门诊、划价、取药
+				3、场景
+					function bindEvent(elem, type, selector, fn) {
+						if (fn == null) {
+							fn = selector
+							selector = null
+						}
+					}
+
+					// 调用
+					bindEvent(elem, 'click', '#div1', fn)
+					bindEvent(elem, 'click', fn)
+				4、设计原则验证
+					不符合单一职责原则和开放封闭原则，因此谨慎使用，不可滥用
+			—— 观察者模式【使用最多的模式】
+				1、介绍
+					—— 发布&订阅
+					—— 一对多
+				2、示例
+					—— 点咖啡，点好之后坐等被叫
+					class Subject {
+						constructor () {
+							this.state = 0
+							this.observers=[]
+						}
+						getState() {
+							rturn this.state
+						}
+						setState(state) {
+							this.state = state
+							this.notifyAllObsrvers()
+						}
+						notifyAllObservers() {
+							this.observers.forEach(observer => {
+								observer.update()
+							})
+						}
+						attach(observer){
+							this.observers.push(observer)
+						}
+					}
+
+					class Observer {
+						constructor(name, subject) {
+							this.name = name
+							this.subject = subject
+							this.subject.attach()
+						}
+						update() {
+							console.log(`${this.name} update, state: ${this.subject.getState()}`)
+						}
+					}
+
+					let s = new Subject()
+					let o1 = new Observer('o1', s)
+					let o2 = new Observer('o2', s)
+					let o3 = new Observer('o3', s)
+					s.setState(1)
+					s.setState(2)
+					s.setState(3)
+
+				3、场景
+					—— 网页事件绑定
+						<button id="btn1">btn</button>
+
+						$('#btn1').click(function(){
+							console.log(1)
+						})
+						$('#btn1').click(function(){
+							console.log(2)
+						})
+						$('#btn1').click(function(){
+							console.log(3)
+						})
+						—— 写成一个click事件也是观察者模式，不点击不触发，点击才触发所有的观察者
+
+					—— Promise
+						function loadImg(src) {
+							var promise = new Promise(function(resolve, reject) {
+								var img = document.createElement('img')
+								img.onload = function() {
+									resolve(img)
+								}
+								img.onerror = function() {
+									reject('图片加载失败')
+								}
+								img.src = src
+							})
+							return promise
+						}
+
+						var resulit = loadImg('http://www.baidu.com/hua.jpg')
+						result.then(function(img){
+							console.log(img.width)
+							return img
+						}).then(function(img){
+							console.log(img.height)
+						})
+
+					—— jQuery callbacks
+						var callbacks = $.Callbacks()
+						callbacks.add(function(info){
+							console.log('fn1', info)
+						})
+						callbacks.add(function(info){
+							console.log('fn2', info)
+						})
+						callbacks.fire('gogogo')
+						callbacks.fire('fire')
+
+					—— nodejs 自定义事件
+						const EventEmitter =require('events').Eventmitter
+						const emitter1 = new EventEmitter()
+						emitter1.on('some', ()=>{
+							console.log('some event is occured 1')
+						})
+						emitter1.on('sbowName', name=>{
+							console.log('some event is occured 2')
+						})
+						// 触发some事件
+						emitter1.emit('some')
+						emitter1.emit('sbowName', 'zhangsan') // emit 时候可以传递参数过去
+
+
+				4、设计原则验证
+					- 主题和观察者分离，不是主动触发而是被动监听，两者解耦。
+					- 符合开放封闭原则
+
+				5、总结
+					- 介绍和示例
+					- UML类图和演示
+					- 经典使用场景
+			—— 迭代器模式
+				1、介绍
+					—— 顺序访问一个集合
+					—— 使用者无需知道集合的内部结构（封装）
+				2、示例
+					—— 没有合适的示例，用常用的jQuery演示一下
+						var arr = [1,2,3,4]
+						var nodeList = document.getElementByTagName('p')
+						var $p = $('p')
+
+						// 要对三个变量进行遍历，需要写三个遍历方法
+						// 第一
+						arr.forEach(function(item) {
+							consolle.log(item)
+						})
+						// 第二
+						var i, length = nodeList.length
+						for(i=0; i < length; i++) {
+							console.log(nodeList[i])
+						}
+						// 第三
+						$p.each(function(key, p) {
+							console.log(key, p)
+						})
+
+						<!---------------------- 迭代器模式优化 ---------------------------->
+						var arr = [1,2,3]
+						var nodeList = document.getElementsByTagName('a')
+						var $a = $('a')
+
+						function each(data) {
+							var $data = $(data)
+							$data.each(function(key, val) {
+								console.log(key, val)
+							})
+						}
+						each(arr)
+						each(nodeList)
+						each($a)
+				3、UML类图
+				4、代码演示
+					class Iterator {
+						constructor(container) {
+							this.list = container.list
+							this.index = 0
+						}
+						next() {
+							if(this.hasNext()) {
+								return this.list[this.index++]
+							}
+							return null
+						}
+						hasNext() {
+							if (this.index >= this.list.length) {
+								return false
+							}
+							return true
+						}
+					}
+
+					class Container {
+						constructor (list) {
+							this.list = list
+						}
+						getIterator() {
+							return new Iterator(this)
+						}
+					}
+					// 测试代码
+					let arr = [1,2,3,4,5,6]
+					let container = new Container(arr)
+					let iterator = container.getIterator()
+					while(iterator.hasNext()) {
+						consle,log(iterator.next())
+					}
+				5、场景
+					—— jQuery each
+					—— ES6 Iterator
+						1、ES6 Iterator 为何存在
+							—— ES6 语法中，有序集合的数据类型已经有很多
+							—— Array Map Set String TypedArray arguments NodeList
+							—— 需要有一个统一的遍历接口来遍历所有的数据类型
+							——（注意， object 不是有序集合，可以用Map代替）
+						2、ES6 Iterator是什么？
+							—— 以上数据类型，都有[Symbol.iterator]属性
+							—— 属性值是函数，执行函数返回一个迭代器
+							—— 这个迭代器就有next方法可以顺序迭代子元素
+							—— 可运行Array.prototype[Symbol.iterator]来测试
+						3、示例
+							function each(data) {
+								let iterator = data[Symboll.iterator]()
+								let item = {done: false}
+								while(!item.done) {
+									item = iterator.next()
+									if (! .done) {
+										console.log(item.value)
+									}
+								}
+							}
+
+							// 测试代码
+							let arr = [1,2,3,4,5,6]
+							let nodeList = document.getElementsByTagName('p')
+							let m = new Map()
+							m.set('a', 100)
+							m.set('b', 200)
+
+							each(arr)
+							each(nodeList)
+							each(m)
+
+							// 不是每个人都知道Symbol.iterator，也不是每个人都要封装一个each函数，因此有了for...of...语法
+							function each(data) {
+								for(let item of data) {
+									console.log(item)
+								}
+							}
+
+							each(arr)
+							each(nodeList)
+							each(m)
+						4、ES6 Iterator 与 Generator
+				6、设计原则验证
+					—— 迭代器对象和目标对象分离
+					—— 迭代器将使用者和目标对象隔离开
+					—— 符合开放封闭原则
+				7、总结
+					—— 介绍和示例
+					—— UML类图和演示
+					—— 经典使用场景
+			—— 状态模式
+				1、介绍
+					—— 一个对象有状态变化
+					—— 每次状态变化都会触发一个逻辑
+					—— 不能总是用if...else来控制
+				2、演示
+					—— UML类图
+					—— 代码演示
+
+						// 状态
+						class State {
+							constructor(color) {
+								this.color = color
+							}
+							handle(context) {
+								console.log(`turn to ${this.color} light`)
+								context.setState(this)
+							}
+						}
+
+						// 主体
+						class Context {
+							constructor() {
+								this.state = null
+							}
+							getState() {
+								return this.state
+							}
+							setState(state)  {
+								this.state = state
+							}
+						}
+
+						// 测试
+						let context = new Context()
+
+						let green = new State('green')
+						let yellow = new State('yellow')
+						let red = new State('red')
+
+						green.handle(context)
+						console.log(context.getState())
+
+						yellow.handle(context)
+						console.log(context.getState())
+
+						red.handle(context)
+						console.log(context.getState())
+
+				3、场景
+					—— 有限状态机
+						1、什么是有限状态机？
+							—— 有限个状态、以及在这些状态之间的变化
+							—— 如交通信号灯
+							—— 使用开源lib：Javascript-state-machine
+						2、代码演示
+							// 状态机模型
+							var fsm = new StateMachine({
+								init: '收藏',
+								transtions: [
+									{
+										name: 'doStore',
+										from: '收藏',
+										to: '取消收藏'
+									},
+									{
+										name: 'deleteStore',
+										from: '取消收藏',
+										to: '收藏'
+									}
+								],
+								methods: {
+									// 执行收藏
+									onDoStore: function() {
+										alert('收藏成功')
+										updateText()
+									},
+									// 取消收藏
+									onDeleteStore: function() {
+										alert('已取消收藏')
+										updateText()
+									}
+								}
+							})
+
+							var $btn = $('#btn')
+
+							// 点击事件
+							$btn.click(function() {
+								if (fsm.is('收藏')) {
+									fsm.doStore()
+								} else {
+									fsm.deleteStore()
+									updateText()
+								}
+							})
+
+							// 更新文案
+							function updateText() {
+								$btn.text(fsm.state)
+							}
+
+							// 初始化文案
+							updateText()
+
+					—— 写一个简单的Promise
+						var fsm = new StateMachine({
+							init: 'pending',
+							transitions: [
+								{
+									name: 'resolve',
+									from: 'pending',
+									to: 'fullfilled'
+								},
+								{
+									name: 'reject',
+									from: 'pending',
+									to: 'rejected'
+								}
+							],
+							methods: {
+								onResolve: function(state, data) {
+									// state - 当前状态机示例； data - fsm.resolve(xxx)传递的参数
+									data.successList.forEach(fn=>fn())
+								}，
+								onReject: function(state, data) {
+									data.failList.forEach(fn=>fn())
+								}
+							}
+						})
+						
+						// 定义 Promise
+						class myPromise {
+							constructor() {
+								this.successList =  []
+								this.failList = []
+
+								fn(() => {
+									fsm.resolve(this)
+								}, () => {
+									fsm.reject(this)
+								})
+							}
+							then(successFn, failFn) {
+								this.successList.push(successFn)
+								this.failList.push(failFn)
+							}
+						}
+
+						function loadImg(src) {
+							const promise = new Promise(function(resolve, reject) {
+								var img = document.createElement('img')
+								img.onload = function () {
+									resolve(img)
+								}
+								img.onerror = function () {
+									reject()
+								}
+								img.src = src
+							})
+							retrun promise
+						}
+
+						var src = 'http://www.imooc.com/logo.png'
+						var result = loadImg(src)
+
+						result.then(function (img) {
+							console.log('success 1')
+						}, function() {
+							console.log(failed 1)
+						})
+
+					—— 设计原则验证
+						1、将状态对象和主题对象分离，状态的变化逻辑单独处理
+				4、总结
+					—— 介绍和示例
+					—— UML类图和演示
+					—— 经典使用场景
+			—— 其他设计模式
+				1、优先级划分依据
+					—— 不常用
+					—— 对应不到经典的应用场景
+				2、讲解方式
+					—— 代码演示，说明该设计模式的目的和用意
+					—— 不再画UML类图
+				3、有哪些设计模式
+					—— 创建型： 原型模式
+					—— 结构型： 桥接模式、组合模式、享元模式
+					—— 行为型： 策略模式、模板方法模式、职责链模式	、命令莫斯、备忘录模式、中介者模式、访问模式、解释器模式 
+				4、原型模式
+					—— 概念
+						1、clone自己，生成一个新对象
+					—— 应用
+						JS中应用： Object.create
+						// 一个原型对象
+						const prototype = {
+							getName: function () {
+								return this.first + ' ' + this.last
+							},
+							say: function () {
+								alert('hello')
+							}
+						}
+
+						// 基于原型创建X
+						let x = Object.create(prototype)
+						x.first = 'A'
+						x.last = 'B'
+						alert(x.getName())
+						x.say()
+					—— 总结
+						1、概念和用意
+						2、实现方法
+						3、JS中的场景
+				5、桥接模式
+					—— 概念
+						1、 用于把抽象化与实现化解耦，使二者可以独立变化
+					—— 演示
+						class Color {
+							constructor (name) {
+								this.name = name
+							}
+						}
+						class Shape {
+							constructor(name, color) {
+								this.name = name
+								this.color = color
+							}
+						}
+						draw() {
+							console.log(`${this.color.name}${this.name}`)
+						}
+
+						// 测试代码
+						let red = new Color('red')
+						let yellow = new Color('yellow')
+						let circle = new Shape('circle', red)
+						circle.draw()
+						let triangle = new Shape('triangle', yellow)
+						triangle.draw()
+					—— 设计原则
+						1、抽象和实现分离，解耦
+						2、符合开放封闭原则
+
+					—— 总结
+						1、概念和用意
+						2、实现方式
+						3、JS中的场景
+				6、组合模式
+					—— 概念
+						1、生成树形结构，表示”整体-部分“关系
+						2、让整体和部分都具有一致的操作方式
+					—— 演示
+						虚拟DOM中的vnode是这种形式，但数据类型简单
+						{
+							tag: 'div',
+							attr: {
+								id: 'div1',
+								className: 'container'
+							},
+							children: [
+								{
+									tag: 'p',
+									attr: {},
+									children: ['123']
+								},
+								{
+									tag: 'p',
+									attr: {},
+									children: ['456']
+								}
+							]
+						}
+						整体和耽搁节点的操作是一致的，整体和单个节点的数据结构也保持一致
+					—— 设计原则验证
+						1、将整体和单个节点的操作抽象出来
+						2、符合开放封闭原则
+					—— 总结
+						1、概念和用意
+						2、实现方式
+						3、JS应用场景
+				7、享元模式
+					—— 概念
+						1、共享内存（主要考虑内存，而非效率）
+						2、相同的数据，共享使用
+					—— 演示
+						1、事件代理						
+					—— 设计原则验证
+						1、将相同的部分抽象出来
+						2、符合开放封闭原则
+				8、策略模式
+					—— 概念
+						1、不同策略分开处理
+						2、避免出现大量的if...else 或者switch...case		
+					—— 演示
+						class User {
+							constructor(type) {
+								this.type = type
+							}
+							buy () {
+								if (this.type === 'ordinary') {
+									console.log('普通用户购买')
+								} else if (this.type === 'member') {
+									console.log('会员用户购买')
+								} else if (this.type === 'vip') {
+									console.log('VIP用户购买')
+								}
+							}
+						}
+						// 测试代码
+						let u1 = new User('ordinary')
+						u1.buy()
+						let u2 = new User('member')
+						u2.buy()
+						let u3 = new User('vip')
+						u3.buy()
+
+						//优化修改
+						class ordinaryUser {
+							buy () {
+								console.log('普通用户购买')
+							}
+						}
+						class memberUser {
+							buy () {
+								console.log('会员用户购买')
+							}
+						}
+						class vipUser {
+							buy () {
+								console.log('VIP用户购买')
+							}
+						}
+
+						let u1 = new ordinaryUser()
+						u1.buy()
+						let u2 = new memberUser()
+						u2.buy()
+						let u3 = new vipUser()
+						u3.buy()
+					—— 设计原则验证
+						1、不同策略，分开处理，而不是混合在一起
+						2、符合开放封闭原则
+					—— 总结
+						1、概念和用意
+						2、实现方式
+						3、JS中的场景
+				9、模板方法模式
+					class Action {
+						handle() {
+							handle1()
+							handle2()
+							handle3()
+						}
+						handle1() {
+							console.log(1)
+						}
+						handle2() {
+							console.log(2)
+						}
+						handle3() {
+							console.log(3)
+						}
+					}
+				10、职责链模式
+					—— 概念
+						1、 一步操作可能分为多个职责角色来完成
+						2、吧这些角色都分开，然后用一个链串起来
+						3、将发起者和各个处理者进行隔离
+					—— 演示
+						// 请假审批，需要组长审批、经理审批、最后总监审批
+						class Action {
+							constructor (name) {
+								this.name = name 
+								this.nextAction = null
+							}
+							setNextAction(action) {
+								this.nextAction = action
+							}
+							handle() {
+								console.log(`${this.name} 审批`)
+								if(this.nextAction != null) {
+									this.nextAction.handle(0)
+								}
+							}
+						}
+
+						// 测试代码
+						let a1 = new Action('组长')
+						let a2 = new Acrtion('经理')
+						let a3 = new Action ('总监')
+						a1.setNextAction(a2)
+						a2.setNextAction(a3)
+						a1.handle()
+					—— JS中的链式操作
+						1、职责链模式和业务结合比较多，JS中能联想到链式操作
+						2、jQuery的链式操作Promise.then的链式操作
+					—— 设计原则验证
+						1、发起者与各个处理者进行隔离
+						2、符合开放封闭原则
+					—— 总结
+						1、概念和用意
+						2、实现方式
+						3、JS中的场景
+				11、命令模式
+					—— 概念
+						1、执行命令时，发布者和执行者分开，中间加入命令对象，作为中转站
+					—— 演示
+						// 接收者
+						class Receiver {
+							exec() {
+								console.log('执行')
+							}
+						}
+						// 命令者
+						class Command {
+							constructor(receiver) {
+								this.receiver = receiver
+							}
+							cmd() {
+								console.log('执行命令')
+								this.receiver.exec()
+							}
+						}
+						// 触发者
+						class Invoker {
+							constructor(command) {
+								this.command = command
+							}
+							invoke() {
+								console.log('开始')
+								this.command.cmd()
+							}
+						}
+
+						// 士兵
+						let solider = new Receiver()
+						// 小号手
+						let trumpeter = new Command(soldier)
+						// 将军
+						let general = new Invoker(trumpeter)
+					—— JS中的应用
+						1、 网页富文本编辑器操作，浏览器封装了一个命令对象
+						document.execCommand('bold')
+						ducument.execCommand('undo')
+					—— 设计原则验证
+						1、命令对象与执行对象分开、解耦
+						2、符合开放封闭原则
+					—— 总结
+						1、概念和用意
+						2、实现方式
+						3、JS中的场景
+				12、备忘录模式
+					—— 概念
+						1、随时记录一个对象的状态变化
+						2、随时可以恢复之前的某个状态（如撤销功能）
+						3、未找到JS中的经典应用，除了一些工具（如编辑器）
+					—— 演示
+						// 备忘类
+						class Memento {
+							constructor (content) {
+								this.content = content
+							}
+							getContent() {
+								return this.content
+							}
+						}
+						// 备忘列表
+						class CareTaker {
+							constructor() {
+								this.list = []
+							}
+							add(memento) {
+								this.list.push(memento)
+							}
+							get(index){
+								return this.list[index]
+							}
+						}
+						// 编辑器
+						class Editor {
+							constructor() {
+								this.content = null
+							}
+							setContent(content) {
+								this.content = content
+							}
+							getContent() {
+								return this.content
+							}
+							saveContentToMemento() {
+								return new Memento(this.content)
+							}
+							getContentFormMemento(memento) {
+								this.content = memento.getContent()
+							}
+						}
+
+						// 测试
+						let editor = new Editor()
+						let careTaker = new CareTaker()
+
+						editor.setContent('111')
+						editor.setContent('222')
+						careTaker.add(editor.saveContentToMemento) // 将当前内容备份
+						editor.setContent('333')
+						careTaker.add(editor.saveContentToMemento) // 将当前内容备份
+						editor.setContent('444')
+
+						console.log(editor.getContent())
+						editor.getContentFormMemento(careTaker.get(1)) // 撤销
+						console.log(editor.getContent())
+						editor.getContentFormMemento(careTaker.get(0)) // 撤销
+						console.log(editor.getContent())
+					—— 设计原则验证
+						1、状态对象与使用者分开，解耦
+						2、符合开放封闭原则
+					—— 总结
+						1、概念和用意
+						2、实现方式
+						3、JS使用场景
+				13、中介者模式
+					—— 概念
+						1、中介连接多个对象
+					—— 演示
+						class  Mediator {
+							constructor (a, b) {
+								this.a = a
+								this.b = b
+							}
+							setA() {
+								let number = this.b.number
+								this.a.setNumber(number * 100)
+							}
+							setB () {
+								let number = this.a.number
+								this.b.setNumber(number / 100)
+							}
+						}
+
+						class A {
+							constructor() {
+								this.number = 0
+							}
+							setNumber(num, m) {
+								this.number = num
+								if (m) {
+									m.setB()
+								}
+							}
+						}
+						class B {
+							constructor () {
+								this.number = 0 
+							}
+							setNumber(num, m) {
+								this.number = num
+								if (m) {
+									m.setA()
+								}
+							}
+						}
+
+						// 测试
+						let a = new A()
+						let b = new B()
+						let m = new Mediator(a, b)
+						a.setNumber(100, m)
+						console.log(a.number, b.number)
+						b.setNumber(100, m)
+						console.log(a.number, b.number)
+					—— 设计原则验证
+						1、讲各关联对象通过中介者隔离
+						2、符合开放封闭原则
+					—— 总结
+						1、概念和用意
+						2、实现方式
+						3、JS中的场景
+				14、访问者模式
+					—— 概念
+						1、将数据操作和数据结构进行分离
+						2、使用场景不多
+				15、解释器模式
+					—— 概念
+						1、描述语言语法如何定义，如何解释和编译
+						2、用于专业场景
+
+
+--------------------------------------------------------------------------------------------------
+一、关于面试
+	1、能说出课程讲解的设计模式即可（单例模式、观察者模式）
+二、日常使用
+	1、重点讲解的设计模式，要强制自己模仿、掌握
+	2、非常用的设计模式，视业务场景选择性使用
+
+--------------------------------------------------------------------------------------------------
+一、综合应用
+	—— 介绍 & 演示
+	—— 用到哪些设计模式
+	—— UML类图
+	—— 代码演示
+
+	—— 介绍
+		1、使用jQuery做一个模拟购物车的示例
+		2、包括： 显示购物车列表、加入购物车、从购物车删除
+	—— 用到的设计模式
+		1、工厂模式、单例模式
+		2、装饰器模式、观察者模式
+		3、状态模式、模板方法模式、代理模式
+	—— UML类图
+		1、‘+’ 对外开放（public）
+		1、‘-’ 私有（private）
+	—— 代码演示
+
+		// api/app.js
+		import $ from 'jquery'
+		import ShoppingCart from './ShoppingCart.js'
+		import List from './List.js'
+
+		export default class APP {
+			constructor(id) {
+				this.$el = $('#' + id)
+			}
+			// 初始化购物车
+			initShoppingCart() {
+				let shoppingCart = new ShoppingCart(this)
+				shoppingCart.init()
+			}
+			// 初始化列表
+			initList() {
+				let list = new List(this)
+				list.init()
+			}
+
+			init() {
+
+			}
+		}
+
+		// index.js
+		import App from './demo/api/App.js'
+		let app = new App('app')
+		app.init()
+
+		// config.js
+		export const GET_LIST = '/api/list.json'
+
+		// List.js
+		import $ from 'jquery'
+		import { GET_LLIST } from './config.js'
+		import createItem from './createItem.js'
+
+		export default class List {
+			constructor(app) {
+				this.app = app
+				this.$el = $('<div>')
+			}
+			// 获取数据
+			loadData() {
+				// 返回Promise的实例
+				return fetch(GET_LLIST).then(result => {
+					return result.json()
+				})
+			}
+
+			// 生成列表
+			initItemList(data){
+				data.forEach(itemData=>{
+					// 创建一个Item 然后init
+					let item = createItem(this, itmData)
+					itm.init()
+				})
+			}
+
+			// 渲染
+			render() {
+				this.app.$el.append(this.$el)
+			}
+
+			init() {
+				this.loadData().then(data => {
+					this.initItemList(data)
+				}).then(()=>{
+					// 渲染
+					this.render()
+				})
+			}
+		}
+
+		// Cart.js
+		class Cart {
+			constructor() {
+				this.list = []
+			}
+			add (data) {
+				this.list.push(data)
+			}
+			del(id){
+				this.list = this.list.filter(item => {
+					if (item.id === id) {
+						return false
+					}
+					return true
+				})
+			}
+			getLlist() {
+				return this.list.map(item => {
+					return item.name
+				}).join('\n')
+			}
+		}
+
+		 // 返回单例
+		 let getCart = (function(){
+		 	let cart
+		 	return function() {
+		 		if (!cart) {
+		 			cart = new Cart()
+		 		}
+		 		return cart
+		 	}
+		 })()
+
+		 export default getCart
+
+
+		// Item.js
+		import $ from 'jquery'
+		import getCart from './Cart.js'
+		import StateMachine from 'javascript-state-machine'
+		import {log} from './util/log.js'
+		export default class Item {
+			constructor (list, data) {
+				this.list = list
+				this.data = data
+				this.$el = $('<div>')
+				this.cart = getCart()
+			}
+			initContent() {
+				let $el = this.$el
+				let data = this.data
+				$el.append($(`<p>名称:${data.name}</p>`))
+				$el.append($(`<p>价格:${data.price}</p>`))
+			}
+			initBtn() {
+				llelt $el = this.$el
+				let $btn = $('<button>')
+				let _this = this
+				let fsm = new StateMachine({
+					init: '加入购物车',
+					transitions: [
+						{
+							name: 'addToCart',
+							from: '加入购物车',
+							to: '从购物车删除'
+						},{
+							name: 'deleteFromCart',
+							from: '从购物车删除',
+							to: '加入购物车'
+						}
+					],
+					methods: {
+						// 加入购物车
+						onAddToCart: function() {
+							_this.addToCartHandle()
+							updateText()
+						},
+						// 从购物车删除
+						onDeleteFromCart: function() {
+							_this.deleteFromCartHandle()
+							updateText()
+						}
+					}
+				})
+				function updateText () {
+					$btn.text(fsm.state)
+				}
+				$btn.click(()=>{
+					// 添加到购物车
+					// 从购物车移除
+					if (fsm.is('加入购物车')) {
+						fsm.onAddToCart()
+					} else {
+						fsm.onDeleteFromCart()
+					}
+				})
+				updateText()
+				$el.append($btn)
+			}
+			// 添加到购物车
+			@log('add')
+			addToCartHandle () {
+				this.cart.add(this.data)
+			}
+			// 从购物车删除
+			@log('del')
+			deleteFromCartHandle() {
+				this.cart.del(this.data.id)
+			}
+			render() {
+				this.list.$el.append(this.$el)
+			}
+
+			init () {
+				this.initContent()
+				this.initBtn()
+				this.render()
+			}
+		}
+
+		// cretateItem.js
+		import Item from './Item.js'
+		// 补充： 优惠商品的处理逻辑
+		function createDiscount(itemData) {
+			// 用代理做折扣显示
+			retrun new Proxy(itemData, {
+				get: function(target, key, receiver) {
+					if(key === 'name') {
+						return `${target[key]}【折扣】`
+					}
+					if(key === 'price') {
+						return target[key] * 0.8
+					}
+					return target[key]
+				}
+			})
+		}
+		// 工厂函数
+		export defaault function(list, data) {
+			if (itemData.discount) {
+				itemData = createDiscount(itemData)
+			}
+			return new Item(list, itemData)
+		}
+
+		// ShoppingCart.js
+		import $ from 'jquery'
+		export default class ShoppingCart {
+			constructor(app) {
+				this.app = app
+				this.$el = $('<div>'.css({
+					'padding-bottom': '10px',
+					'border-bottom': '1px solid #ccc'
+				}))
+				this.cart = getCart() 
+			}
+			initBtn() {
+				let $btn = $('<button>购物车</button>')
+				$btn.click(()=>{
+					this.showCart()
+				})
+				this.$el.append($btn)
+			}
+			showCart() {
+				alert(this.cart.getList())
+			}
+			render() {
+				this.app.$el.append(this.$el)
+			}
+			init() {
+				this.initBtn()
+				this.render()
+			}
+		}
+		// utili/log.js
+		export function log(type) {
+			return function (target, name, descriptor) {
+				let oldVlue = descriptor.value
+				descriptor.value = function() {
+					// 在此统一打印日志
+					console.log(`日志上报${type}`)
+					// 执行原有的方法
+					return oldValue.apply(this, arguments)
+				}
+				return descriptor
+			}
+		}
+	—— 总结用到的设计模式
+		1、工厂模式：$('XXX')，创建商品（折扣信息）
+		2、单例模式：购物车
+		3、装饰器模式：打点统计
+		4、观察者模式：网页事件，Promise
+		5、状态模式：添加到购物车 & 从购物车删除
+		6、模板方法模式： 渲染有统一的方法，内部包含了各个模块的渲染
+		7、代理模式：打折商品信息处理
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+—— 虚拟DOM（存在价值、如何使用、diff算法）
+	—— 什么是vdom,为何要用vdom
+	—— vdom如何使用，核心函数有哪些
+	—— 了解diff算法
+
+—— vue（MVVM、vue响应式、模板解析、渲染）
+	—— 之前使用jquery和现在使用vue和react有哪些区别
+	—— 你如何理解MVVM
+	—— vue 如何实现响应
+	—— vue 如何解析模板
+	—— 介绍vue的实现流程
+
+—— React（组件化、JSX、vdom、setState）
+	—— 对组件化的理解
+	—— JSX是什么
+	—— JSX和vdom是什么关系
+	—— 简述React的setState
+
+—— 对比VUE和React（有主见，自圆其说）
+	—— 简述自己如何比较React和Vue

@@ -1,0 +1,266 @@
+一、页面某个模块的文字内容是动态的，可能是几个字，也可能是一句话。然后，希望文字少的时候居中显示，文字超过一行的时候居左显示。该如何实现？
+	.box {
+		text-algin: center;
+	}
+	.content {
+		display: inline-block;
+		text-aligin: left;
+	}
+
+二、实现一个“凹”和“凸”效果
+	.ao {
+		display: inline-block; width: 0;
+	}
+	.ao:before {
+		content: "love你love";
+		outline: 2px solid #cd0000;
+	     color: #fff;
+	}
+
+三、内在盒子：content box、padding box、border box、margin box
+	.box1 { box-sizing: content-box; } /* 默认值 */
+	.box2 { box-sizing: padding-box; } /* Firefox曾经支持*/ 
+	.box3 { box-sizing: border-box; } /* 全线支持 */
+	.box4 { box-sizing: margin-box; } /* 从未支持过 */
+
+四、”宽度分离“原则：father只有width属性，border、padding设置在son标签上。
+	box-sizing或许是为替换元素自适应问题而设计的：
+	input, textarea, img, video, object { 
+		box-sizing: border-box;
+	}
+
+五、为何height：100% 无效？
+	如果包含 块的高度没有显式指定(即高度由内容决定)，并且该元素不是绝对定位，则计算值为 auto。
+	'auto' * 100/100 = NaN
+
+	—— 使height：100%；生效
+		(1)设定显式的高度值。
+			html, body {
+			   height: 100%;
+			}
+		(2)使用绝对定位。
+			div {
+		      height: 100%;
+		      position: absolute;
+			}
+		(2)图片左右半区点击分别上一张图下一张图效果：（原理很简单，就是在图片外面包一层具有“包裹性”同时具有定位特性的标签。此时，只要在图片上覆盖两个绝对定位，同时设 height:100%，则无论图片多高，我们的左右半区都能自动和图片高度一模一样，无须任何使用 JavaScript 的计算。）
+			.box {
+			  display: inline-block;
+			  position: relative;
+			}
+			.prev, 
+			.next {
+			  width: 50%; height: 100%;
+			  position: absolute;
+			  top: 0;
+			  opacity: .5;
+			}
+			.prev {
+			  left: 0;
+			  background-color: #cd0000;
+			}
+			.next {
+			  right: 0;
+			  background-color: #34538b;
+			}
+六、展开更多的动画效果
+	1、使用max-height实现
+		.element {
+			max-height: 0;
+			overflow: hidden; 
+			transition: max-height .25s;
+		}
+		.element.active {
+			max-height: 666px; /* 一个足够大的最大高度值 */ 
+		}
+
+七、替换元素：通过修改某个属性值呈现的内容就可以被替换的元素就称为”替换元素“。（所有的替换元素都是内联水平元素）因此，<img>、<object>、<video>、<iframe>或者表单元素<textarea>和<input>都是典型 的替换元素。
+	1、内容的外观不受页面上的CSS影响
+	2、有自己的尺寸
+	3、在很多CSS属性上有自己的一套表现规则
+
+八、替换元素的尺寸计算规则
+	1、固有尺寸指的是替换内容原本的尺寸。
+	2、HTML 尺寸（标签样式属性width、height、size、cols、rows）
+	3、CSS 尺寸
+
+九、使用content实现“两端对齐”的弹性布局 —— 所有浏览器全部兼容（但 这种方法也有不足之处，就是 HTML 代码需要注意有些地方不能换行或者空格，有些地方则必 须要换行或者有空格，这在多人协作的时候就容易出问题。）
+	（开发人员喜欢编辑器的 HTML 格式化功能，然后标签自动换行，于是样式就会出现偏差，所以，一定记得在 HTML 代码中写 上明确的注释— “这里千万不能换行”，或者类似这种。）
+	1、CSS代码
+		.box {
+			width: 256px; height: 256px; /* 两端对齐关键 */
+			text-align: justify;
+		}
+		.box:before {
+			content: "";
+			display: inline-block; height: 100%;
+		}
+		.box:after {
+			content: "";
+			display: inline-block; width: 100%;
+		}
+		.bar {
+			display: inline-block;
+		    width: 20px;
+	    }
+    2、HTML代码
+    	<div class="box"><i class="bar"></i> 
+    		<i class="bar"></i>
+			<i class="bar"></i>
+			<i class="bar"></i>
+		</div>
+
+十、插入换行符来实现某些布局或者效果：CR （'\A'）字符和 LF （'\D'）字符分 别指回车(CR)和换行(LF)，
+	:after {
+		content: '\A'; white-space: pre;
+	}
+
+	—— 让加载中...后面的三个点动起来（支持 animation 动画的浏览器下全 部都是打点 loading 动画效果，颜色大小可控，使用非常方便。）
+		HTML：
+			正在加载中<dot>...</dot>
+		CSS：
+			dot {
+			    display: inline-block; 
+			    height: 1em;
+			    line-height: 1;
+			    text-align: left;
+			    vertical-align: -.25em;
+			    overflow: hidden;
+			}
+			dot::before {
+			    display: block;
+			    content: '...\A..\A.';
+			    white-space: pre-wrap;
+			    animation: dot 3s infinite step-start both;
+			}
+			@keyframes dot {
+			    33% { transform: translateY(-2em); }
+			    66% { transform: translateY(-1em); }
+			}
+	—— 生成辅助标记
+		<a href="" target="_blank">这个链接</a>
+
+		a {
+		  text-decoration: underline;
+		  color: #cd0000;
+		}
+		a[target="_blank"]:after {
+		  content: url(data:image/gif;base64,R0lGODlhBQAFAIABAM0AAAAAACH5BAEAAAEALAAAAAAFAAUAAAIHRIB2eKuOCgA7);
+		}
+	—— 针对不同的语音，设置不同的前后符号
+		1、玩法一
+			<p lang="ch"><q>这本书很赞!</q></p>
+			<p lang="en"><q>This book is very good!</q></p>
+			<p lang="no"><q>denne bog er fantastisk!</q></p> 
+
+			/* 为不同语言指定引号的表现 */
+			:lang(ch) > q { quotes: '“' '”'; }
+			:lang(en) > q { quotes: '"' '"'; }
+			:lang(no) > q { quotes: '«' '»'; }
+
+			/* 在 q 标签的前后插入引号 */
+			q:before { content: open-quote; } q:after { content: close-quote; }
+
+		2、玩法二
+			<p class="ask">为什么open-quote/close-quote很少使用?</p>
+			<p class="answer">因为直接使用字符更干脆!</p>
+
+			.ask {
+				quotes:'提问:“' '”';
+			}
+			.answer {
+				quotes:'回答:“' '”'; 、
+			}
+			.ask:before, .answer:before {
+				content: open-quote; 
+			}
+			.ask:after, .answer:after {
+				content: close-quote; 
+			}
+	—— content attr属性值内容生成
+		img::after {
+			/* 生成alt信息 */ 
+			content: attr(alt); 
+			/* 其他CSS略 */
+		}
+		除了原生的 HTML 属性，自定义的 HTML 属性也是可以生产的，例如:
+		.icon:before {
+			content: attr(data-title);
+		}
+
+	—— 设置层级
+		HTML：
+			<div class="reset">
+			    <div class="counter">我是王小二
+			        <div class="reset">
+			            <div class="counter">我是王小二的大儿子</div>
+			            <div class="counter">我是王小二的二儿子
+			                <div class="reset">
+			                    <div class="counter">我是王小二的二儿子的大孙子</div>
+			                    <div class="counter">我是王小二的二儿子的二孙子</div>
+			                    <div class="counter">我是王小二的二儿子的小孙子</div>
+			                </div>
+			            </div>
+			            <div class="counter">我是王小二的三儿子</div>
+			        </div>
+			    </div>
+			    <div class="counter">我是王小三</div>
+			    <div class="counter">我是王小四
+			        <div class="reset">
+			            <div class="counter">我是王小四的大儿子</div>
+			        </div>
+			    </div>
+			</div>
+		CSS：
+			.reset { 
+			  padding-left: 20px; 
+			  counter-reset: wangxiaoer;
+			}
+			.counter:before { 
+			  content: counters(wangxiaoer, '-') '. '; 
+			  counter-increment: wangxiaoer;
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

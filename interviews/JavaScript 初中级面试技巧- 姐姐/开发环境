@@ -1,0 +1,225 @@
+零、面试官提问开发环境的目的
+	—— 面试官通过开发环境了解面试者的经验
+	—— 开发环境，最能体现工作产出的效率
+	—— 会以聊天的形式为主，而不是出具体的问题
+
+零.零：关于开发环境
+	—— IDE（写代码的效率）
+	—— git（代码版本管理，多人协作开发）
+	—— JS模块化
+	—— 打包工具
+	—— 上线回滚流程
+
+零.壹：IDE
+	—— webstorm
+	—— sublime
+	—— vscode【微软推出的编辑器】
+	—— atom【GitHub开源的编辑器】
+
+一、版本管理 Git
+	—— 正式项目都需要代码版本管理
+	—— 大型项目需要多人协作开发
+	—— Git和Linux是一个作者
+	—— 网络Git服务如coding.net、github.com
+	—— 一般公司代码非开源，都有自己的Git服务器
+	—— 搭建Git服务器无需你了解太多
+	—— Git的基本操作必须熟练
+		1、git add .
+		2、git checkout XXX
+		3、git commit -m "xxx"
+		4、git push origin master
+		5、git pull origin master 
+		6、git branch
+		7、git checkout -b xxx/ git checkout xxx
+		8、git merge xxx  
+
+二、模块化
+	1、不使用模块化的情况
+		—— 各个JS文件，如果互相依赖必须保持顺序正确，如果顺序错了就会报错
+		—— 每个文件的函数都必须是全局变量，才能暴露给使用方，全局变量污染 
+		—— 不清楚其他JS文件的依赖关系
+
+	2、使用模块化
+		—— 引入模块然后使用，依赖关系非常明确
+
+	3、AMD
+		—— 引入require.js
+			1、会形成全局的define函数、全局require函数、依赖JS会自动异步加载
+			2、在main.js 中使用
+				—— <script data-main="./main.js" src="https://requires.js">
+		—— 好处
+			1、可以实现异步加载
+			2、实现不使用就不加载JS文件
+
+	4、CommonJS
+		—— CommonJS是nodejs模块化规范，现在被大量用前端，原因：
+			1、前端开发依赖的库和插件，都可以从npm中获取
+			2、构建工具的高度自动化，使得使用npm的成本非常低
+			3、CommonJS不会异步加载JS，而是同步一次性加载出来的
+
+		—— 使用
+			module.export = {
+				getFormatDate: function (data) {
+					return 'XXXX'
+				}
+			}
+
+			var util = require(util.js)
+			module.exports = {
+				newGetFormatDate: function (date) {
+					return util.getFormatDate(date)
+				}
+			}
+		—— 需要构建工具支持
+		—— 一般和npm一起使用
+
+	5、AMD和CommonJS的使用场景
+		—— 需要异步加载JS，使用AMD
+		—— 使用了npm 之后建议使用CommonJS
+	6、重点总结
+		1、AMD
+		2、CommonJS
+		3、两者的区别
+
+三、构建工具（打包工具）
+	1、grunt
+	2、gulp
+	3、fis3
+	4、webpack：（最核心的作用是合并打包和压缩）
+		—— npm install webpack --save-dev
+		—— npm install jquery --save
+
+四、上线和回滚
+	—— 不会有具体的问题，交流询问的方式
+	—— 知识点
+		1、上线回滚的基本流程
+			—— 上线回滚流程介绍
+				1、 是非常重要的开发环节
+				2、 各个公司的具体流程不同
+				3、 由专门的工具或者系统完成，我们无需关心细节
+				4、 如果你没有参与过，面试时也要说出点
+				5、 只讲要点，具体实现无法讲解
+			—— 上线流程要点
+				1、将测试完成的代码提交到git版本库的master分支
+				2、将当前服务器的代码全部打包并记录版本号，备份
+				3、将master分支的代码提交覆盖到线上服务器，生成新的版本号
+			—— 回滚流程要点
+				1、将当前服务器的代码打包并记录版本号，备份
+				2、将备份的上一个版本号解压，覆盖到线上的服务器，并生成新的版本号
+
+		2、Linux基本命令
+			—— 服务器使用Linux居多，server版，只有命令行
+			—— 测试环境要匹配线上环境，因此也是Linux
+			—— 经常需要登录测试机来配置、获取数据
+			—— 常用命令
+				1、mkdir filename  创建一个文件
+				2、ls 查看目录下的文件
+				3、ll 查看文件及信息
+				4、pwd 查看当前文件的路径
+				5、rm -rf filename 删除文件
+				6、vi filename 修改文件内容
+				7、cp filename filename1 拷贝一个filename文件为filename1
+				8、mv a1.js src/a1.js 把a1.js 移动到src下
+				9、cd src 跳转去src文件
+				10、:wq 保存并退出编辑状态
+				11、cat a.js 打印出a.js的内容
+				12、head a.js 打印出前半部分
+				13、tail a.js 打印尾部的一些内容
+				15、head -n 1 a.js 只输出第一行
+				16、tail -n 1  a.js 只看后两行
+				17、grep '2' a.js 搜索出包含2的行内容
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

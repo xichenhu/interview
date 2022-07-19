@@ -1,0 +1,9 @@
+一、函数对于参数的判断是否为空的写法
+function mapChildren(children, func, context) {
+  if (children == null) { // 判断当前传递的参数是否为空
+    return children
+  }
+  const result = []
+  mapIntoWithKeyPrefixInternal(children, result, null, func, context) // 调用外部函数
+  return result
+}

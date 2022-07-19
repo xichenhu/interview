@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<style type="text/css">
+	.box1 {
+		height:150px;
+		border:1px solid #000;
+		line-height:150px;
+		text-align:center;
+	}
+
+	.box2 {
+		height:150px;
+		border:1px solid #000;
+		text-align:center;
+		color: #fff;
+	}
+	.box2-red {
+		width:30px;
+		height:80px;
+		background:#c00;
+		display: inline-block;	/* 在元素内的所有元素垂直位置相互居中，不是相对于外框的高度垂直居中 */
+		vertical-align: middle;
+	}
+	.box2-blue {
+		width:30px;
+		height:100px;
+		background:#00f;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.box2-green {
+		width:30px;
+		height: 100%;	/* 如果有一个方块变成了高度100%，那么其他的方块就会真正的垂直居中 */ 
+		background:#0c0;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.box3 {
+		height:150px;
+		border:1px solid #000;
+		text-align:center;
+		color: #fff;
+	}
+	.box3::before{
+		content:'';
+		width:0;
+		height:100%;
+		display:inline-block;
+		position:relative;
+		vertical-align:middle;
+		background:#f00;
+	}
+	.box3-red {
+		width:30px;
+		height:80px;
+		background:#c00;
+		display: inline-block;	/* 在元素内的所有元素垂直位置相互居中，不是相对于外框的高度垂直居中 */
+		vertical-align: middle;
+	}
+	.box3-blue {
+		width:30px;
+		height:100px;
+		background:#00f;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.box3-green {
+		width:30px;
+		height:120px;
+		background:#0c0;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.box4 {
+		height:150px;
+		border:1px solid #000;
+		text-align:center;
+		color: #fff;
+	}
+	.box4-red {
+		position: relative;
+		width:30px;
+		height:80px;
+		background:#c00;
+		float:left;
+		top:calc(50% - 40px);
+		margin-left:calc(50% - 40px);
+	}
+	.box4-blue {
+		position: relative;
+		width:30px;
+		height:100px;
+		background:#00f;
+		float:left;
+		top:calc(50% - 50px);
+	}
+	.box4-green {
+		position: relative;
+		width:30px;
+		height:120px;
+		background:#0c0;
+		float:left;
+		top:calc(50% - 60px);
+	}
+	.like-table {
+		height: 120px;
+		display: table-cell;
+		border: 1px solid #000;
+		vertical-align: middle;
+	}
+	.like-table-red {
+		width: 100px;
+		height: 50px;
+		margin: 0 auto;
+		color: #fff;
+		font-size: 12px;
+		line-height: 50px;
+		text-align: center;
+		background: #c00;
+	}
+
+	.box5 {
+		height: 200px;
+		border: 1px solid #000;
+	}
+	.box5-green {
+		position: relative;
+		width: 100px;
+		height: 50px;
+		top: 50%;
+		transform: translateY(-50%);
+		background: #095;
+	}
+
+	.box6 {
+		position: relative;
+		width:200px;
+		height:150px;
+		border:1px solid #000;
+	}
+	.box6-green {
+		position: absolute;
+		width:100px;
+		height:50px;
+		top:0;
+		right:0;
+		bottom:0;
+		left:0;
+		margin:auto;
+		background:#f60;
+	}
+
+	.box7 {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 200px;
+		height: 150px;
+		border: 1px solid #000;
+	}
+	.box7-green {
+		width: 100px;
+		height: 50px;
+		background: #099;
+	}
+</style>
+<body>
+	<div>
+		<h1>设定行高</h1>
+		<div class="box1">
+			适用于"单行"的"行内元素"，line-height 和 height 设置的一样高。
+		</div>
+
+		<h1>vertical-align</h1>
+		<div class="box2">
+			<div class="box2-red">红色</div>
+			<div class="box2-blue">蓝色</div>
+			<div class="box2-green">绿色</div>
+		</div>
+
+		<h1>添加伪元素</h1>
+		<div class="box3">
+			<div class="box3-red">红色</div>
+			<div class="box3-blue">蓝色</div>
+			<div class="box3-green">绿色</div>
+		</div>
+
+		<h1>calc动态计算</h1>
+		<div class="box4">
+			<div class="box4-red">红色</div>
+			<div class="box4-blue">蓝色</div>
+			<div class="box4-green">绿色</div>
+		</div>
+
+		<h1>使用表格或假装表格</h1>
+		<div class="like-table">
+			<div class="like-table-red">假的表格垂直居中</div>
+		</div>
+
+		<h1>transform</h1>
+		<div class="box5">
+			<div class="box5-green"></div>
+		</div>
+
+		<h1>绝对定位</h1>
+		<div class="box6">
+			<div class="box6-green"></div>
+		</div>
+
+		<h1>使用Flexbox</h1>
+		<div class="box7">
+			<div class="box7-green"></div>
+		</div>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

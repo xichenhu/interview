@@ -1,0 +1,29 @@
+—— node（https://www.jb51.net/article/171511.htm）
+	—— 问题（https://www.jb51.net/article/163137.htm）
+		—— 什么是错误优先的回调函数？
+		—— 如何避免回调地狱？
+		—— 什么是Promise?
+		—— 用什么工具保证一致的代码风格？为什么要这样？
+		—— 什么是Stub?举例说明
+		—— 什么是测试金字塔？举例说明
+		—— 最喜欢哪个HTTP框架？为什么？
+		—— Cookies如何防范XSS攻击？
+		—— 如何保证依赖的安全性？
+		—— 新建Buffer会占用V8分配的内存吗？【不会，Buffer属于堆外内存，不是V8分配的。】
+
+		（https://www.infoq.cn/article/qbjxf0413reeca2exgwd）
+		—— Node.js 与 JavaScript 有什么不同?
+JavaScript是一种编程语言,可以在任何具有合适浏览器引擎的网络浏览器中运行。 	Node.js是一个为JavaScript设计的解释器和运行时环境。Node.js内置了一些增强JavaScript编程功能模块。
+除了Node.js, JavaScript用于网络应用程序的客户端,特别是用于开发动态特性。 Node.js可以在任何操作系统上用于开发与系统硬件交互的应用程序，特别是对于web后端
+JavaScript可以在不同的浏览器引擎上运行,比如v8 (Google Chrome) 、Spider Monkey (Firefox)和JavaScript Core(Safari)	Node.js仅在Chrome使用的v8引擎上运行。
+		
+		—— 什么时候用Node.js?
+		—— EventEmitter 做了什么？
+		—— 事件循环是什么?
+		—— 流是什么?
+		—— readFile 和 createReadStream 函数有什么区别？
+		—— 如何处理 Node.js 中未捕获的异常？
+		—— 什么是 yarn 和 npm？为什么要用 yarn 代替 npm 呢？
+
+		（https://chowdera.com/2021/07/20210717170503927m.html）
+		

@@ -1,0 +1,37 @@
+https://segmentfault.com/a/1190000017072371
+
+
+—— 掌握的内容
+	1、 JavaScript 的核心原理
+		—— 一定要学好语言的特性和其中的各种坑。
+	
+	2、 浏览器的工作原理
+
+	3、 网络协议 HTTP
+		—— 也是要着重了解的，尤其是 HTTP/2，还有 HTTP 的几种请求方式：短连接、长连接、Stream 连接、WebSocket 连接。
+
+	4、 前端性能调优
+
+	5、 框架学习
+		—— 我只给了 React 和 Vue 两个框架。就这两个框架来说，Virtual DOM 技术是其底层技术，组件化是其思想，管理组件的状态是其重点。而对于 React 来说，函数式编程又是其编程思想，所以，这些基础技术都是你需要好好研究和学习的。
+
+	6、 UI 设计
+		—— 设计也是前端需要做的一个事，比如像 Google 的 Material UI，或是比较流行的 Atomic Design 等应该是前端工程师需要学习的。
+
+—— HTML5
+	1、HTML5 权威指南 ，本书面向初学者和中等水平 Web 开发人员，是牢固掌握 HTML5、CSS3 和 JavaScript 的必读之作。书看起来比较厚，是因为里面的代码很多。
+	2、HTML5 Canvas 核心技术 ，如果你要做 HTML5 游戏的话，这本书必读。
+	3、对于 SVG、Canvas 和 WebGL 这三个对应于矢量图、位图和 3D 图的渲染来说，给前端开发带来了重武器，很多 HTML5 小游戏也因此蓬勃发展。所以，你可以学习一下。
+		—— 学习这三个技术，我个人觉得最好的地方是 MDN。
+			1、SVG: Scalable Vector Graphics
+			2、Canvas API
+			3、The WebGL API: 2D and 3D graphics for the web
+	4、最后是几个资源列表。
+
+—— CSS
+	
+—— JavaScript
+	1、下面是学习 JavaScript 的一些图书和文章。
+		—— JavaScript: The Good Parts ，中文翻译版为《JavaScript 语言精粹》。这是一本介绍 JavaScript 语言本质的权威图书，值得任何正在或准备从事 JavaScript 开发的人阅读，并且需要反复阅读。学习、理解、实践大师的思想，我们才可能站在巨人的肩上，才有机会超越大师，这本书就是开始。
+		—— Secrets of the JavaScript Ninja ，中文翻译版为《JavaScript 忍者秘籍》，本书是 jQuery 库创始人编写的一本深入剖析 JavaScript 语言的书。适合具备一定 JavaScript 基础知识的读者阅读，也适合从事程序设计工作并想要深入探索 JavaScript 语言的读者阅读。这本书有很多晦涩难懂的地方，需要仔细阅读，反复琢磨。
+		

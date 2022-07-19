@@ -1,0 +1,386 @@
+React 及 React框架原理、TypeSeript、Hooks、НТТР、Webpack前端工程的构建、打包、部署,
+
+一、CSS HTML
+	1、水平垂直全部居中的方法？【利用vertical-align,text-align,inline-block实现、利用绝对定位实现、利用flex实现】
+	2、两侧定宽，中栏自适应的方法？【利用float+margin实现、利用table实现、利用flex实现】
+	3、伪类与伪元素
+
+二、JavaScript
+	1、JS 有哪些数据类型？
+		基本类型：Number、Boolean、String、null、undefined、symbol(ES6 新增的)，BigInt(ES2020) 
+		引用类型：Object，对象子类型(Array，Function)
+	2、typeof可以判断哪些类型? instanceof做了什么?
+	1、JS中使用typeof能得到哪些类型？
+		考点： JS变量类型
+			答：只能把值类型给区分出来 【值类型 VS 引用类型】
+				typeof undefined //undefined
+				typeof 'abc' // string
+				typeof 123 // number
+				typeof true // boolean
+				typeof {} // object
+				typeof [] // object
+				typeof null // object
+				typeof console.log // function
+
+			答：
+				var arr = []
+				arr instanceof Array // true
+				typeof arr //object, typeof是无法判断是否是数组的
+	3、JS中有哪些内置函数 —— 数据封装对象
+		Object
+		Array
+		Boolean
+		String
+		Function
+		Date
+		RegExp
+
+	4、箭头函数与普通函数（function）的区别是什么？构造函数（function）可以使用 new 生成实例，那么箭头函数可以吗？为什么？
+
+	
+	6、Promise的状态变化
+		1、三种状态：pending fulfilled rejected
+		2、初始状态是pending
+		3、pending变成fulfilled 或者 pending变成rejected
+		4、状态变化不可逆
+	7、介绍一下async/await（和Promise的区别、联系）
+
+	—— 总结一下当前JS异步的方案
+		1、jQuery Deferred
+		2、Promise（浏览器原生支持）
+		3、Async/Await
+		4、Generator（不讲的原因）
+			—— 原理复杂，跟编辑器有关，是新的语法
+			—— 不是异步的直接替代方案（被提出来并不是为了解决异步的）
+			—— 有更好更简洁的解决方案async/await
+			—— koa 也早已“弃暗投明”（放弃了generator的使用）
+
+	三、JS运行机制
+		1、如何理解JS单线程：一个时间之内JS只能执行一个任务
+		2、什么是任务队列：分为同步任务和异步任务，异步任务的放入时间和执行时间
+		3、事件传播机制（事件流）
+		3、什么是Event Loop
+			—— 执行栈
+			—— 任务队列
+			—— 什么是event-loop
+				1、事件轮询，JS异步的解决方案（解决JS异步存在的问题）
+				2、什么是异步队列，何时被放入异步队列（JS代码中同步的代码要立刻执行，异步的函数放入异步队列中，
+					1、setTimeout没有时间参数，
+					2、setTimeout有时间参数，
+					3、网络请求图片或ajax加载完成之后，把回调函数放入异步队列中）
+				3、轮询的过程（监控异步队列，如果异步队列中有函数被放入，就放入主线程中执行）
+		4、什么时候会开启异步任务
+			—— setTimeout 和 setInterval
+			—— DOM事件
+			—— ES6中的Promise
+	2、DOM事件模型
+		—— 捕获：从上往下
+		—— 冒泡：从下往上【目标元素往上】
+
+	3、DOM事件流
+		—— 点击事件的交互过程：
+			1、浏览器在用户和页面做交互的过程中，点击事件是怎么传到页面上的、怎么响应的。
+			2、完整的事件流分三个阶段
+				—— 第一阶段是捕获，
+				—— 第二阶段是目标阶段，事件通过捕获元素到达目标元素即为目标阶段，
+				—— 第三阶段是冒泡，从目标元素直接上传到Windows对象
+
+三、总结一下ES6的常用功能
+	—— let/const
+	—— 多行字符串/模版变量
+	—— 结构赋值
+	—— 块级作用域
+	—— 默认参数
+	—— 箭头函数
+
+三、React
+	3、JSX和vdom的关系
+		—— 为何使用 vdom：JSX需要渲染成html，还有rerender
+		—— React.createElement和h，都生成vnode
+		—— 何时patch: ReactDOM.redner(...)和setSate
+		—— 自定义组件的解析：初始化实例，然后执行render
+
+	5、单页面应用有什么优缺点
+		优点：
+			用户体验好，快，内容改变不需要刷新整个页面
+			避免出现‘白屏’
+		缺点：
+			首次加载时间较长
+			不利于SEO优化
+			页面复杂度较高
+
+	6、react 的diff算法
+		1、节点之间的比较
+		2、两个列表之间的比较
+		3、取舍
+
+—— 介绍Redux数据流的流程
+	首先是dispatch一个action。
+	然后reducer会收到这个action, 
+	根据这个action对状态进行修改。
+	状态修改以后会被处理容器捕捉到。
+	从而对相关的界面进行更新。
+
+—— Redux
+ 	1、Redux遵循的三个原则是什么？
+ 		单一事实来源：整个应用的状态存储在单个 store 中的对象/状态树里。单一状态树可以更容易地跟踪随时间的变化，并调试或检查应用程序。
+ 		状态是只读的：改变状态的唯一方法是去触发一个动作。动作是描述变化的普通 JS 对象。就像 state 是数据的最小表示一样，该操作是对数据更改的最小表示。
+ 		使用纯函数进行更改：为了指定状态树如何通过操作进行转换，你需要纯函数。纯函数是那些返回值仅取决于其参数值的函数。
+ 	2、列出 Redux 的组件。
+ 		Action – 这是一个用来描述发生了什么事情的对象。
+		Reducer – 这是一个确定状态将如何变化的地方。
+		Store – 整个程序的状态/对象树保存在Store中。
+		View – 只显示 Store 提供的数据。
+	3、数据如何通过 Redux 流动？
+
+四、计算机网络基础
+	1、你知道 302 状态码是什么嘛？你平时浏览网页的过程中遇到过哪些 302 的场景？
+	2、HTTP 缓存
+	3、讲一下同源策略和跨域方案? CORS的几个头部是什么?
+
+	4、HTTP状态码
+		—— 1XX：指示信息——表示请求已接收，继续处理
+		—— 2XX：成功——表示请求已被成功接收
+			200 OK
+			206 Partial Content：客户端发送了一个带有Range头的GET请求，服务器完成了它
+
+			301 Moved Permanently：所请求的页面已经转移至新的URL【永久重定向】
+			302 Found：所请求的页面已经临时转移至新的URL【临时重定向】
+			304 Not Modified：客户端有缓存的文档并发出了一个条件性的请求，服务器告诉客户端，原来缓存的文档还可以继续使用。
+
+			400 Bad Request：客户端请求有语法错误，不能被服务器所理解
+			401 Unauthorized：请求未经授权，这个状态码必须和WWW-Authenticate报文域一起使用。
+			403 Forbidden：对请求的页面的访问被禁止
+			404 Not Found：请求的资源不存在
+
+			500 Internal Server Error：服务器发生不可预期的错误，原来缓存的文档还可以继续使用
+			503 Server Unavailable：请求未完成，服务器临时过载或当机，一段时间后可能恢复正常。
+
+		—— 3XX：重定向——要完成请求必须进一步的操作
+		—— 4XX：客户端错误——请求有语法错误或请求无法实现
+		—— 5XX：服务器错误——服务器未能实现合法的请求
+
+—— 浏览器缓存机制 304
+	if(Cache-Control === no-store) {
+		// 绝对禁止缓存，浏览器本地不会进行缓存，每次请求资源都要从服务器重新获取。
+		直接向服务器获取资源（本地不缓存资源）
+	} else if (Cache-Control === no-cache) {
+		// 设置了no-cache之后并不代表浏览器不缓存，而是在获取缓存前要向服务器确认资源是否被更改。
+		每次请求都想服务器确认资源是否被更改（本地缓存资源），走下面的协商缓存
+	} else if (本地未过期=> max-age|| Expires) {
+		使用浏览器本地缓存
+	} else {
+		if (Etag有值) {
+			向服务器请求带 if-None-Match
+			if(Etag与原来的一致) {
+				返回304，直接使用本地缓存
+			} else {
+				返回200，获取新资源
+			}
+		} else if (Last-modified有值) {
+			向服务器请求带 if-Modified-Since
+			if (Last-modified与原来的一致) {
+				返回304，直接使用本地缓存
+			} else {
+				返回200，获取新资源
+			}
+		} else {
+			向服务器获取新资源，返回200
+		}
+	}
+
+
+3、跨域
+	—— 什么是跨域
+		1、浏览器有同源策略，不允许ajax访问其他域的接口
+		2、跨域条件：协议、域名、端口号，有一个不同就算跨域
+		3、可以跨域的三个标签
+			—— 有三个标签允许跨域加载资源
+				1、<img src="XXX">
+				2、<link href="XXX">
+				3、<script src="XXX">
+			—— 三个标签的使用场景
+				1、<img> 用于打点统计，统计网站可能是其他域（img没有浏览器兼容问题）
+				2、<link> <script> 可以使用CDN，CDN也是其他域
+				3、<script> 可以用JSONP
+			—— 跨域注意事项
+				1、所有跨域请求都必须经过信息提供方允许
+				2、如果未经允许即可获取，那是浏览器同源策略出现漏洞
+
+			—— JSONP
+				1、JSONP的实现原理
+					—— 加载 https://coding.m.imooc/classindex.html
+					—— 不一定服务器真正存在一个classindex.html文件
+					—— 服务器可以根据请求，动态生成一个文件返回
+					—— 同理 <script src="https://coding.m.imooc/api.js">
+					—— 例子：
+						1、请求https://coding.m.imooc/api.js地址
+						2、返回内容格式callback({x: 100, y: 200})
+
+							<script>
+								window.callback = function(data) {
+									console.log(data)
+								}
+							</script>
+							<script src="https://coding.m.imooc/api.js">
+							<!---- 以上将返回 callback({x: 100, y: 200}) ---->
+
+			—— 服务器端设置 http header
+				response.setHeader("Access-Control-Allow-Origin", "http://a.com") // 第二个参数是允许跨域的域名，不建议直接写*
+				response.setHeader("Access-Control-Allow-Header", "X-Requested-With")
+				response.setHeader("Access-Control-Allow-Methods", "PUT,GET,POST,OPTION")
+
+				// 接收跨域的cookie
+				response.setHeader("Access-Control-Credentials", "true")
+
+—— webpack
+	1、使用过webpack里面哪些plugin和loader
+	2、webpack打包的整个过程
+		从入口文件开始，建立依赖树 ——> 递归依赖树——> rules属性 -> test正则匹配文件，使用加载器，加载模块——> loader处理 ——> plugin ——> boundle.js 完成打包
+	3、dev-server是怎么跑起来
+	4、一般怎么组织CSS（Webpack）
+	5、如何配置把js、css、html单独打包成一个文件
+	6、webpack和gulp的优缺点
+	7、使用webpack构建时有无做一些自定义操作
+	8、webpack的热更新是如何做到的？说明其原理？
+	9、webpack的loader, plugles 
+		（Webpack配置(loader和plugin如何使用)：https://www.jianshu.com/p/d029a35d3501）
+		（https://blog.csdn.net/weixin_39645003/article/details/111138925）
+		（https://www.cnblogs.com/gaoht/p/11310365.html）
+		
+		style-loader(将处理结束的CSS代码存储在js中，运行时嵌入<style>后挂载至html页面上)  
+		css-loader(使webpack可以识别css模块)  
+		sass-loader(使webpack可以识别scss/sass文件)
+
+		—— loader用于加载某些资源文件。因为webpack本身只能打包common.js规范的js文件，对于其他资源如css，img等，是没有办法加载的，这时就需要对应的loader将资源转化，从而进行加载。
+		—— plugin用于扩展webpack的功能。不同于loader，plugin的功能更加丰富，比如压缩打包，优化，不只局限于资源的加载。
+		—— 常用 loader
+			1、处理 css
+				—— style-loader
+				—— css-loader
+			2、处理less
+				—— syle-loader
+				—— css-loader
+				—— less-loader (less-loader依赖于less，所以要一并安装)
+			3、处理css图片资源
+				—— url-loader (依赖于file-loader，所以要一并安装,可以指定其限制用base64 )
+			4、处理html图片资源
+				—— html-loader(注意该loader的模块化方式与url-loader不一致，需要将url-loader的配置中esModule改为false)
+			5、处理其他资源(如：字体文件等)
+				—— file-loader
+		—— 常用plugins
+			1、html编译
+				—— html-webpack-plugin
+			2、提取css文件
+				—— mini-css-extract-plugin（如果用了此插件，那么就不能使用style-loader处理css文件了，需要用mcep.loader替换style-loader）
+
+
+
+—— 性能优化
+	1、代码层面
+	2、缓存利用
+	3、请求数量
+	4、请求带宽
+	5、代码层面的优化
+	6、浏览器渲染机制JS阻塞怎么办?
+		—— 将js放在最后加载
+		—— 监听onload 异步 加载	
+
+五、页面性能
+	2、性能优化
+	—— 为何要把CSS放到head中？
+	—— 为何把Javascript代码放到body之后？
+
+	—— 原则
+		1、多使用内存、缓存或者其他方法
+		2、减少CUP计算、减少网络
+	—— 从哪入手
+		1、加载页面和静态资源
+		2、页面渲染
+	—— 加载资源优化
+		1、静态资源合并压缩（JS合并、image合并、…………）
+		2、静态资源缓存
+			—— 通过链接名称控制缓存
+			—— <script src="abc_1.js"></script>
+			—— 只有内容改变的时候，链接名称才会改变（浏览器自动缓存）
+			—— <script src="abc_2.js"></script>
+
+		3、使用CDN让资源加载更快
+		4、使用SSR后端渲染，数据直接输出到HTML中
+			—— 现在Vu React提出了这样的概念
+			—— 其实JSP PHP ASP都属于后端渲染
+
+	—— 渲染优化
+		1、CSS放前面，JS放后面
+		2、懒加载（图片懒加载、下拉加载更多）
+			<img id="img1" src="smallImage.png" data-realsrc="originImage.png">
+			<script type="text/javascript">
+				var img1 = document.getElementById('img1')
+				img1.src = img1.getAttribute('data-realsrc')
+			</script>
+
+		3、减少DOM查询，对DOM查询做缓存
+			// 为缓存DOM查询
+			for(var i=0;i<document.getElementsByTagName('p').length, i++){
+
+			}
+
+			// 缓存DOM查询
+			var pList = document.getElementsByTagName('p')
+			for(var i = 0; i < pList.lenght; i++) {
+
+			}
+
+		4、减少DOM操作，多个操作尽量合并在一起执行
+			var listNode = document.getElementById('list')
+			// 需要插入10个li标签
+			var frag = document.createDocumentFragment();
+			var x, li;
+			for(x=0;x<10;x++) {
+				li=document.createElement("li")
+				li.innerHTML = "List item" + x;
+				frag.appendChild(li);
+			}
+
+			listNode.appendChild(frag);
+
+		5、事件节流
+			var textarea = document.getElementById('text')
+			var timeoutId
+			textarea.addEventListtener('keyup', function(){
+				if (timeoutId) {
+					clearTimeout(timeoutId)
+				}
+				timeoutId = setTimeout(function(){
+					// 触发change事件
+				}, 100)
+			})
+
+		6、尽早执行操作（如：DOMContentLoaded)
+			window.addEventListener('DOMContentLoaded', function(){
+				// DOM 渲染完即可执行，此时图片、视频还可能没有加载完
+			})
+
+
+五、算法
+	1、求数组里面最大连续项的和
+
+
+扩展题：
+1. 能了解一下你现在负责的工作吗？
+	理解业务，能讲清楚业务流程。
+	业务和技术的难点和痛点。
+	解决思路，结果什么？
+	介绍整体架构信息，后续的规划？
+2. 技术选型（ROI）
+3. 怎么评价代码质量？
+4. 怎么做性能优化？ 
+5. 怎么做架构？
+6. 怎么做技术规划？
+7. 预判业务发展方向，怎么预判业务发展？ 
+8. 能分享一下你自己的学习方法吗？
+
+
+
+
+

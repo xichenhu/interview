@@ -1,0 +1,4 @@
+一、垃圾回收机制
+	【文档】：https://www.cnblogs.com/fundebug/p/javascript-memory-garbage-collection.html
+	—— 一般来说没有被引用的对象就是垃圾，会被清理，有个例外如果几个对象引用形成一个环，但根访问不到它们，这几个对象也是垃圾，也要被清除。
+	

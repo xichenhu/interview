@@ -1,0 +1,504 @@
+
+一、变量类型和计算
+	1、JS中使用typeof能得到哪些类型
+		—— typeof只能区分值类型和function
+
+	2、何时使用 === 何时使用 ==
+		—— 字符串拼接时发生“类型转换”
+		—— 双等和全等计算的时候会发生“类型转换” 100 == ‘100‘
+		—— if语句
+		—— 逻辑运算符
+
+		if (obj.a == null) { // 这里相当于obj.a === null || obj.a === undefined 的简写形式
+			// 上面的判断条件是jquery源码中推荐写法
+		}
+
+	3、JS中有哪些内置函数
+		—— Object、Array、Boolean、Number、String、Function、Date、RegExp、Error
+
+	4、JS按照存储方式应该分为哪些类型
+		—— 值类型
+		—— 引用类型：为了节省内存空间
+
+	5、如何理解JSON
+		—— JSON是一个JS对象，JSON有两个API：JSON.stringify 和 JSON.parse
+
+二、原型、原型链
+	—— 知识点：
+		1、构造函数
+			function Foo (name, age) {
+				this.name = name
+				this.age = age
+				// return this  默认有这一行
+			}
+			var f = new Foo('张三', 22)
+
+		2、构造函数 —— 扩展
+			—— var a = {} 其实是var a = new Object()的语法糖
+			—— var a = [] 其实是var a = new Array()的语法糖
+			—— function Foo(){} 其实是 var Foo = new Function()的语法糖
+			—— 使用instanceof判断一个函数是否是一个变量的构造函数
+
+		3、原型规则和示例
+			—— 所有的引用类型（数组、对象、函数），都具有对象特性，即可以自由扩展属性（除了‘null之外’）
+			—— 所有的引用类型（数组、对象、函数），都有一个__proto__属性，属性值是一个普通对象
+			—— 所有函数（只指function函数），都有一个prototype属性，属性值也是一个普通对象。
+			—— 所有的引用类型（数组、对象、函数），__proto__属性值指向它的构造函数的‘prototype’属性值
+			—— 当试图得到一个对象的某个属性时，如果这个对象本身没有这个属性，那么会去它的__proto__（即它的构造函数的prototype）中寻找。
+
+			var obj = {}; obj.a = 100;
+			var array = []; arr.a = 100;
+			funcion fn() {}; fn.a = 100;
+
+			console.log(obj.__proto__)
+			console.log(array.__proto__)
+			console.log(fn.__proto__)
+
+			console.log(obj.__ptoto__ === Object.prototype)
+
+			—— 通过hasOwnProperty()能判断对象自身属性，而不是继承的属性，
+
+
+		4、原型链
+			—— f ——__proto__ ——> Foo.prototype ——__proto__ ——> Obejct.prototype ——__proto__——> null
+
+
+		5、instanceof
+			—— 用于判断引用类型属于哪个构造函数的方法：instanceof
+
+	—— 面试题：
+		1、如何准确判断一个变量是数组类型
+			var arr = []
+			arr typeof Array  // true
+
+		2、写一个原型链继承的例子
+			—— 封装一个DOM查询
+				function Elem(id) {
+					this.ele = document.getElementById(id)
+				}
+				Elem.prototype.html=function(val) {
+					var elem = this.elem
+					if (val) {
+						elem.innerHTML = val 
+						return this
+					} else {
+						return elem.innerHTML
+					}
+				}
+				Elem.prototype.on = function(type, fn){
+					var elem = this.elem
+					elem.addEventListener(type, fn)
+					return this
+				}
+				var div1 = new Elem('div1')
+				div1.html('<p>hello</p>').on('click', function(){alert('hello')}).html('<p>Word</p>').on('click', function(){alert('Word')})
+
+		3、描述new一个对象的过程
+			—— 创建一个新对象
+			—— this指向这个新对象
+			—— 执行代码，即对this赋值
+			—— 返回this
+
+		4、zepto（或其他框架）源码中如何使用原型链
+			—— zepto设计和源码分析【慕课网】
+
+三、作用域、闭包
+
+	—— 知识点
+		1、执行上下文
+			—— 范围：一段<script>或一个函数
+			—— 全局【<script>则生成一个全局的执行上下文】：变量定义、函数声明
+			—— 函数【函数则生成一个函数的执行上下文】：变量定义、函数声明、this、arguments
+			PS：注意“函数声明”和“函数表达式”的区别
+
+		2、this
+			—— this要在执行的时候才能确认值，定义时无法确认。
+				var a = {
+					name: 'A',
+					fn: function() {
+						console.log(this.name)
+					}
+				}
+				a.fn() // this === a
+				a.fn.call({name: 'B'}) // this === {name: 'B'}
+				var fn1 = a.fn
+				fn1() // this === window
+
+			—— 场景
+				1、作为构造函数执行
+				2、作为对象属性执行
+				3、作为普通函数执行  【this是window】
+				4、call、apply、bind
+
+		3、作用域
+			—— 示例：
+				if(true){
+					var name = 'zhangsan'
+				}
+				console.log(name) // zhangsan
+
+				eg: 写法不同功能同上 【这个是推荐写法】
+				var name
+				if(true){
+					var name = 'zhangsan'
+				}
+				console.log(name) // zhangsan
+
+
+		4、作用域链
+			—— 示例：
+				var a = 100;
+				var FA = function() {
+					var b = 200
+					var FB = function() {
+						var c = 300
+						console.log(a)
+						console.log(b)
+						console.log(c)
+					}
+					FB()
+				};
+				FA();
+
+		5、闭包(https://segmentfault.com/a/1190000023425946)
+			—— 示例：一个函数的作用域是它定义时的作用域
+				var Fn = function() {
+					var a = 200
+					return function() {
+						console.log(a) // 自由变量，父作用域寻找
+					}
+				}
+				var fn1 = Fn()
+				var a = 300
+				fn1() // 100
+
+			—— 闭包的使用场景
+				1、函数作为返回值
+				2、函数作为参数传递
+
+			—— 代码演示
+				var Fn = function() {
+					var a = 200
+					return function() {
+						console.log(a) // 自由变量，父作用域寻找
+					}
+				}
+				var fn1 = Fn()
+				var fn2 = function(fn) {
+					var a = 500
+					fn()
+				}
+				fn2(fn1) // 100, 闭包函数的父作用域在声明的地方查找
+
+	—— 题目
+		1、说下对变量提升的理解
+			—— 变量的定义
+			—— 函数的声明（注意和函数表达式的区别）
+
+		2、说明this几种不同的使用场景
+			—— 作为构造函数执行
+			—— 作为对象属性执行
+			—— 作为普通函数执行  【this是window】
+			—— call、apply、bind
+
+		3、创建10个<a>标签，点击的时候弹出对应的序号
+				for (var i = 0; i < 10; i++) {
+					(function(i){
+						var a = document.createElement('a')
+						a.innerHTML = i + '<br/>'
+						a.addEventListener('click', function(e) {
+							e.preventDefault()
+							alert(i)
+						})
+						document.body.appendChild(a)
+					})(i)
+				}
+
+		4、如何理解作用域
+			—— 自由变量
+			—— 作用域链，即自由变量的查找
+			—— 闭包的两个场景
+
+		5、实际开发中闭包的应用
+			—— 封装变量收敛权限
+				function isFirstLoad() {
+					var _list = [];
+					return function(id) {
+						if (_list.indexof(id) >=0) {
+							return false
+						} else {
+							_list.push(id)
+							return true
+						}
+					}
+				}
+				// 使用：
+				var firstLoad = isFirstLoad()
+				firstLoad(10) // true
+				firstLoad(10) // false
+				firstLoad(20) // true
+
+				// 你在 isFirstLoad 函数外面，根本不可能修改 _list 的值
+
+四、异步、单线程
+	—— 知识点
+		1、什么是异步（对比同步）
+			—— 示例：
+				异步：不会阻塞后边的代码执行
+				console.log(100)
+				setTimeout(function() {console.log(200)}, 1000)
+				console.log(300)
+
+				同步：阻塞后边的代码执行
+				console.log(100)
+				alert(200)
+				console.log(300)
+
+			—— 何时需要异步
+				1、在可能发生等待的情况
+				2、等待的过程中不能像alert一样，阻塞程序的运行
+				3、因此，所有的“等待情况”，都需要异步
+
+		2、前端使用异步的场景
+			—— 定时任务： setTimeout、setInterval
+			—— 网络请求：ajax请求、动态<img>加载
+			—— 事件绑定
+
+			—— 示例：
+				// <img>加载
+				console.log('start')
+				var img = document.createElement('img');
+				img.onload = function () {
+					console.log('loaded')
+				}
+				img.src = './XXX.png'
+				console.log('end')
+
+				// 绑定事件
+				console.log('start')
+				document.getElementById('btn1').addEventListener('click', function(){
+					alert('click');
+				})
+				console.log('end')
+
+		3、异步和单线程
+			—— 单线程：一次只能干一个事儿
+
+
+	—— 题目
+		1、同步和异步的区别是什么？分别举一个同步和异步的例子
+			—— 同步会阻塞代码执行，而异步不会
+			—— alert是同步，setTTimeout是异步
+
+		2、一个关于setTimeout的笔试题
+			console.log(1)
+			setTimeout(function(){console.log(2)},0)
+			console.log(3)
+			setTimeout(function(){console.log(4)}, 1000)
+			console.log(5)
+
+		3、前端使用异步的场景有哪些？
+			—— 定时任务： setTimeout、setInterval
+			—— 网络请求：ajax请求、动态<img>加载
+			—— 事件绑定
+
+
+五、补充
+
+	—— 知识点
+		1、日期
+			Date.now()
+			var dt = new Date()
+			dt.getTime()	 // 获取毫秒数
+			dt.getFullYear()	// 年
+			dt.getMonth()	// 月（0-11）
+			dt.getDate()	// 日（0-31）
+			dt.getHours()	// 小时（0-23）
+			dt.getMinutes()	// 分钟（0-59）
+			dt.getSeconds()	// 秒（0-59）
+
+		2、Math
+			—— 获取随机数Math.random()  // 用于清除缓存
+
+		3、数组API
+			—— forEach 遍历所有元素
+				var arr = ['a','b','c']
+				arr.foreach(function(item, index){
+					console.log(item, index)
+				})
+
+			—— every 判断所有元素是否都符合条件
+				var arr = [1,2,3]
+				var result = arr.every(function(item, index){
+					if (item < 4) {
+						return true
+					}
+				})
+				console.log(result)
+
+			—— some 判断是否至少有一个元素符合条件
+				var arr = [1,2,3]
+				var result = arr.some(function(item, index){
+					if (item > 4) {
+						return true
+					}
+				})
+				console.log(result)
+
+			—— sort 排序【原数组也会改变】
+				var arr = [1,4,2,3,5]
+				var arr2 = arr.sort(function(a,b){
+					// 从小到大
+					return a-b
+
+					// 从大到小
+					return b-a
+				})
+				console.log(arr2)
+
+			—— map 对元素重新组装，生成新数组【原数组不会改变】
+				var arr = [1,2,3]
+				var arr2 = arr.map(function(item, index){
+					return '<b>' + item + '</b>'
+				})
+				console.log(arr2)
+
+			—— filter 过滤符合条件的元素【原数组不会改变】
+				var arr = [1,2,3]
+				var arr2 = arr.filter(function(item, index){
+					if (item >= 2) {
+						return true
+					}
+				})
+				console.log(arr2)
+
+		4、对象API
+			—— for...in...
+				var obj = {
+					x: 100,
+					y: 200,
+					z: 300
+				}
+				for(var key in obj){
+					if (obj.hasOwnProperty(key)) {
+						console.log(key, obj[key])
+					}
+				}
+
+	—— 题目
+		1、获取2017-06-10格式的日期
+			function formatDate(dt) {
+				if (!dt) {
+					dt = new Date(0)
+				}
+				var year = dt.getfullYear()
+				var month = dt.getMonth() + 1
+				var date = dt.getDate()
+				if (month < 10) {
+					month = '0' + month
+				}
+				if (date < 10) {
+					date = '0' + date
+				}
+				return year + '-' + month + '-' + date
+			}
+
+			var dt = new Date()
+			var formatDate = formatDate(dt)
+			console.log(formatDate)
+
+		2、获取随机数，要求是长度一致的字符串格式
+			var random = Math.random();
+			random = random + '0000000000'
+			random = random.slice(0, 10)
+			console.log(random)
+
+		3、写一个能遍历对象和数组的通用的forEach函数
+			—— 自定义函数
+				function forEach(obj, fn) {
+					var key 
+					if (obj instanceof Array) {
+						obj.forEach(function(item, index){
+							fn(index, item)
+						})
+					} else {
+						for(key in obj) {
+							fn(key, obj[key])
+						}
+					}
+				}
+
+			—— 使用
+				var arr = [1,2,3]
+				forEach(arr, function(index, item){
+					console.log(index, item)
+				})
+
+				var obj = {
+					name: 'xiao',
+					age: '20',
+					sex: 'nv'
+				}
+				forEach(obj, function(key, value) {
+					console.log(key, value)
+				})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

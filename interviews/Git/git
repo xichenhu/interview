@@ -1,0 +1,10 @@
+一、github删除已经push到服务器上的commit的方法
+	git log 	// 查看提交的HEAD
+	git reset --hard <commit_id>		// 强制回退已经push上去的commit的代码
+	git push origin HEAD --force		// 强制覆盖，那么可以使用--force命令
+
+二、回退已经git add .的命令
+	git reset HEAD .
+	
+三、取得项目的 Git 仓库
+	

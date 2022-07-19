@@ -1,0 +1,216 @@
+—— 进程和线程之间的区别？
+	一、进程
+		1、系统进行资源分配和调度的基本单位
+		2、进程是线程的容器
+		3、多进程就是进程的复制（fork），fork 出来的每个进程都拥有自己的独立空间地址、数据栈，一个进程无法访问另外一个进程里定义的变量、数据结构，只有建立了 IPC 通信，进程之间才可数据共享。
+	二、线程
+		1、线程是操作系统能够进行运算调度的最小单位，线程是隶属于进程的，被包含于进程之中。
+		2、一个线程只能隶属于一个进程，但是一个进程是可以拥有多个线程的。
+		3、单线程就是一个进程只开一个线程
+			—— 单线程使用总结
+				—— Node.js 虽然是单线程模型，但是其基于事件驱动、异步非阻塞模式，可以应用于高并发场景，避免了线程创建、线程之间上下文切换所产生的资源开销。
+				—— 如果你有需要大量计算，CPU 耗时的操作，开发时候要注意。
+		4、多线程
+—— 多进程或多个 Web 服务之间的状态共享问题？
+	多进程模式下各个进程之间是相互独立的，例如用户登陆之后 session 的保存，如果保存在服务进程里，那么如果我有 4 个工作进程，每个进程都要保存一份这是没必要的，假设服务重启了数据也会丢失。多个 Web 服务也是一样的，还会出现我在 A 机器上创建了 Session，当负载均衡分发到 B 机器上之后还需要在创建一份。一般的做法是通过 Redis 或者 数据库来做数据共享。
+
+—— 你知道NodeJs是如何工作的吗？
+	node的工作原理： node使用chrom的V8引擎来解释编译JS语言，将编译后的代码传递给libuv，在libuv中进行区别是调用linux的libev/libio还是window的IOCP实现具体操作
+	node中事件环工作原理：node执行JS栈中的代码，发现宏任务将其放到对应的宏任务队列，微任务放到微任务队列。将JS栈中的代码执行完毕后，清空微任务队列，进入事件环，取出第一个宏任务进入JS执行栈执行。完毕后，清空微任务对列，进入宏任务取下一个，形成事件环。
+	注意：process.nextTick微任务会在微任务队列中第一个执行
+—— 你是怎么调试NodeJs呢？有哪些方法？
+	1、使用VSCode
+	2、使用命令窗口 node debug xxx
+	3、使用浏览器 需要提前安装 node-inspector
+—— NodeJs的回调有什么用吗？
+	由于Node的IO操作是异步的，不知道什么时候执行完毕，用户为了拿到异步操作的结果，采取回调函数的方式拿到操作的结果。因此回调中采取错误优先原则，防止异步操作中有错误，而拿不到错误结果。
+
+—— Node的全局对象有哪些？
+	setTimeout
+	setInterval
+	process
+	console	
+—— Node的全局变量有哪些？
+	__dirname：当前文件所处目录
+	__filename：当前文件所处目录+文件名
+	export：用于导出实现变量 等价于module.export
+	module：CommonJS中的Module的实例
+
+—— 怎样在NodeJs中加载HTML文件？
+	开启http服务器
+	使用fs读取对应目录的文件
+	设置请求头 res.setHeader("Content-Type","text/html;charset=utf-8");
+	res.write(html字符串)，调用res.end()；获采取res.end(html字符串)；
+	如果文件过大采取 fs.createReadStream(文件路径).pipe(res);
+
+—— 你用NodeJs做过什么项目？
+	web服务器
+	文字，语音识别
+	SSR
+
+—— 你有使用过express和koa吗？它俩有什么区别？
+	koa和express都是同一批团队开发的，可以把koa叫做express的一个升级版本吧，
+	express里面主要使用es5的语法，处理异步用的是回调函数，
+	而koa则不用经历这种回调地狱，Koa1和Koa2分别采用了ES6中的Generator函数+yield语句+Promise语句和ES7中的async/await+Promise来处理异步操作。
+
+	Express
+		优点：线性逻辑，通过中间件形式把业务逻辑细分、简化，一个请求进来经过一系列中间件处理后再响应给用户，清晰明了。 缺点：基于 callback 组合业务逻辑，业务逻辑复杂时嵌套过多，异常捕获困难。
+
+	Koa
+		优点：首先，借助 co 和 generator，很好地解决了异步流程控制和异常捕获问题。其次，Koa 把 Express 中内置的 router、view 等功能都移除了，使得框架本身更轻量。 缺点：社区相对较小
+
+
+—— koa是如何解决跨域的？
+	一般使用koa-cors解决跨域，可以使用中间件
+	app.use(async (ctx,next)=>{
+	    ctx.set({
+	        "Access-Control-Allow-Origin":"*",
+	        "Access-Control-Allow-Headers":"Content-Type",
+	        "Access-Control-Allow-Methods":"POST,GET,PUT,DELETE,OPTIONS"
+	    })
+	    if(ctx.method === "OPTIONS"){
+	        ctx.status = 200;
+	        ctx.body = "";
+	    }else{
+	        await next();
+	    }
+	})
+
+
+—— 你自己有写过koa的中间件吗？
+	中间件通用格式
+		function xxxxPlugin(options){
+		    return async (ctx,next)=>{
+		        ....操作
+		        await next();
+		    }
+		}
+		module.exports = xxxxPlugin;
+
+	使用中间件
+		const xxxPlugin = require('./xxxPlugin');
+		const Koa = require('koa');
+		const app = new Koa();
+		app.use(xxxPlugin({}));
+
+		...
+		app.listen(1234);
+
+—— module.exports与exports的区别是什么？
+	exports 返回的是模块函数
+	module.exports 返回的是模块对象本身，返回的是一个类
+
+	使用上的区别是
+	exports的方法可以直接调用
+	module.exports需要new对象之后才可以调用
+
+	CommonJS规范最终返回module.exports,
+	重新为exports赋值，不会该改变module.exports结果
+	exports与module.exports 指向同一引用空间
+
+
+—— 说说你对EventLoop的理解
+	浏览器与node将异步任务分为宏任务与微任务
+	首先执行js主线程中得代码，将对应的宏任务与微任务分别放入宏任务队列与微任务队列
+
+	1、js主线程代码执行完毕
+	2、清空微任务队列
+	3、取出第一个宏任务执行,
+		重复以上操作后将宏任务队列中完成的回调一次取出执行。
+		node中的宏任务队列为：
+		timers => 定时器相关
+		pending callbacks => 上一次IO操作相关
+		内部调用的宏任务栈
+		poll 本次执行调用的IO操作
+		check 本阶段执行setImmdiate
+		close callbacks 用于关闭一些其他操作
+
+—— 在Node项目中你有使用过哪些常用的中间件？
+	config-lite: 读取配置文件
+	express-session: session 中间件
+	connect-mongo: 将 session 持久化存储于 mongodb，结合 express-session 使用
+	connect-flash: 页面通知提示的中间件，基于 session 实现
+
+—— nodejs中require方法是同步还是异步操作？为什么？
+	同步
+	因为经常用到模块，并且一般都在模块顶端引入，所以把require做成同步，有助于代码整洁有序，增强可读性。
+	但是，I/O密集的地方尽量不要用require。所有的同步，都会阻塞Node，直到调用完才能做其他事。
+	比如，在运行一个http服务，如果在每个请求上都用到require，就会遇到性能问题。
+	所以，require和其他同步操作通常放在程序最初加载的位置。
+
+	require是同步请求，require支持条件导入、动态导入等，因为require获取得到的是对应路径的module导出的内容。当导出内容发生变化时，再次导入得到的内容是最新的。读取文件采取的也是同步读取
+
+—— 发布一个npm包如何忽略不需要发布的文件？
+	使用 .gitignore 或者 .npmignore 来设置忽略文件；
+	使用 package.json 的 files 字段来设置需要发布的文件；
+
+—— .npmrc配置文件有什么用途？
+	.npmrc文件的作用，就是配置npm源。 （该文件在C盘用户文件目录下）
+	eg.淘宝源
+	registry = https://registry.npm.taobao.org
+
+—— 你会搭建私有的npm仓库吗？怎么搭建？
+—— 你有发布过自己的npm包吗？流程是怎样的？（http://www.mianshigee.com/question/30604cfr/）
+
+—— 你对Mongodb有了解吗？
+	mongodb 文档型非关系型数据库
+	MongoDB 将数据存储在类似 JSON 的灵活文档中，这意味着字段可能因具体文档而异，并且数据结构可能随着时间的推移而变化
+	文档模型映射到您的应用程序代码中的对象，令数据变得容易运用
+	即席查询、索引和实时聚合提供了访问数据和分析数据的强大方式
+	MongoDB 本质上是一种分布式数据库，所以高可用性、横向扩展和地理分布都是内置且易用的
+—— node有哪些定时功能?
+	参考答案: setTimeout/clearTimeout, setInterval/clearInterval, setImmediate/clearImmediate, process.nextTick
+
+
+—— 请谈一下内存泄漏是什么，以及常见内存泄漏的原因，和排查的方法
+
+	什么是内存泄漏
+		内存泄漏(Memory Leak)指由于疏忽或错误造成程序未能释放已经不再使用的内存的情况。
+		如果内存泄漏的位置比较关键，那么随着处理的进行可能持有越来越多的无用内存，这些无用的内存变多会引起服务器响应速度变慢。
+		严重的情况下导致内存达到某个极限(可能是进程的上限，如 v8 的上限;也可能是系统可提供的内存上限)会使得应用程序崩溃。常见内存泄漏的原因内存泄漏的几种情况:
+		一、全局变量
+			a = 10; 
+			//未声明对象。 
+			global.b = 11; 
+			//全局变量引用 
+			这种比较简单的原因，全局变量直接挂在 root 对象上，不会被清除掉。
+		二、闭包
+			function out() { 
+			 const bigData = new Buffer(100); 
+			 inner = function () { 
+			   
+			 } 
+			}
+			闭包会引用到父级函数中的变量，如果闭包未释放，就会导致内存泄漏。上面例子是 inner 直接挂在了 root 上，那么每次执行 out 函数所产生的 bigData 都不会释放，从而导致内存泄漏。
+			需要注意的是，这里举得例子只是简单的将引用挂在全局对象上，实际的业务情况可能是挂在某个可以从 root 追溯到的对象上导致的。
+
+		三、事件监听
+			Node.js 的事件监听也可能出现的内存泄漏。例如对同一个事件重复监听，忘记移除(removeListener)，将造成内存泄漏。这种情况很容易在复用对象上添加事件时出现，所以事件重复监听可能收到如下警告：
+			emitter.setMaxListeners() to increase limit
+			例如，Node.js 中 Agent 的 keepAlive 为 true 时，可能造成的内存泄漏。当 Agent keepAlive 为 true 的时候，将会复用之前使用过的 socket，如果在 socket 上添加事件监听，忘记清除的话，因为 socket 的复用，将导致事件重复监听从而产生内存泄漏。
+
+			原理上与前一个添加事件监听的时候忘了清除是一样的。在使用 Node.js 的 http 模块时，不通过 keepAlive 复用是没有问题的，复用了以后就会可能产生内存泄漏。所以，你需要了解添加事件监听的对象的生命周期，并注意自行移除。
+
+		排查方法
+			想要定位内存泄漏，通常会有两种情况：
+			对于只要正常使用就可以重现的内存泄漏，这是很简单的情况只要在测试环境模拟就可以排查了。
+			对于偶然的内存泄漏，一般会与特殊的输入有关系。想稳定重现这种输入是很耗时的过程。如果不能通过代码的日志定位到这个特殊的输入，那么推荐去生产环境打印内存快照了。
+			需要注意的是，打印内存快照是很耗 CPU 的操作，可能会对线上业务造成影响。快照工具推荐使用 heapdump 用来保存内存快照，使用 devtool 来查看内存快照。
+			使用 heapdump 保存内存快照时，只会有 Node.js 环境中的对象，不会受到干扰(如果使用 node-inspector 的话，快照中会有前端的变量干扰)。
+			PS：安装 heapdump 在某些 Node.js 版本上可能出错，建议使用 npm install heapdump -target=Node.js 版本来安装。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

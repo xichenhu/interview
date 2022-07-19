@@ -1,0 +1,66 @@
+一面
+	tcp和udp的区别和使用场景?
+
+	quic基于udp怎么保证可靠性?
+
+	讲一下同源策略和跨域方案? CORS的几个头部是什么?
+
+	讲一下react fiber?
+
+	vue双向绑定原理?
+
+	redux和mobx的区别和使用场景?
+
+	typeof null? null instanceof Object?
+
+	typeof可以判断哪些类型? instanceof做了什么?
+
+	实现一个bind函数
+
+	求数组里面最大连续项的和
+
+	event loop
+
+二面
+	怎么优化h5的加载速度?
+
+	离线包怎么更新?怎么知道需要打开哪个离线包?
+
+	js bridge通信原理?
+
+	怎么实现h5页面秒开?
+
+	明明不是同一个语言,为什么js和native可以通信?
+
+	怎么实现js bridge跨多个app共用?
+
+	grpc相比http的优势?
+
+	怎么实现移动端的布局？
+
+	iOs下软键盘输入框遮挡遇到过问题么?怎么解决顶不起来的问题?
+
+	实现两个大数相加
+
+	求一个数组最大子项的和,要求这些子项在数组中的位置不是连续的常用的react hooks方法
+
+	怎么解决useState闭包的问题?
+
+三面
+	做过哪些公共组件? DatePicker怎么实现的?难点在哪里?
+
+	组件封装有哪些原则?
+
+	组件数据和UI怎么分离?
+
+	有没有做过一些提高工作效率的东西?
+
+	有没有了解过拖拽?觉得它有哪些难点?
+
+	有没有做过优化相关的? webpack做了哪些优化?
+
+	cache-loader和hard-source-webpack-plugin的区别是什么?
+
+	最近遇到的比较难的项目是什么?你们服务是怎么部署的?
+	
+	Puppeteer可以用来做什么

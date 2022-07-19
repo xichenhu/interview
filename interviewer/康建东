@@ -1,0 +1,232 @@
+—— 两边固定，中间自适应布局 https://blog.csdn.net/elite_zhou/article/details/115277537
+	1、绝对定位
+	2、自身浮动法
+	3、双飞翼布局
+	4、圣杯布局
+	5、flex布局
+
+—— 盒子模型
+	1、把所有的网页元素都看成一个盒子，它具有： content，padding，border，margin 四个属性，这就是盒子模型
+	2、盒子模型有两种形式：标准盒子模型，怪异盒子模型
+		两种模式可以利用box-sizing属性进行自行选择：
+		　　标准模式：box-sizing:content-box;
+		　　怪异模式：box-sizing:border-box;
+	3、两种模式的区别
+
+—— 什么是BFC、如何产生BFC、BFC的作用
+	1、BFC 全称为 块格式化上下文 (Block Formatting Context) 。
+	2、https://www.jianshu.com/p/0d713b32cd0d
+	3、如何产生BFC
+		1、根元素(整个页面就是一个大的BFC)；
+		2、float为 left | right；
+		3、overflow为 hidden | auto | scroll；
+		4、display为 inline-block | table-cell | table-caption | flex | inline-flex；
+		5、position为 absolute | fixed；
+	4、BFC的作用
+		1、BFC的发生在这个垂直方向的边距会发生重叠
+		2、BFC的区域不会与浮动元素的box重叠
+		3、BFC在页面上是一个独立的容器，外面的元素不会影响到里边的元素，反过来里边的元素也不会影响到外面的元素【常用于清除浮动】
+		4、计算BFC高度的时候浮动元素也会参与高度计算
+
+7、什么是闭包？（https://blog.csdn.net/weixin_43352901/article/details/107528020）
+	—— 一个函数的作用域是它定义时的作用域
+	—— 闭包的使用场景
+		1、函数作为返回值
+		2、函数作为参数传递
+		
+8、描述下节流、防抖
+
+—— webpack
+	1、使用过webpack里面哪些plugin和loader
+	2、webpack打包的整个过程
+		从入口文件开始，建立依赖树 ——> 递归依赖树——> rules属性 -> test正则匹配文件，使用加载器，加载模块——> loader处理 ——> plugin ——> boundle.js 完成打包
+	3、dev-server是怎么跑起来
+	4、一般怎么组织CSS（Webpack）
+	5、如何配置把js、css、html单独打包成一个文件
+	6、webpack和gulp的优缺点
+	7、使用webpack构建时有无做一些自定义操作
+	8、webpack的热更新是如何做到的？说明其原理？
+	9、webpack的loader, plugles 
+		（Webpack配置(loader和plugin如何使用)：https://www.jianshu.com/p/d029a35d3501）
+		（https://blog.csdn.net/weixin_39645003/article/details/111138925）
+		（https://www.cnblogs.com/gaoht/p/11310365.html）
+		
+		style-loader(将处理结束的CSS代码存储在js中，运行时嵌入<style>后挂载至html页面上)  
+		css-loader(使webpack可以识别css模块)  
+		sass-loader(使webpack可以识别scss/sass文件)
+
+		—— loader用于加载某些资源文件。因为webpack本身只能打包common.js规范的js文件，对于其他资源如css，img等，是没有办法加载的，这时就需要对应的loader将资源转化，从而进行加载。
+		—— plugin用于扩展webpack的功能。不同于loader，plugin的功能更加丰富，比如压缩打包，优化，不只局限于资源的加载。
+		—— 常用 loader
+			1、处理 css
+				—— style-loader
+				—— css-loader
+			2、处理less
+				—— syle-loader
+				—— css-loader
+				—— less-loader (less-loader依赖于less，所以要一并安装)
+			3、处理css图片资源
+				—— url-loader (依赖于file-loader，所以要一并安装,可以指定其限制用base64 )
+			4、处理html图片资源
+				—— html-loader(注意该loader的模块化方式与url-loader不一致，需要将url-loader的配置中esModule改为false)
+			5、处理其他资源(如：字体文件等)
+				—— file-loader
+		—— 常用plugins
+			1、html编译
+				—— html-webpack-plugin
+			2、提取css文件
+				—— mini-css-extract-plugin（如果用了此插件，那么就不能使用style-loader处理css文件了，需要用mcep.loader替换style-loader）
+
+—— HTTP
+	1、从输入url到页面加载完成发生了什么？（https://www.jianshu.com/p/0054fa46e22b）
+	2、浏览器的缓存机制
+		—— 浏览器缓存机制 304
+			if(Cache-Control === no-store) {
+				// 绝对禁止缓存，浏览器本地不会进行缓存，每次请求资源都要从服务器重新获取。
+				直接向服务器获取资源（本地不缓存资源）
+			} else if (Cache-Control === no-cache) {
+				// 设置了no-cache之后并不代表浏览器不缓存，而是在获取缓存前要向服务器确认资源是否被更改。
+				每次请求都想服务器确认资源是否被更改（本地缓存资源），走下面的协商缓存
+			} else if (本地未过期=> max-age|| Expires) {
+				使用浏览器本地缓存
+			} else {
+				if (Etag有值) {
+					向服务器请求带 if-None-Match
+					if(Etag与原来的一致) {
+						返回304，直接使用本地缓存
+					} else {
+						返回200，获取新资源
+					}
+				} else if (Last-modified有值) {
+					向服务器请求带 if-Modified-Since
+					if (Last-modified与原来的一致) {
+						返回304，直接使用本地缓存
+					} else {
+						返回200，获取新资源
+					}
+				} else {
+					向服务器获取新资源，返回200
+				}
+			}
+	3、HTTPS的加密过程
+		1、服务器端用非对称加密(RSA)生成公钥和私钥
+		2、然后把公钥发给客户端, 服务器则保存私钥
+		3、客户端拿到公钥后, 会生成一个密钥, 这个密钥就是将来客户端和服务器用来通信的钥匙
+		4、然后客户端用公钥对密钥进行加密, 再发给服务器
+		5、服务器拿到客户端发来的加密后的密钥后, 再使用私钥解密密钥, 到此双方都获得通信的钥匙
+	4、网络七层模型
+		—— 物理层-数据链路层-网络层-传输层-会话层-表示层-应用层
+
+—— 性能优化
+	1、代码层面
+	2、缓存利用
+	3、请求数量
+	4、请求带宽
+	5、代码层面的优化
+	6、浏览器渲染机制JS阻塞怎么办?
+		—— 将js放在最后加载
+		—— 监听onload 异步 加载
+
+—— VUE
+	2、说一下对MVVM的理解
+		—— MVVM： model view viewModel
+		—— 三者之间的联系，以及如何对应到各段代码
+		—— ViewModel的理解，联系View和Model
+		—— 三要素
+			1、响应式：vue如何监听到data的每个属性变化
+			2、模版引擎：vue的模板如何被解析，指令如何处理？
+			3、渲染：vue的模版如何被渲染成html？以及渲染过程
+
+	3、vue中如何实现响应式
+		—— 关键是理解Object.defineProperty
+		—— 将data的属性代理到vm上
+
+	4、vue中如何解析模版
+		—— 模板：字符串、有逻辑、嵌入JS变量……
+		—— 模版必须转换成为JS代码（有逻辑，渲染成html、JS变量）
+		—— render函数是什么样子的
+		—— render函数执行是返回vnode
+		—— updateComponent
+
+	5、VUE实现的整体流程
+		—— 第一步：解析模版成render函数
+		—— 第二步：响应式开始监听
+		—— 第三步：首次渲染、显示页面，且绑定依赖
+		—— 第四步：data属性变化，触发rerender
+
+—— vue3.0比2.0有哪些变化
+	1、Typescript：Vue3.0使用 TypeScript 重构，所以，别再纠结需要不需要学习TypeScript——学就对了！
+	2、Proxy：Vue3.0实现方式是通过 ES6 提供的 Proxy API，相比旧的 defineProperty API ，Proxy 可以代理数组&对象。
+	3、reactivity：Vue3.0 项目结构采用了 lerna 做 monorepo 风格的代码管理，简单来说就是源码的管理从多个包变成了集中管理。
+
+
+—— React（https://www.jianshu.com/p/9ce5b647313f）
+	1、React 中的箭头函数是什么？怎么用？
+		箭头函数（=>）是用于编写函数表达式的简短语法。这些函数允许正确绑定组件的上下文，因为在 ES6 中默认下不能使用自动绑定。使用高阶函数时，箭头函数非常有用。
+		//General way
+		render() {    
+		    return(
+		        <MyInput onChange = {this.handleChange.bind(this) } />
+		    );
+		}
+		//With Arrow Function
+		render() {  
+		    return(
+		        <MyInput onChange = { (e)=>this.handleOnChange(e) } />
+		    );
+		}
+	2、React组件生命周期的阶段是什么？
+		初始渲染阶段：这是组件即将开始其生命之旅并进入 DOM 的阶段。
+		更新阶段：一旦组件被添加到 DOM，它只有在 prop 或状态发生变化时才可能更新和重新渲染。这些只发生在这个阶段。
+		卸载阶段：这是组件生命周期的最后阶段，组件被销毁并从 DOM 中删除。
+	3、如何模块化 React 中的代码？
+	4、你对受控组件和非受控组件了解多少？
+		受控组件										非受控组件
+		1. 没有维持自己的状态							1. 保持着自己的状态
+		2.数据由父组件控制								2.数据由 DOM 控制
+		3. 通过 props 获取当前值，然后通过回调通知更改	3. Refs 用于获取其当前值
+
+	5、单页面应用有什么优缺点
+		优点：
+			用户体验好，快，内容改变不需要刷新整个页面
+			避免出现‘白屏’
+		缺点：
+			首次加载时间较长
+			不利于SEO优化
+			页面复杂度较高
+	6、react 的diff算法
+		1、节点之间的比较
+		2、两个列表之间的比较
+		3、取舍
+
+—— 什么是微前端、微前端的意义、介绍一下微前端的沙箱机制
+	1、微前端是一种类似于微服务的架构，它将微服务的理念应用于浏览器端，即将Web应用由单一的单体应用转变为多个小型前端应用聚合为一的应用。各个前端应用可以独立运行、独立开发、独立部署。
+	2、目前主流的single-spa框架
+		—— single-spa 社区公认的主流方案，可以基于它做二次开发
+		—— qiankun：基于 single-spa 封装，增加 umi 特色，增加沙箱机制（JS、ShadowDOM 等）
+		—— icestark：类似于 single-spa 实现，React 技术栈友好，阿里的另一个轮子
+		—— Micro-Frontends：类似于 single-spa 实现，React 技术栈友好，阿里的另一个轮子
+	3、关于是否使用微前端架构的思考
+		—— 系统是否臃肿，开发，构建性能很差，需要重构(自虐)，功能拆分
+		—— 多个系统，需要集成到一起，使用统一入口提供给用户使用
+		—— 能不能推动整个项目的规划和落实(多个系统配合 === 开发的噩梦， 流程失控)
+	4、微前端的特点
+		—— 代码库更小，可以将系统拆分成多个子系统。
+		—— 独立部署，子系统堵路部署，没有技术栈限制
+		—— 无需重新开发当前项目，可以直接集成
+	5、微前端的不足
+		—— 开发中
+			1、需要运行多个子系统才能开发和调试(至少是base系统和业务系统)
+			2、多个系统之间的约定，已经架构设计
+			3、性能问题（单页面系统=>ios， 微架构=> Android）
+		—— 生产环境
+			1、多个系统之间的版本控制(业务流程可能会出现耦合的情况)
+			2、浏览器会加载多个框架代码(子系统采用不同的技术框架，如vue, react, 以及UI框架)
+			3、多个系统之间通信复杂 ，数据共享操作很繁琐。
+	6、微前端的沙箱机制（https://segmentfault.com/a/1190000022684014?utm_source=tag-newest）
+
+
+
+
+
+
